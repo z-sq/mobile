@@ -1,0 +1,12 @@
+:root .adm-search-bar {
+    border-radius: 0;
+}
+
+.adm-input-element {
+    font-size: 0.75rem !important;
+}
+
+:root .adm-search-bar-active .adm-search-bar-input-box {
+    background-color: #F2F2F2;
+    border: none;
+}

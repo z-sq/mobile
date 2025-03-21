@@ -1,0 +1,28 @@
+.bjs-powered-by {
+  display: none;
+}
+
+.approved-node .djs-visual > :nth-child(1) {
+  stroke: #9edbed !important;
+  fill: #a3e3fc !important;
+}
+
+.unapproved-node .djs-visual > :nth-child(1) {
+  stroke: #bff3c3 !important;
+  fill: #bff3c3 !important;
+}
+
+.current-node .djs-visual > :nth-child(1) {
+  stroke: #fee9cc !important;
+  fill: #fee9cc !important;
+}
+
+.end-node .djs-visual > :nth-child(1) {
+  stroke: #fee9cc !important;
+  fill: #fee9cc !important;
+}
+
+.djs-connection path {
+  stroke: #adadad !important;
+  marker-end: url(#sequenceflow-arrow-normal) !important;
+}

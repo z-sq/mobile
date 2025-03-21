@@ -1,0 +1,33 @@
+.table-wrapper::-webkit-scrollbar,
+.headRef-wrapper::-webkit-scrollbar,
+.bodyRef-wrapper::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0px;
+  display: none;
+}
+
+.sticky-element::before,
+.sticky-element::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #f2f2f2;
+}
+
+.sticky-element::before {
+  left: -1px;
+}
+
+.sticky-element::after {
+  right: -1px;
+}
+
+.table-wrapper :global .adm-infinite-scroll {
+  padding: 0.5rem;
+  /* position: sticky;
+  bottom: 0;
+  left: 0; */
+  width: 100%;
+}
