@@ -46,6 +46,8 @@ const MenuPage = () => {
   const [curProc, setCurProc] = useState({})
   const [procList, setProcList] = useState([])
   const [tabsMap, setTabsMap] = useState(defaultTabsMap)
+  const token = window.localStorage.getItem('token')
+  const usercode = window.localStorage.getItem('acctCode')
 
   const onExpand = () => {
     setVisible(!visible)
@@ -97,7 +99,11 @@ const MenuPage = () => {
         }
       }
       router.push(
-        `/detail/${typeMap[page].page}${pagUrl ? '/' + pagUrl : ''}?key=${busKeyValue}&type=${procCode}&state=${state}&procVersion=${procVersion}&purMet=${type}&pagCode=${page}${chaFlag === 'Y' ? '&chaFlag=' + chaFlag : ''}`
+        `/detail/${typeMap[page].page}${
+          pagUrl ? '/' + pagUrl : ''
+        }?key=${busKeyValue}&type=${procCode}&state=${state}&procVersion=${procVersion}&purMet=${type}&pagCode=${page}${
+          chaFlag === 'Y' ? '&chaFlag=' + chaFlag : ''
+        }`
       )
     }
   }
@@ -134,12 +140,23 @@ const MenuPage = () => {
     }
     try {
       setLoading(true)
+
       const result = await request(
-        '/business/mas/tp/manual/tp2000/getWorkItem',
+        '/home/page/getWorkItem',
         'GET',
         {
           states,
-          procCodes: procCode !== undefined ? procCode : curProc.procCode || ''
+          procCodes:
+            procCode !== undefined
+              ? procCode
+              : curProc.procCode || '',
+          limit: 20,
+          page: 1,
+          comCode: '01',
+          usercode
+        },
+        {
+          Authorization: token
         }
       )
       setLoading(false)
@@ -149,15 +166,18 @@ const MenuPage = () => {
         if (activeKey === '1') {
           setUnread(total)
         }
-        //先按照insStaDate降序排序，如果insStaDate相同，则按照insStatime降序排序 
+        //先按照insStaDate降序排序，如果insStaDate相同，则按照insStatime降序排序
         data.sort(function (a, b) {
-          return new Date(`${b.insStaDate.replaceAll('/', '-')}T${b.insStaTime}`) - new Date(`${a.insStaDate.replaceAll('/', '-')}T${a.insStaTime}`);
-        });
+          return (
+            new Date(`${b.insStaDate.replaceAll('/', '-')}T${b.insStaTime}`) -
+            new Date(`${a.insStaDate.replaceAll('/', '-')}T${a.insStaTime}`)
+          )
+        })
         setData(data)
       } else {
         setData([])
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   // const loadMore = async () => {
@@ -177,25 +197,23 @@ const MenuPage = () => {
 
   const getProcDef = async () => {
     try {
-      const token = window.localStorage.getItem('token');
-      const usercode = window.localStorage.getItem('acctCode')
       const result = await request(
-        '/business/mas/tp/manual/tp2000/getProcDef',
+        '/home/page/getProcDef',
         'GET',
         {
           comCode: '01',
           usercode
         },
         {
-          Authorization: token,
+          Authorization: token
         }
       )
       if (result && result.success) {
         const data = result.data ? result.data : []
-        data.unshift({ procCode: '00000', procName: '空', })
+        data.unshift({ procCode: '00000', procName: '空' })
         setProcList(data)
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   useEffect(() => {
