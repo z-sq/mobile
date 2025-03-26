@@ -12,6 +12,7 @@ import { typeMap, busTypeMap } from '@/config/configData'
 import { workflowApi } from '@/request/apis/workflow'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
+import tabStore from '@/stores/tabStore'
 
 const saleAgreementCenterLayout = observer(({ children }) => {
   const [opinionValue, setOpinionValue] = useState('')
@@ -26,6 +27,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
   const {
     approveStore: { currentInfo, updateCurInfo }
   } = useStores()
+  const {currentTabKey} =tabStore;
 
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
 
@@ -128,7 +130,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
   }
 
   const saveOpinion = () => {
-    if (state === '7') {
+    if (currentTabKey === '7') {
       const values = form.getFieldsValue()
       updateCurInfo({ curOpinion: values.opinion })
     }
@@ -144,7 +146,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
     //   form.setFieldsValue({
     //     opinion: currentInfo.opinion
     //   })
-    // } else if (state === '7' && currentInfo && currentInfo.curOpinion) {
+    // } else if (currentTabKey === '7' && currentInfo && currentInfo.curOpinion) {
     //   form.setFieldsValue({
     //     opinion: currentInfo.curOpinion
     //   })
@@ -169,7 +171,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
       
       <div
         className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
-        style={{ marginBottom: state === '7' ? '1.5rem' : 0 }}
+        style={{ marginBottom: currentTabKey === '7' ? '1.5rem' : 0 }}
       >
         <div className="h-64px box-border w-[100%]">
           {/* <Form
@@ -194,7 +196,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
         </div>
 
 
-        {state === '7' && !isForward ? (
+        {currentTabKey === '7' && !isForward ? (
           <div className="box-border flex w-full place-content-between items-center">
             <Button
               color="primary"
@@ -274,7 +276,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
             </Popup>
           </div>
         ) : null}
-        {state === '7' && isForward ? (
+        {currentTabKey === '7' && isForward ? (
           <div className="box-border flex w-full place-content-center items-center">
             <Button
               color="primary"

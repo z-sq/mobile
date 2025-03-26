@@ -21,6 +21,7 @@ import ApproveOpinion from './ApproveOpinion'
 import { typeMap } from '@/config/configData'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
+import tabStore from '@/stores/tabStore'
 
 const saleAgreementCenter = observer(({ children }) => {
   const [activeKey, setActiveKey] = useState('1')
@@ -34,14 +35,14 @@ const saleAgreementCenter = observer(({ children }) => {
   } = useStores()
 
   const searchParams = useSearchParams()
-  const busKeyValue = searchParams.get('key')
+  const busKeyValue = searchParams.get('key')||'R1092125020026'
   const procCode = searchParams.get('type')
   const pagCode = searchParams.get('pagCode')
   const procVersion = searchParams.get('procVersion')
   const state = searchParams.get('state')
 
-  const wfType = typeMap[pagCode]?.pagCode
-  const busKey = typeMap[pagCode]?.busKey
+  const wfType = typeMap[pagCode]?.pagCode||'tp2100'
+  const busKey = typeMap[pagCode]?.busKey||'reqNo'
 
   const getMaterialInfo = async (page) => {
     try {
@@ -87,9 +88,12 @@ const saleAgreementCenter = observer(({ children }) => {
       }
     } catch (err) {}
   }
-
+// 审核意见
   const getWfmApproveInfo = async () => {
+    console.log(222)
+    // /business/mas/tp/manual/tp2800/getWfmApproveInfo
     try {
+      console.log(333,busKeyValue,wfType,busKey)
       const result = await request(
         `/business/mas/tp/manual/${wfType}/getWfmApproveInfo`,
         'GET',
@@ -100,6 +104,7 @@ const saleAgreementCenter = observer(({ children }) => {
           uuId: currentInfo.uuid
         }
       )
+      console.log(444)
       if (result && result.success) {
         const data = result.data || []
         setApprovalInfo(data)
@@ -126,15 +131,33 @@ const saleAgreementCenter = observer(({ children }) => {
         return <BaseInfo />
     }
   }
+  const handleGetTabChange=(key)=>{
+    setActiveKey(key)
+    tabStore.setCurrentTabKey(key)
+    console.log(1,key,'11223344')
+    if (key==='7') {
+      getWfmApproveInfo()
+    }
+  }
+  useEffect(() => {
+    // if (!currentInfo) {
+    //   return
+    // }
+    console.log(currentInfo,'currentInfo')
+    getMaterialInfo(1)
+    getVendorInfo()
+    getWfmApproveInfo()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
-      <TabBar setActiveKey={setActiveKey} />
+      <TabBar handleTabChange={handleGetTabChange} />
       <div
         className="pt-80px pb-160px absolute box-border w-full overflow-hidden"
         style={{
           height: 'calc(var(--vh, 1vh) * 100)',
-          paddingBottom: state === '7' ? '9rem' : '5rem'
+          paddingBottom: activeKey === '7' ? '9rem' : '5rem'
         }}
       >
         <div className="relative box-border h-[100%] w-full">
@@ -146,9 +169,6 @@ const saleAgreementCenter = observer(({ children }) => {
           >
            {renderContent(activeKey)}
           </div>
-          
-          {/* {activeKey === '3' && <SupplierInformation data={supplierInfo} />} */}
-         
         </div>
       </div>
     </>
