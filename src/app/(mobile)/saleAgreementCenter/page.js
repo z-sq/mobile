@@ -111,7 +111,7 @@ const saleAgreementCenter = observer(({ children }) => {
       case '1':
         return <BaseInfo />
       case '2':
-        return <ProductInfo />
+        return <ProductInfo data={materialInfo} total={materialTotal} />
       case '3':
         return <SelfCheck />
       case '4':
@@ -121,7 +121,7 @@ const saleAgreementCenter = observer(({ children }) => {
       case '6':
         return <ReturnPlan />
       case '7':
-        return <ApproveOpinion />
+        return <ApproveOpinion  data={approvalInfo} />
       default:
         return <BaseInfo />
     }
@@ -134,7 +134,7 @@ const saleAgreementCenter = observer(({ children }) => {
         className="pt-80px pb-160px absolute box-border w-full overflow-hidden"
         style={{
           height: 'calc(var(--vh, 1vh) * 100)',
-          paddingBottom: state === '2' ? '9rem' : '5rem'
+          paddingBottom: state === '7' ? '9rem' : '5rem'
         }}
       >
         <div className="relative box-border h-[100%] w-full">
@@ -146,11 +146,9 @@ const saleAgreementCenter = observer(({ children }) => {
           >
            {renderContent(activeKey)}
           </div>
-          {activeKey === '2' && (
-            <MaterialInformation data={materialInfo} total={materialTotal} />
-          )}
-          {activeKey === '3' && <SupplierInformation data={supplierInfo} />}
-          {activeKey === '4' && <ApprovalOpinion data={approvalInfo} />}
+          
+          {/* {activeKey === '3' && <SupplierInformation data={supplierInfo} />} */}
+         
         </div>
       </div>
     </>
