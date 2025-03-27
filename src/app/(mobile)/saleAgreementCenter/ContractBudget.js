@@ -14,28 +14,6 @@ import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 
 // 表格数据：合同条款审查项、是否符合、备注信息。还有个动态列，自查编码
-const tableData = [
-  {
-    "BUD_FUN_CODE": "01",
-    "CUR_CODE": "RMB",
-    "CUR_NAME": "人民币",
-    "BUD_PAR_CODE": "z14",
-    "PJT_BUD_NO": null,
-    "AMT": "0",
-    "ORD_NO": "OM2025021300002",
-    "UU_ID": "e290a07642fe4e4cba568f9a2ba4e304",
-    "ROWNUM_": "1",
-    "COM_CODE": "01",
-    "BUD_PAR_NAME": "直接费用-设备费",
-    "NOTE": null,
-    "BUD_FUN_NAME": "国拨",
-    "UPD_CODE": null,
-    "BUD_PJT_NAME": "购置设备费",
-    "UPD_NAME": null,
-    "UPD_DATE": null,
-    "BUD_PJT_CODE": "z1401"
-},
-]
 // 表格列的配置，还有个动态列，自查编码,列排序
 const columns = [
   {
@@ -93,16 +71,7 @@ const ContractBudget = () => {
       approveStore: { currentInfo }
     } = useStores()
     const {COM_CODE,ORD_NO}=currentInfo
-  // 根据接口返回的参数，重写formatFieldVal
-  const formatFieldVal = (field, val) => {
-    if (val === undefined || val === null || val === '') {
-      return '-'
-    }
-    if (field === 'IS_CONFORM') {
-      return val === 'Y' ? '是' : '否'
-    }
-    return val
-  }
+    
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getBillhead, 'GET', {
