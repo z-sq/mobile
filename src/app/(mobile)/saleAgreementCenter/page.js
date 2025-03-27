@@ -44,26 +44,6 @@ const saleAgreementCenter = observer(({ children }) => {
   const wfType = typeMap[pagCode]?.pagCode||'tp2100'
   const busKey = typeMap[pagCode]?.busKey||'reqNo'
 
-  const getMaterialInfo = async (page) => {
-    try {
-      const result = await request(
-        `/business/mas/tp/manual/${wfType}/getItemInfo`,
-        'GET',
-        {
-          [busKey]: busKeyValue,
-          page,
-          limit: 20
-        }
-      )
-      if (result && result.success) {
-        const data = result.data ? result.data.records || [] : []
-        const total = result.data ? result.data.total || 0 : 0
-        setMaterialInfo(data)
-        setMaterialTotal(total)
-      }
-    } catch (err) {}
-  }
-
   const getVendorInfo = async () => {
     try {
       const result = await request(
@@ -143,8 +123,6 @@ const saleAgreementCenter = observer(({ children }) => {
     // if (!currentInfo) {
     //   return
     // }
-    console.log(currentInfo,'currentInfo')
-    getMaterialInfo(1)
     getVendorInfo()
     getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
