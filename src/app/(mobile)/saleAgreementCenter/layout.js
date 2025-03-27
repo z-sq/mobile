@@ -28,13 +28,13 @@ const saleAgreementCenterLayout = observer(({ children }) => {
     approveStore: { currentInfo, updateCurInfo }
   } = useStores()
   const {currentTabKey} =tabStore;
-
+console.log(JSON.stringify(currentInfo),'currentInfo')
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
 
   const searchParams = useSearchParams()
   const reqNo = searchParams.get('key')
   const pagCode = searchParams.get('pagCode')
-  const state = searchParams.get('state')
+  const state = searchParams.get('state')||'2'
   const purMetCode = searchParams.get('purMet')
   const chaFlag = searchParams.get('chaFlag')
   let title_item = 'title'
@@ -173,7 +173,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
         className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
         style={{ marginBottom: currentTabKey === '7' ? '1.5rem' : 0 }}
       >
-        <div className="h-64px box-border w-[100%]">
+        {/* <div className="h-64px box-border w-[100%]"> */}
           {/* <Form
             layout="horizontal"
             form={form}
@@ -193,12 +193,12 @@ const saleAgreementCenterLayout = observer(({ children }) => {
               valid={visible}
             />
           </Form> */}
-        </div>
+        {/* </div> */}
 
 
-        {currentTabKey === '7' && !isForward ? (
-          <div className="box-border flex w-full place-content-between items-center">
-            <Button
+        {state === '2' && !isForward ? (
+          <div className="box-border flex w-full justify-between">
+            {/* <Button
               color="primary"
               fill="outline"
               style={{
@@ -210,25 +210,27 @@ const saleAgreementCenterLayout = observer(({ children }) => {
               disabled={disable}
             >
               驳 回
-            </Button>
+            </Button> */}
             <Button
               color="primary"
               fill="solid"
               style={{
-                width: '30%'
+                width: '50%'
               }}
+             
               onClick={() => {
                 onApprove(true)
               }}
               disabled={disable}
             >
-              通 过
+              审 批
             </Button>
+            <div  className='mx-2'/>
             <Button
               color="primary"
               fill="outline"
               style={{
-                width: '30%'
+                width: '50%'
               }}
               onClick={() => {
                 setMoreVisible(true)
@@ -245,7 +247,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
             >
               <div className="text-14px px-12px pb-24px">
                 <div
-                  className={`border-bottom-gray flex h-[100%] h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
+                  className={`border-bottom-gray flex h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
@@ -255,7 +257,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
                   转发
                 </div>
                 <div
-                  className="border-bottom-gray flex h-[100%] h-[48px] w-[100%] items-center justify-center"
+                  className="border-bottom-gray flex h-[48px] w-[100%] items-center justify-center"
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
@@ -265,7 +267,7 @@ const saleAgreementCenterLayout = observer(({ children }) => {
                   转办
                 </div>
                 <div
-                  className="flex h-[100%] h-[48px] w-[100%] items-center justify-center"
+                  className="flex h-[48px] w-[100%] items-center justify-center"
                   onClick={() => {
                     setMoreVisible(false)
                   }}
