@@ -8,6 +8,8 @@ import { useStores } from '@/utils/useStores'
 // /business/om/auto/om_ys_sp/query/billhead 合同预算基础信息 Get
 // /business/om/auto/om_ys_sp/query/billmgrid 合同预算表格 Get
 // /business/om/auto/om_cgfk_sp/query/headformpanel 项目采购付款计划 基础信息
+// 回款计划 /business/om/auto/om_hk_sp/query/billform
+// 回款计划表格 
 /**
  * 销售合同接口
  * @type {saleAgreementApi}
@@ -20,5 +22,7 @@ export const saleAgreementApi = {
   getBillhead:'/business/om/auto/om_ys_sp/query/billhead',
   getBillmgrid:'/business/om/auto/om_ys_sp/query/billmgrid',
   getPayPlanBase:'/business/om/auto/om_cgfk_sp/query/headformpanel',
-  getPayPlanTable:'/business/om/auto/om_cgfk_sp/query/detailgridpanel'
+  getPayPlanTable:'/business/om/auto/om_cgfk_sp/query/detailgridpanel',
+  getReturnInfo:'/business/om/auto/om_hk_sp/query/billform',
+  getReturnTable:'/business/om/auto/om_hk_sp/query/billform',
 }
