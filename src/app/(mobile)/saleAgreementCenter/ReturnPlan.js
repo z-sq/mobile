@@ -92,6 +92,10 @@ const PaymentPlan = () => {
   const [loading, setLoading] = useState(true)
   const [baseInfo, setBaseInfo] = useState({})
   const [data, setData] = useState([])
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [total,setTotal]=useState(0)
+
   const {
         approveStore: { currentInfo }
       } = useStores()
@@ -136,6 +140,16 @@ const PaymentPlan = () => {
     }finally{
         setLoading(false)
     }
+  }
+  const loadMore = async () => {
+    if (data.length >= total) {
+      setHasMore(false)
+      return
+    }
+    setPage(page + 1)
+    const append = (await getDetailInfo(page + 1)) || []
+    setHasMore(data.length + append.length < total)
+    setData((val) => [...val, ...append])
   }
   useEffect(() => {
     setLoading(true)
@@ -200,6 +214,9 @@ const PaymentPlan = () => {
               columns={columns}
               dataSource={data}
               orderColumn={true}
+              loadMore={loadMore}
+              hasMore={hasMore}
+              infiniteScroll={true}
             />
           </div>
         </>
