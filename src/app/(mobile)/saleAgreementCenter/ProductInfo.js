@@ -1,5 +1,5 @@
 'use client'
-
+import { observer } from 'mobx-react'
 import { useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
@@ -9,6 +9,7 @@ import TableList from '@/components/TableList'
 import { typeMap } from '@/config/configData'
 import { replaceString } from '@/utils/method'
 import request from '@/utils/request'
+import { useStores } from '@/utils/useStores'
 
 const defaultColumns =
 [
@@ -221,45 +222,52 @@ const otherColumns = [
   }
 ]
 
-export default function ProductInfo({
-  data,
-  total,
-  style = {},
-  columns,
-  width,
-  params
-}) {
-  const [tableDdata, setTableData] = useState(data)
+const ProductInfo=observer(({style = {}})=> {
+  const [tableDdata, setTableData] = useState([])
+  const [total, setMaterialTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [tableColumns, setTableColumns] = useState(defaultColumns)
   const [tableWidth, setTableWidth] = useState(null)
-
+  const {
+      approveStore: { currentInfo }
+    } = useStores()
+  console.log(JSON.stringify(currentInfo),'currentInfo')
   const searchParams = useSearchParams()
   const busKeyValue = searchParams.get('key')
   const pagCode = searchParams.get('pagCode')
   const wfType = typeMap[pagCode]?.pagCode
   const busKey = typeMap[pagCode]?.busKey
-
-  const getMaterialInfo = async (page) => {
+  const {COM_CODE,ORD_NO,REC_VERSION,REC_VERSION_OLD}=currentInfo
+  // 产品信息
+  const getMaterialInfo = async (page=1) => {
     try {
       const result = await request(
-        `/business/mas/tp/manual/${wfType}/getItemInfo`,
+        `/business/om/auto/bzs_om2120/query/tabdehead`,
         'GET',
         {
-          [busKey]: busKeyValue,
-          page,
-          limit: 20,
-          ...params
+          params:JSON.stringify({
+            COM_CODE:COM_CODE,
+            ORD_NO:ORD_NO,
+            REC_VERSION:REC_VERSION,
+            REC_VERSION_OLD:REC_VERSION_OLD,
+          }),
+          COM_CODE:COM_CODE,
+          ORD_NO:ORD_NO,
+          REC_VERSION:REC_VERSION,
+          REC_VERSION_OLD:REC_VERSION_OLD,
+          page: page,
+          start: 0,
+          limit: 200
         }
       )
-      if (result.success) {
-        const data = result.data ? result.data.records || [] : []
-        return data
-      } else {
-        // 错误提示
+      if (result && result.success) {
+        const data = result.data ? result.data || [] : []
+        const total = result.data ? result.total || 0 : 0
+        setTableData(data)
+        setMaterialTotal(total)
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   const loadMore = async () => {
@@ -274,6 +282,7 @@ export default function ProductInfo({
   }
 
   useEffect(() => {
+    getMaterialInfo(1)
   }, [])
 
   return (
@@ -292,4 +301,5 @@ export default function ProductInfo({
       </div>
     </div>
   )
-}
+})
+export default ProductInfo;
