@@ -28,10 +28,10 @@ const columns = [
   },
   {
     title: '合同节点说明',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'IS_CONFORM1',
+    key: 'IS_CONFORM1',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.IS_CONFORM1 - b.IS_CONFORM1,
       multiple: 2
     }
   },
@@ -46,43 +46,43 @@ const columns = [
   },
   {
     title: '回款类型',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARK1',
+    key: 'REMARK1',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARK1 - b.REMARK1,
       multiple: 3
     }
   },{
     title: '回款说明',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARK2',
+    key: 'REMARK2',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARK2 - b.REMARK2,
       multiple: 3
     }
   },{
     title: '计划回款金额',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARK3',
+    key: 'REMARK3',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARK3 - b.REMARK3,
       multiple: 3
     }
   },{
     title: '计划回款日期',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARK4',
+    key: 'REMARK4',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARK4 - b.REMARK4,
       multiple: 3
     }
   },
   {
     title: '责任人',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARK5',
+    key: 'REMARK5',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARK5 - b.REMARK5,
       multiple: 3
     }
   }
