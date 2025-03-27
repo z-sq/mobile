@@ -173,28 +173,6 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
         className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
         style={{ marginBottom: currentTabKey === '7' ? '1.5rem' : 0 }}
       >
-        {/* <div className="h-64px box-border w-[100%]"> */}
-          {/* <Form
-            layout="horizontal"
-            form={form}
-            requiredMarkStyle={false}
-            style={{
-              '--border-bottom': 'none',
-              '--border-inner': 'none',
-              '--border-top': 'none'
-            }}
-          >
-            <LabelInput
-              label={isForward ? '评论 ' : '审核意见 '}
-              value={opinionValue}
-              onChange={handleInputChange}
-              read={state !== '2'}
-              form={form}
-              valid={visible}
-            />
-          </Form> */}
-        {/* </div> */}
-
 
         {state === '2' && !isForward ? (
           <div className="box-border flex w-full justify-between">
@@ -251,7 +229,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
-                    router.push('/wfm/forward')
+                    router.push('./saleAgreementCenter/forward')
                   }}
                 >
                   转发
@@ -261,7 +239,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
-                    router.push('/wfm/transfer')
+                    router.push('./saleAgreementCenter/transfer')
                   }}
                 >
                   转办
