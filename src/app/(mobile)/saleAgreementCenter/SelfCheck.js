@@ -88,8 +88,14 @@ const columns = [
 
 const SelfCheck = () => {
   const [loading, setLoading] = useState(true)
-  const [baseInfo, setBaseInfo] = useState(mockdata)
+  const [baseInfo, setBaseInfo] = useState({})
   const [data, setData] = useState(tableData)
+
+  const {
+    approveStore: { currentInfo }
+  } = useStores()
+  const {COM_CODE,ORD_NO}=currentInfo
+  console.log(COM_CODE,ORD_NO,'currentInfo')
   // 根据接口返回的参数，重写formatFieldVal
   const formatFieldVal = (field, val) => {
     if (val === undefined || val === null || val === '') {
@@ -103,11 +109,10 @@ const SelfCheck = () => {
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
-        _dc: 1742895269636,
-        params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
         page: 1,
         start: 0,
-        limit: 25
+        limit: 100
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
@@ -125,8 +130,7 @@ const SelfCheck = () => {
         saleAgreementApi.getCheckTableDetail,
         'GET',
         {
-          _dc: 1742895269633,
-          params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+          params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
           page: 1,
           start: 0,
           limit: 100
@@ -160,12 +164,12 @@ const SelfCheck = () => {
           <table className="w-full">
             <tbody>
               <tr>
-                <BasicFormItem label="业务部门" text={data.purTitle || ''} />
-                <BasicFormItem label="销售员" text={data.proName || ''} />
+                <BasicFormItem label="业务部门" text={baseInfo?.DEP_NAME || ''} />
+                <BasicFormItem label="销售员" text={baseInfo?.SAL_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="录入人" text={data.purName || ''} />
-                <BasicFormItem label="申请日期" text={data.finDate || ''} />
+                <BasicFormItem label="录入人" text={baseInfo?.UPD_NAME || ''} />
+                <BasicFormItem label="申请日期" text={baseInfo?.CON_DATE || ''} />
               </tr>
             </tbody>
           </table>
