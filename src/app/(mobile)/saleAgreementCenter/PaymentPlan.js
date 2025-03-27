@@ -13,16 +13,6 @@ import { BASE_PATH } from '@/config/app'
 import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 
-// 表格数据：合同条款审查项、是否符合、备注信息。还有个动态列，自查编码
-const tableData = [
-  {
-    REMARK: null,
-    IS_CONFORM: null,
-    CONFORM_ITEM: null,
-    ROWNUM_: '1',
-    UU_ID: null
-  }
-]
 // 表格列的配置，还有个动态列，自查编码,列排序
 const columns = [
   
@@ -37,10 +27,10 @@ const columns = [
   },
   {
     title: '付款金额',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'PAY_NUM',
+    key: 'PAY_NUM',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.PAY_NUM - b.PAY_NUM,
       multiple: 2
     }
   },
@@ -58,22 +48,16 @@ const columns = [
 const PaymentPlan = () => {
   const [loading, setLoading] = useState(true)
   const [baseInfo, setBaseInfo] = useState({})
-  const [data, setData] = useState(tableData)
+  const [data, setData] = useState([])
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [total,setTotal]=useState(0)
 
   const {
         approveStore: { currentInfo }
       } = useStores()
     const {COM_CODE,ORD_NO,CUR_CODE,CUR_NAME}=currentInfo
-  // 根据接口返回的参数，重写formatFieldVal
-  const formatFieldVal = (field, val) => {
-    if (val === undefined || val === null || val === '') {
-      return '-'
-    }
-    if (field === 'IS_CONFORM') {
-      return val === 'Y' ? '是' : '否'
-    }
-    return val
-  }
+
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getPayPlanBase, 'GET', {
@@ -92,7 +76,7 @@ const PaymentPlan = () => {
         setLoading(false)
     }
   }
-  const getDetailInfo = async () => {
+  const getDetailInfo = async (page=1) => {
     try {
       const result = await request(
         saleAgreementApi.getPayPlanTable,
@@ -108,13 +92,14 @@ const PaymentPlan = () => {
           ORD_NO,
           CUR_CODE,
           CUR_NAME,
-          page: 1,
+          page: page,
           start: 0,
           limit: 100
         }
       )
       if (result && result.success) {
         setData(result.data)
+        setTotal(result.total)
         console.log('result', result)
       }
     } catch (err) {
@@ -122,6 +107,16 @@ const PaymentPlan = () => {
     }finally{
         setLoading(false)
     }
+  }
+  const loadMore = async () => {
+    if (data.length >= total) {
+      setHasMore(false)
+      return
+    }
+    setPage(page + 1)
+    const append = (await getDetailInfo(page + 1)) || []
+    setHasMore(data.length + append.length < total)
+    setData((val) => [...val, ...append])
   }
   useEffect(() => {
     setLoading(true)
@@ -182,6 +177,9 @@ const PaymentPlan = () => {
               columns={columns}
               dataSource={data}
               orderColumn={true}
+              loadMore={loadMore}
+              hasMore={hasMore}
+              infiniteScroll={true}
             />
           </div>
         </>
