@@ -48,6 +48,7 @@ const BidPage = observer(() => {
         }
       )
       if (result && result.success) {
+        // TODO  获取列表UU_ID
         const baseInfo = result.data.find(item=>item.UU_ID == '2ee9fafed3db4b318305d541d247de7d');
         setBaseInfo(baseInfo || {})
       } else {
@@ -102,9 +103,10 @@ const BidPage = observer(() => {
     if (!currentInfo) {
       return
     }
-    // getBaseInfo()
-    // getProductInfo()
-    // getWfmApproveInfo()
+    getBaseInfo()
+    // TODO 在服务器调试
+    // getProductInfo()  
+    getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentInfo])
 
