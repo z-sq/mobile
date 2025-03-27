@@ -256,8 +256,8 @@ const LoginWrapper = () => {
           }
           window.localStorage.setItem('token', response.access_token)
           document.cookie = `token=${response.access_token}; path=/;`
-          document.cookie = `sysCode=tp; path=/;`
-          document.cookie = `menuCode=tp2000; path=/;`
+          document.cookie = `sysCode=pm; path=/;`
+          document.cookie = `menuCode=bzs_pm2120; path=/;`
           if (rememberPwd) {
             window.localStorage.setItem(
               'userInfo',
