@@ -1,42 +1,16 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
-import FiewViewer from './components/FileViewer'
 
 import Loading from '@/components/Loading'
-import { typeMap } from '@/config/configData'
-import { addCommas } from '@/utils/method'
 import request from '@/utils/request'
 
-import { centerDataInfo, attrData } from './mockData'
+import { centerDataInfo } from './mockData'
 export default function BaseInfo({ style = {} }) {
   const usercode = window.localStorage.getItem('acctCode')
-  console.log('用户',usercode)
-  const searchParams = useSearchParams()
-  const busKeyValue = searchParams.get('key') || 'P1090524080033'
-  const pagCode = searchParams.get('pagCode') || 'tp2514'
-  const wfType = typeMap[pagCode].pagCode || 'tp2800'
-  const busKey = typeMap[pagCode].busKey || 'bilNo'
-
   const [data, setData] = useState(centerDataInfo)
-  const [attaDataList, setAttaDataList] = useState(attrData)
-
-  const getAtta = async (params = {}) => {
-    const result = await request(
-      `/business/mas/tp/manual/${wfType}/getAttaFileInfo`,
-      'GET',
-      {
-        busValue: busKeyValue,
-        ...params
-      }
-    )
-    if (result && result.success) {
-      setAttaDataList(result.data || [])
-    }
-  }
 
   const getBaseInfo = async () => {
     try {
@@ -50,14 +24,8 @@ export default function BaseInfo({ style = {} }) {
           limit: 9999
         }
       )
-      console.log('basedata', result,  { usercode:usercode })
       if (result && result.success) {
         setData(result.data[0] || {})
-        const data = result.data[0] || {}
-        const params = {
-          comCode: data.comCode
-        }
-        getAtta(params)
       }
     } catch (err) {}
   }
@@ -72,9 +40,9 @@ export default function BaseInfo({ style = {} }) {
       className="text-12px px-10px py-10px h-[100%] overflow-y-auto"
       style={style}
     >
-      {/* {!data ? (
+      {!data ? (
         <Loading />
-      ) : ( */}
+      ) : (
       <table className="w-full">
         <tbody>
           <tr>
@@ -143,20 +111,10 @@ export default function BaseInfo({ style = {} }) {
               textColSpan={3}
             />
           </tr>
-          {/* <tr>
-              <BasicFormItem
-                label="附件"
-                text={() => {
-                  return attaDataList.map((atta, index) => (
-                    <FiewViewer key={index} className="pr-4" file={atta} />
-                  ))
-                }}
-                textColSpan={3}
-              />
-            </tr> */}
+          
         </tbody>
       </table>
-      {/* )} */}
+     )} 
     </div>
   )
 }
