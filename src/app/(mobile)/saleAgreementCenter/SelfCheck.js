@@ -9,9 +9,6 @@ import request from '@/utils/request'
 import SectionTitle from './components/SectionTitle'
 import Dash from './components/Dash'
 
-
-
-
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
 import FiewViewer from './components/FileViewer'
 
@@ -21,15 +18,15 @@ import { BASE_PATH } from '@/config/app'
 import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 // 自查表基础信息
-const mockdata =  {
-    CON_DATE: '2025/02/13',
-    UPD_CODE: 'lhy',
-    SAL_NAME: '李浩宇',
-    DEP_NAME: '客户服务部',
-    UPD_NAME: '李浩宇',
-    ROWNUM_: '1',
-    UU_ID: 'nullnullnull'
-  }
+const mockdata = {
+  CON_DATE: '2025/02/13',
+  UPD_CODE: 'lhy',
+  SAL_NAME: '李浩宇',
+  DEP_NAME: '客户服务部',
+  UPD_NAME: '李浩宇',
+  ROWNUM_: '1',
+  UU_ID: 'nullnullnull'
+}
 // 对应的label名称：业务部门、销售员、录入人
 const FIELD_LABEL = {
   DEP_NAME: '业务部门',
@@ -75,27 +72,30 @@ const columns = [
       multiple: 3
     }
   },
-    {
-        title: '自查编码',
-        dataIndex: 'UU_ID',
-        key: 'UU_ID',
-        sorter: {
-        compare: (a, b) => a.UU_ID - b.UU_ID,
-        multiple: 4
-        }
+  {
+    title: '自查编码',
+    dataIndex: 'UU_ID',
+    key: 'UU_ID',
+    sorter: {
+      compare: (a, b) => a.UU_ID - b.UU_ID,
+      multiple: 4
     }
+  }
 ]
 
 const SelfCheck = () => {
   const [loading, setLoading] = useState(true)
   const [baseInfo, setBaseInfo] = useState({})
   const [data, setData] = useState(tableData)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [total, setTotal] = useState(0)
 
   const {
     approveStore: { currentInfo }
   } = useStores()
-  const {COM_CODE,ORD_NO}=currentInfo
-  console.log(COM_CODE,ORD_NO,'currentInfo')
+  const { COM_CODE, ORD_NO } = currentInfo
+  console.log(COM_CODE, ORD_NO, 'currentInfo')
   // 根据接口返回的参数，重写formatFieldVal
   const formatFieldVal = (field, val) => {
     if (val === undefined || val === null || val === '') {
@@ -120,18 +120,18 @@ const SelfCheck = () => {
       }
     } catch (err) {
       console.log(err)
-    }finally{
-        setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
-  const getDetailInfo = async () => {
+  const getDetailInfo = async (page=1) => {
     try {
       const result = await request(
         saleAgreementApi.getCheckTableDetail,
         'GET',
         {
           params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
-          page: 1,
+          page: page,
           start: 0,
           limit: 100
         }
@@ -142,51 +142,74 @@ const SelfCheck = () => {
       }
     } catch (err) {
       console.log(err)
-    }finally{
-        setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
+
+  const loadMore = async () => {
+    if (data.length >= total) {
+      setHasMore(false)
+      return
+    }
+    setPage(page + 1)
+    const append = (await getDetailInfo(page + 1)) || []
+    setHasMore(data.length + append.length < total)
+    setData((val) => [...val, ...append])
+  }
+
   useEffect(() => {
     setLoading(true)
     getBaseInfo()
     getDetailInfo()
   }, [])
   return (
-  <>
-   <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto">
-      {!data ? (
-        <Loading />
-      ) : (
-        <>
-         <div className="text-12px mt-16px">
-           基本信息
-          </div>
-          <table className="w-full">
-            <tbody>
-              <tr>
-                <BasicFormItem label="业务部门" text={baseInfo?.DEP_NAME || ''} />
-                <BasicFormItem label="销售员" text={baseInfo?.SAL_NAME || ''} />
-              </tr>
-              <tr>
-                <BasicFormItem label="录入人" text={baseInfo?.UPD_NAME || ''} />
-                <BasicFormItem label="申请日期" text={baseInfo?.CON_DATE || ''} />
-              </tr>
-            </tbody>
-          </table>
-          <div className="text-12px mt-16px">
-           明细信息
-          </div>
-          <div className="text-12px mt-10px w-full">
-            <TableList
-              columns={columns}
-              dataSource={data}
-              orderColumn={true}
-            />
-          </div>
-        </>
-      )}
-    </div>
-  </>
+    <>
+      <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto">
+        {!data ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="text-12px mt-16px">基本信息</div>
+            <table className="w-full">
+              <tbody>
+                <tr>
+                  <BasicFormItem
+                    label="业务部门"
+                    text={baseInfo?.DEP_NAME || ''}
+                  />
+                  <BasicFormItem
+                    label="销售员"
+                    text={baseInfo?.SAL_NAME || ''}
+                  />
+                </tr>
+                <tr>
+                  <BasicFormItem
+                    label="录入人"
+                    text={baseInfo?.UPD_NAME || ''}
+                  />
+                  <BasicFormItem
+                    label="申请日期"
+                    text={baseInfo?.CON_DATE || ''}
+                  />
+                </tr>
+              </tbody>
+            </table>
+            <div className="text-12px mt-16px">明细信息</div>
+            <div className="text-12px mt-10px w-full">
+              <TableList
+                columns={columns}
+                dataSource={data}
+                orderColumn={true}
+                loadMore={loadMore}
+                hasMore={hasMore}
+                infiniteScroll={true}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </>
   )
 }
 export default SelfCheck
