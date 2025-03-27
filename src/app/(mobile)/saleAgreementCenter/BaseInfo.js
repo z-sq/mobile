@@ -6,12 +6,15 @@ import BasicFormItem from './components/BasicInformation/BasicFormItem'
 
 import Loading from '@/components/Loading'
 import request from '@/utils/request'
+import { useStores } from '@/utils/useStores'
 
 import { centerDataInfo } from './mockData'
 export default function BaseInfo({ style = {} }) {
   const usercode = window.localStorage.getItem('acctCode')
   const [data, setData] = useState(centerDataInfo)
-
+  const {
+    approveStore: { resetCurInfo }
+  } = useStores()
   const getBaseInfo = async () => {
     try {
       const result = await request(
@@ -25,7 +28,9 @@ export default function BaseInfo({ style = {} }) {
         }
       )
       if (result && result.success) {
-        setData(result.data[0] || {})
+        const resData=result.data[0]
+        setData(resData || {})
+        resetCurInfo(resData)
       }
     } catch (err) {}
   }
