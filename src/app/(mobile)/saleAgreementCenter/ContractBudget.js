@@ -16,58 +16,71 @@ import { useStores } from '@/utils/useStores'
 // 表格数据：合同条款审查项、是否符合、备注信息。还有个动态列，自查编码
 const tableData = [
   {
-    REMARK: null,
-    IS_CONFORM: null,
-    CONFORM_ITEM: null,
-    ROWNUM_: '1',
-    UU_ID: null
-  }
+    "BUD_FUN_CODE": "01",
+    "CUR_CODE": "RMB",
+    "CUR_NAME": "人民币",
+    "BUD_PAR_CODE": "z14",
+    "PJT_BUD_NO": null,
+    "AMT": "0",
+    "ORD_NO": "OM2025021300002",
+    "UU_ID": "e290a07642fe4e4cba568f9a2ba4e304",
+    "ROWNUM_": "1",
+    "COM_CODE": "01",
+    "BUD_PAR_NAME": "直接费用-设备费",
+    "NOTE": null,
+    "BUD_FUN_NAME": "国拨",
+    "UPD_CODE": null,
+    "BUD_PJT_NAME": "购置设备费",
+    "UPD_NAME": null,
+    "UPD_DATE": null,
+    "BUD_PJT_CODE": "z1401"
+},
 ]
 // 表格列的配置，还有个动态列，自查编码,列排序
 const columns = [
   {
     title: '预算项目大类',
-    dataIndex: 'CONFORM_ITEM',
-    key: 'CONFORM_ITEM',
+    dataIndex: 'BUD_PAR_NAME',
+    key: 'BUD_PAR_NAME',
     sorter: {
-      compare: (a, b) => a.CONFORM_ITEM - b.CONFORM_ITEM,
+      compare: (a, b) => a.BUD_PAR_NAME - b.BUD_PAR_NAME,
       multiple: 1
     }
   },
   {
     title: '预算项目类别',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'BUD_PJT_NAME',
+    key: 'BUD_PJT_NAME',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.BUD_PJT_NAME - b.BUD_PJT_NAME,
       multiple: 2
     }
   },
   {
     title: '预算资金类别',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'BUD_FUN_NAME',
+    key: 'BUD_FUN_NAME',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
-      multiple: 2
+      compare: (a, b) => a.BUD_FUN_NAME - b.BUD_FUN_NAME,
+      multiple: 3
     }
   },
   {
     title: '预算金额',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'AMT',
+    key: 'AMT',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
-      multiple: 2
+      compare: (a, b) => a.AMT - b.AMT,
+      multiple: 4
     }
   },
   {
     title: '备注',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'NOTE',
+    key: 'NOTE',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
-      multiple: 3
+      compare: (a, b) => a.NOTE - b.NOTE,
+      multiple: 5
     }
   },
 ]
@@ -75,7 +88,11 @@ const columns = [
 const ContractBudget = () => {
   const [loading, setLoading] = useState(true)
   const [baseInfo, setBaseInfo] = useState({})
-  const [data, setData] = useState(tableData)
+  const [data, setData] = useState([])
+  const {
+      approveStore: { currentInfo }
+    } = useStores()
+    const {COM_CODE,ORD_NO}=currentInfo
   // 根据接口返回的参数，重写formatFieldVal
   const formatFieldVal = (field, val) => {
     if (val === undefined || val === null || val === '') {
@@ -88,9 +105,8 @@ const ContractBudget = () => {
   }
   const getBaseInfo = async () => {
     try {
-      const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
-        _dc: 1742895269636,
-        params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+      const result = await request(saleAgreementApi.getBillhead, 'GET', {
+        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
         page: 1,
         start: 0,
         limit: 25
@@ -108,11 +124,10 @@ const ContractBudget = () => {
   const getDetailInfo = async () => {
     try {
       const result = await request(
-        saleAgreementApi.getCheckTableDetail,
+        saleAgreementApi.getBillmgrid,
         'GET',
         {
-          _dc: 1742895269633,
-          params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+          params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
           page: 1,
           start: 0,
           limit: 100
@@ -146,45 +161,45 @@ const ContractBudget = () => {
           <table className="w-full">
             <tbody>
               <tr>
-                <BasicFormItem label="单位" text={data.purTitle || ''} />
-                <BasicFormItem label="编制部门" text={data.proName || ''} />
+                <BasicFormItem label="单位" text={baseInfo.COM_NAME || ''} />
+                <BasicFormItem label="编制部门" text={baseInfo.DEP_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="编制人" text={data.purName || ''} />
-                <BasicFormItem label="申请日期" text={data.finDate || ''} />
+                <BasicFormItem label="编制人" text={baseInfo.AUD_NAME || ''} />
+                <BasicFormItem label="申请日期" text={baseInfo.EDT_DATE || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="订单号" text={data.purName || ''} />
-                <BasicFormItem label="客户名称" text={data.finDate || ''} />
+                <BasicFormItem label="订单号" text={baseInfo.ORD_NO || ''} />
+                <BasicFormItem label="客户名称" text={baseInfo.CUSTOMER_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同名称" text={data.purName || ''} />
-                <BasicFormItem label="牵头单位" text={data.finDate || ''} />
+                <BasicFormItem label="合同名称" text={baseInfo.PROJECT_NAME || ''} />
+                <BasicFormItem label="牵头单位" text={baseInfo.finDate || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同类型" text={data.purName || ''} />
-                <BasicFormItem label="合同分类" text={data.finDate || ''} />
+                <BasicFormItem label="合同类型" text={baseInfo.HEAD_TYPE_NAME || ''} />
+                <BasicFormItem label="合同分类" text={baseInfo.CON_CLS_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="业务分类" text={data.purName || ''} />
-                <BasicFormItem label="组织形式（纵向）" text={data.finDate || ''} />
+                <BasicFormItem label="业务分类" text={baseInfo.BUS_CLS_NAME || ''} />
+                <BasicFormItem label="组织形式（纵向）" text={baseInfo.ORG_FORM || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="币别" text={data.purName || ''} />
-                <BasicFormItem label="销售合同额" text={data.finDate || ''} />
+                <BasicFormItem label="币别" text={baseInfo.CUR_NAME || ''} />
+                <BasicFormItem label="销售合同额" text={baseInfo.ORD_TOT_AMT || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="首付款" text={data.purName || ''} />
-                <BasicFormItem label="预算总金额" text={data.finDate || ''} />
+                <BasicFormItem label="首付款" text={baseInfo.PRE_RET_AMT || ''} />
+                <BasicFormItem label="预算总金额" text={baseInfo.BUD_TOT_AMT || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="利润率" text={data.purName || ''} />
+                <BasicFormItem label="利润率" text={baseInfo.PRO_RATE || ''} />
                 <BasicFormItem label="" text={''} />
               </tr>
               <tr>
               <BasicFormItem
                 label="审批意见"
-                text={data.remarks || ''}
+                text={baseInfo.AUD_TEXT || ''}
                 textColSpan={3}
               />
             </tr>
