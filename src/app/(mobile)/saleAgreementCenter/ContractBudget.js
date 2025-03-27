@@ -70,8 +70,8 @@ const ContractBudget = () => {
   const {
       approveStore: { currentInfo }
     } = useStores()
-    const {COM_CODE,ORD_NO}=currentInfo
-    
+  const {COM_CODE,ORD_NO}=currentInfo
+
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getBillhead, 'GET', {

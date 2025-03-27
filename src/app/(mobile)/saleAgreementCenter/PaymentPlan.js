@@ -59,6 +59,11 @@ const PaymentPlan = () => {
   const [loading, setLoading] = useState(true)
   const [baseInfo, setBaseInfo] = useState({})
   const [data, setData] = useState(tableData)
+
+  const {
+        approveStore: { currentInfo }
+      } = useStores()
+    const {COM_CODE,ORD_NO,CUR_CODE,CUR_NAME}=currentInfo
   // 根据接口返回的参数，重写formatFieldVal
   const formatFieldVal = (field, val) => {
     if (val === undefined || val === null || val === '') {
@@ -71,9 +76,8 @@ const PaymentPlan = () => {
   }
   const getBaseInfo = async () => {
     try {
-      const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
-        _dc: 1742895269636,
-        params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+      const result = await request(saleAgreementApi.getPayPlanBase, 'GET', {
+        params: JSON.stringify({ ORD_NO: ORD_NO, COM_CODE: COM_CODE }),
         page: 1,
         start: 0,
         limit: 25
@@ -91,11 +95,19 @@ const PaymentPlan = () => {
   const getDetailInfo = async () => {
     try {
       const result = await request(
-        saleAgreementApi.getCheckTableDetail,
+        saleAgreementApi.getPayPlanTable,
         'GET',
         {
-          _dc: 1742895269633,
-          params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+          params: JSON.stringify({  
+            COM_CODE,
+            ORD_NO,
+            CUR_CODE,
+            CUR_NAME, 
+          }),
+          COM_CODE,
+          ORD_NO,
+          CUR_CODE,
+          CUR_NAME,
           page: 1,
           start: 0,
           limit: 100
@@ -129,34 +141,34 @@ const PaymentPlan = () => {
           <table className="w-full">
             <tbody>
               <tr>
-                <BasicFormItem label="单位" text={data.purTitle || ''} />
-                <BasicFormItem label="编制部门" text={data.proName || ''} />
+                <BasicFormItem label="单位" text={baseInfo.COM_NAME || ''} />
+                <BasicFormItem label="编制部门" text={baseInfo.DEP_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="编制人" text={data.purName || ''} />
-                <BasicFormItem label="申请日期" text={data.finDate || ''} />
+                <BasicFormItem label="编制人" text={baseInfo.EDT_NAME || ''} />
+                <BasicFormItem label="申请日期" text={baseInfo.EDT_DATE || ''} />
               </tr>
               
               <tr>
-                <BasicFormItem label="合同号" text={data.purName || ''} />
-                <BasicFormItem label="合同名称" text={data.finDate || ''} />
+                <BasicFormItem label="合同号" text={baseInfo.ORD_NO || ''} />
+                <BasicFormItem label="合同名称" text={baseInfo.ORD_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="客户名称" text={data.finDate || ''} />
-                <BasicFormItem label="币别" text={data.purName || ''} />
+                <BasicFormItem label="客户名称" text={baseInfo.CUS_NAME || ''} />
+                <BasicFormItem label="币别" text={baseInfo.CUR_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同额" text={data.purName || ''} />
-                <BasicFormItem label="采购预算金额" text={data.finDate || ''} />
+                <BasicFormItem label="合同额" text={baseInfo.ORD_TOT_AMT || ''} />
+                <BasicFormItem label="采购预算金额" text={baseInfo.PURC_BUD_AMT || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="计划付款总金额" text={data.finDate || ''} />
+                <BasicFormItem label="计划付款总金额" text={baseInfo.PAY_TOT_AMT || ''} />
                 <BasicFormItem label="" text={''} />
               </tr>
               <tr>
               <BasicFormItem
                 label="审批意见"
-                text={data.remarks || ''}
+                text={baseInfo.AUD_TEXT || ''}
                 textColSpan={3}
               />
             </tr>
