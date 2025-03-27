@@ -130,45 +130,45 @@ const ContractBudget = () => {
           <table className="w-full">
             <tbody>
               <tr>
-                <BasicFormItem label="单位" text={baseInfo.COM_NAME || ''} />
-                <BasicFormItem label="编制部门" text={baseInfo.DEP_NAME || ''} />
+                <BasicFormItem label="单位" text={baseInfo?.COM_NAME || ''} />
+                <BasicFormItem label="编制部门" text={baseInfo?.DEP_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="编制人" text={baseInfo.AUD_NAME || ''} />
-                <BasicFormItem label="申请日期" text={baseInfo.EDT_DATE || ''} />
+                <BasicFormItem label="编制人" text={baseInfo?.AUD_NAME || ''} />
+                <BasicFormItem label="申请日期" text={baseInfo?.EDT_DATE || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="订单号" text={baseInfo.ORD_NO || ''} />
-                <BasicFormItem label="客户名称" text={baseInfo.CUSTOMER_NAME || ''} />
+                <BasicFormItem label="订单号" text={baseInfo?.ORD_NO || ''} />
+                <BasicFormItem label="客户名称" text={baseInfo?.CUSTOMER_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同名称" text={baseInfo.PROJECT_NAME || ''} />
-                <BasicFormItem label="牵头单位" text={baseInfo.finDate || ''} />
+                <BasicFormItem label="合同名称" text={baseInfo?.PROJECT_NAME || ''} />
+                <BasicFormItem label="牵头单位" text={baseInfo?.finDate || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同类型" text={baseInfo.HEAD_TYPE_NAME || ''} />
-                <BasicFormItem label="合同分类" text={baseInfo.CON_CLS_NAME || ''} />
+                <BasicFormItem label="合同类型" text={baseInfo?.HEAD_TYPE_NAME || ''} />
+                <BasicFormItem label="合同分类" text={baseInfo?.CON_CLS_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="业务分类" text={baseInfo.BUS_CLS_NAME || ''} />
-                <BasicFormItem label="组织形式（纵向）" text={baseInfo.ORG_FORM || ''} />
+                <BasicFormItem label="业务分类" text={baseInfo?.BUS_CLS_NAME || ''} />
+                <BasicFormItem label="组织形式（纵向）" text={baseInfo?.ORG_FORM || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="币别" text={baseInfo.CUR_NAME || ''} />
-                <BasicFormItem label="销售合同额" text={baseInfo.ORD_TOT_AMT || ''} />
+                <BasicFormItem label="币别" text={baseInfo?.CUR_NAME || ''} />
+                <BasicFormItem label="销售合同额" text={baseInfo?.ORD_TOT_AMT || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="首付款" text={baseInfo.PRE_RET_AMT || ''} />
-                <BasicFormItem label="预算总金额" text={baseInfo.BUD_TOT_AMT || ''} />
+                <BasicFormItem label="首付款" text={baseInfo?.PRE_RET_AMT || ''} />
+                <BasicFormItem label="预算总金额" text={baseInfo?.BUD_TOT_AMT || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="利润率" text={baseInfo.PRO_RATE || ''} />
+                <BasicFormItem label="利润率" text={baseInfo?.PRO_RATE || ''} />
                 <BasicFormItem label="" text={''} />
               </tr>
               <tr>
               <BasicFormItem
                 label="审批意见"
-                text={baseInfo.AUD_TEXT || ''}
+                text={baseInfo?.AUD_TEXT || ''}
                 textColSpan={3}
               />
             </tr>

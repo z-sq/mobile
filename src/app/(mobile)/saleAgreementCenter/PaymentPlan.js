@@ -141,34 +141,34 @@ const PaymentPlan = () => {
           <table className="w-full">
             <tbody>
               <tr>
-                <BasicFormItem label="单位" text={baseInfo.COM_NAME || ''} />
-                <BasicFormItem label="编制部门" text={baseInfo.DEP_NAME || ''} />
+                <BasicFormItem label="单位" text={baseInfo?.COM_NAME || ''} />
+                <BasicFormItem label="编制部门" text={baseInfo?.DEP_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="编制人" text={baseInfo.EDT_NAME || ''} />
-                <BasicFormItem label="申请日期" text={baseInfo.EDT_DATE || ''} />
+                <BasicFormItem label="编制人" text={baseInfo?.EDT_NAME || ''} />
+                <BasicFormItem label="申请日期" text={baseInfo?.EDT_DATE || ''} />
               </tr>
               
               <tr>
-                <BasicFormItem label="合同号" text={baseInfo.ORD_NO || ''} />
-                <BasicFormItem label="合同名称" text={baseInfo.ORD_NAME || ''} />
+                <BasicFormItem label="合同号" text={baseInfo?.ORD_NO || ''} />
+                <BasicFormItem label="合同名称" text={baseInfo?.ORD_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="客户名称" text={baseInfo.CUS_NAME || ''} />
-                <BasicFormItem label="币别" text={baseInfo.CUR_NAME || ''} />
+                <BasicFormItem label="客户名称" text={baseInfo?.CUS_NAME || ''} />
+                <BasicFormItem label="币别" text={baseInfo?.CUR_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同额" text={baseInfo.ORD_TOT_AMT || ''} />
-                <BasicFormItem label="采购预算金额" text={baseInfo.PURC_BUD_AMT || ''} />
+                <BasicFormItem label="合同额" text={baseInfo?.ORD_TOT_AMT || ''} />
+                <BasicFormItem label="采购预算金额" text={baseInfo?.PURC_BUD_AMT || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="计划付款总金额" text={baseInfo.PAY_TOT_AMT || ''} />
+                <BasicFormItem label="计划付款总金额" text={baseInfo?.PAY_TOT_AMT || ''} />
                 <BasicFormItem label="" text={''} />
               </tr>
               <tr>
               <BasicFormItem
                 label="审批意见"
-                text={baseInfo.AUD_TEXT || ''}
+                text={baseInfo?.AUD_TEXT || ''}
                 textColSpan={3}
               />
             </tr>
