@@ -10,6 +10,7 @@ import { useStores } from '@/utils/useStores'
 // /business/om/auto/om_cgfk_sp/query/headformpanel 项目采购付款计划 基础信息
 // 回款计划 /business/om/auto/om_hk_sp/query/billform
 // 回款计划表格 
+// 销售-辅助信息 /business/om/auto/om_fz_cx/query/tabfzdetail
 /**
  * 销售合同接口
  * @type {saleAgreementApi}
@@ -25,4 +26,5 @@ export const saleAgreementApi = {
   getPayPlanTable:'/business/om/auto/om_cgfk_sp/query/detailgridpanel',
   getReturnInfo:'/business/om/auto/om_hk_sp/query/billform',
   getReturnTable:'/business/om/auto/om_hk_sp/query/billform',
+  getSupplyInfo:'/business/om/auto/om_fz_cx/query/tabfzdetail'
 }

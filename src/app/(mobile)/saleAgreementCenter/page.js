@@ -17,6 +17,7 @@ import ContractBudget from './ContractBudget'
 import PaymentPlan from './PaymentPlan'
 import ReturnPlan from './ReturnPlan'
 import ApproveOpinion from './ApproveOpinion'
+import SupplementaryInfo from './SupplementaryInfo'
 
 import { typeMap } from '@/config/configData'
 import request from '@/utils/request'
@@ -107,6 +108,8 @@ const saleAgreementCenter = observer(({ children }) => {
         return <ReturnPlan />
       case '7':
         return <ApproveOpinion  data={approvalInfo} />
+      case '8':
+        return <SupplementaryInfo/>
       default:
         return <BaseInfo />
     }
