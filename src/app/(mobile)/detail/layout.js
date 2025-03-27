@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import Button from '@/components/Button'
 import LabelInput from '@/components/LabelInput'
 import Title from '@/components/Title'
-import { typeMap, busTypeMap } from '@/config/configData'
+// import { typeMap, busTypeMap } from '@/config/configData'
 import { workflowApi } from '@/request/apis/workflow'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
@@ -31,19 +31,19 @@ const ApprovalPage = observer(({ children }) => {
 
   const searchParams = useSearchParams()
   const reqNo = searchParams.get('key')
-  const pagCode = searchParams.get('pagCode')
+  // const pagCode = searchParams.get('pagCode')
   const state = searchParams.get('state')
-  const purMetCode = searchParams.get('purMet')
-  const chaFlag = searchParams.get('chaFlag')
-  let title_item = 'title'
-  if (chaFlag === 'Y') {
-    //如果chaFlag 为Y 取用 title_Change 标题字段
-    title_item = 'title_Change'
-  }
-  let title =
-    busTypeMap[pagCode] && busTypeMap[pagCode][purMetCode]
-      ? busTypeMap[pagCode][purMetCode][title_item]
-      : typeMap[pagCode][title_item]
+  // const purMetCode = searchParams.get('purMet')
+  // const chaFlag = searchParams.get('chaFlag')
+  // let title_item = 'title'
+  // if (chaFlag === 'Y') {
+  //   //如果chaFlag 为Y 取用 title_Change 标题字段
+  //   title_item = 'title_Change'
+  // }
+  // let title =
+  //   busTypeMap[pagCode] && busTypeMap[pagCode][purMetCode]
+  //     ? busTypeMap[pagCode][purMetCode][title_item]
+  //     : typeMap[pagCode][title_item]
 
   const handleInputChange = (val) => {
     setOpinionValue(val)
@@ -139,7 +139,7 @@ const ApprovalPage = observer(({ children }) => {
 
   useEffect(() => {
     if (!currentInfo) {
-      router.push('/list')
+      // router.push('/list')
       return
     }
     if (state !== '2' && currentInfo && currentInfo.opinion !== null) {
@@ -163,7 +163,7 @@ const ApprovalPage = observer(({ children }) => {
       <div className="h-40px absolute left-0 top-0 z-[99] w-[100%] overflow-hidden bg-white pt-[1px]">
         <Title
           onBack={goBack}
-          title={title}
+          title={'采购合同审批'}
           rightIcon={'2'}
           callback={saveOpinion}
         />
@@ -243,7 +243,7 @@ const ApprovalPage = observer(({ children }) => {
             >
               <div className="text-14px px-12px pb-24px">
                 <div
-                  className={`border-bottom-gray flex h-[100%] h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
+                  className={`border-bottom-gray flex h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
@@ -253,7 +253,7 @@ const ApprovalPage = observer(({ children }) => {
                   转发
                 </div>
                 <div
-                  className="border-bottom-gray flex h-[100%] h-[48px] w-[100%] items-center justify-center"
+                  className="border-bottom-gray flex h-[48px] w-[100%] items-center justify-center"
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
@@ -263,7 +263,7 @@ const ApprovalPage = observer(({ children }) => {
                   转办
                 </div>
                 <div
-                  className="flex h-[100%] h-[48px] w-[100%] items-center justify-center"
+                  className="flex h-[48px] w-[100%] items-center justify-center"
                   onClick={() => {
                     setMoreVisible(false)
                   }}
