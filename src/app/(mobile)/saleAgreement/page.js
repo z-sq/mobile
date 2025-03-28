@@ -1,16 +1,16 @@
 'use client'
 
-import {
-  PullToRefresh,
-  Input,
-  Toast,
-  Ellipsis,
-  Button
-} from 'antd-mobile'
-import { DownOutline } from 'antd-mobile-icons'
-import { useRouter } from 'next/navigation'
-import { useState, useEffect, useRef } from 'react'
+import { observer } from 'mobx-react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { Popup, Toast, Form, Modal } from 'antd-mobile'
 
+import ApprovalOpinion from './components/ApprovalOpinion'
+import MaterialInformation from './components/MaterialInformation'
+import SupplierInformation from './components/SupplierInformation'
+import TabBar from './components/TabBar'
+
+// 引入页面所有的tab页签组件
 import BaseInfo from './BaseInfo'
 import ProductInfo from './ProductInfo'
 import SelfCheck from './SelfCheck'
@@ -18,122 +18,93 @@ import ContractBudget from './ContractBudget'
 import PaymentPlan from './PaymentPlan'
 import ReturnPlan from './ReturnPlan'
 import ApproveOpinion from './ApproveOpinion'
+import SupplementaryInfo from './SupplementaryInfo'
 
-import Loading from '@/components/Loading'
-import Tabs from '@/components/Tabs'
-import Title from '@/components/Title'
-import { typeMap, busTypeMap } from '@/config/configData'
+import Button from '@/components/Button'
+import { typeMap } from '@/config/configData'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
+import tabStore from '@/stores/tabStore'
 
-const defaultTabsMap = [
-  { title: '基本信息', key: '1' },
-  { title: '产品信息', key: '2' },
-  { title: '自查表', key: '3' },
-  { title: '合同预算', key: '4' },
-  { title: '项目采购付款计划', key: '5' },
-  { title: '回款计划', key: '6' },
-  { title: '审核意见', key: '7' }
-]
+const SaleAgreement = observer(({ children }) => {
+  const [activeKey, setActiveKey] = useState('1')
+  const [materialInfo, setMaterialInfo] = useState([])
+  const [materialTotal, setMaterialTotal] = useState(0)
+  const [supplierInfo, setSupplierInfo] = useState([])
+  const [approvalInfo, setApprovalInfo] = useState([])
+  const [disable, setDisable] = useState(false)
+  const [moreVisible, setMoreVisible] = useState(false)
 
-const AgreementPage = () => {
+  const [form] = Form.useForm()
   const router = useRouter()
-  const ref = useRef(null)
-  const wrapper = useRef(null)
 
   const {
-    approveStore: { resetCurInfo }
+    approveStore: { currentInfo }
   } = useStores()
-  const [activeKey, setActiveKey] = useState('1')
-  const [visible, setVisible] = useState(false)
-  const [curProc, setCurProc] = useState({})
-  const [tabsMap, setTabsMap] = useState(defaultTabsMap)
-  const token = window.localStorage.getItem('token')
-  const usercode = window.localStorage.getItem('acctCode')
+  const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
+  const searchParams = useSearchParams()
+  const busKeyValue = searchParams.get('key')||'R1092125020026'
+  const procCode = searchParams.get('type')
+  const pagCode = searchParams.get('pagCode')
+  const procVersion = searchParams.get('procVersion')
+  const state = searchParams.get('state')||'2'
 
-  const onExpand = () => {
-    setVisible(!visible)
-  }
+  const wfType = typeMap[pagCode]?.pagCode||'tp2100'
+  const busKey = typeMap[pagCode]?.busKey||'reqNo'
 
-  const onSelect = (procCode, procName) => {
-    if (procCode === curProc.procCode || procCode === '00000') {
-      setCurProc({
-        ...curProc,
-        procCode: '',
-        procName: ''
-      })
-      getListData('')
-      console.log('00000')
-    } else {
-      setCurProc({
-        ...curProc,
-        procCode: procCode,
-        procName: procName
-      })
-      getListData(procCode)
-      console.log(procCode,'procCode')
-    }
-    setVisible(false)
-  }
-
-
-  const getListData = async (procCode) => {
-    let states = ''
-    if (activeKey === '1') {
-      states = '2'
-    } else if (activeKey === '2') {
-      states = '4,5'
-    } else {
-      states = '2,4,5'
-    }
+  const getVendorInfo = async () => {
     try {
-      setLoading(true)
-
       const result = await request(
-        '/home/page/getWorkItem',
+        `/business/mas/tp/manual/${wfType}/getVendorInfo`,
         'GET',
         {
-          states,
-          procCodes:
-            procCode !== undefined
-              ? procCode
-              : curProc.procCode || '',
-          limit: 20,
-          page: 1,
-          comCode: '01',
-          usercode
-        },
-        {
-          Authorization: token
+          [busKey]: busKeyValue
         }
       )
-      setLoading(false)
       if (result && result.success) {
-        const data = result.data ? result.data : []
-        const total = result.total !== null ? result.total : data.length
-        if (activeKey === '1') {
-          setUnread(total)
-        }
-        //先按照insStaDate降序排序，如果insStaDate相同，则按照insStatime降序排序
-        data.sort(function (a, b) {
-          return (
-            new Date(`${b.insStaDate.replaceAll('/', '-')}T${b.insStaTime}`) -
-            new Date(`${a.insStaDate.replaceAll('/', '-')}T${a.insStaTime}`)
-          )
+        const data = result.data || []
+        const vendorData = data.map((item, index) => {
+          if (item.supImpName !== null) {
+            item.supClsNameNew =
+              (item.supClsName || '') + '（' + item.supImpName + '）'
+          } else {
+            item.supClsNameNew = item.supClsName || ''
+          }
+          return item
         })
-        setData(data)
-      } else {
-        setData([])
+        setSupplierInfo(vendorData)
       }
     } catch (err) {}
   }
-// 和tab页签保持一致，根据不同的tab页签，切换不同的组件，基本信息用BaseInfo，根据名字一一对应
+// 审核意见
+  const getWfmApproveInfo = async () => {
+    console.log(222)
+    // /business/mas/tp/manual/tp2800/getWfmApproveInfo
+    try {
+      console.log(333,busKeyValue,wfType,busKey)
+      const result = await request(
+        `/business/mas/tp/manual/${wfType}/getWfmApproveInfo`,
+        'GET',
+        {
+          [busKey]: busKeyValue,
+          procCode,
+          procVersion,
+          uuId: currentInfo.uuid
+        }
+      )
+      console.log(444)
+      if (result && result.success) {
+        const data = result.data || []
+        setApprovalInfo(data)
+      }
+    } catch (err) {}
+  }
   const renderContent = (key) => {
     switch (key) {
       case '1':
         return <BaseInfo />
       case '2':
-        return <ProductInfo />
+        return <ProductInfo data={materialInfo} total={materialTotal} />
       case '3':
         return <SelfCheck />
       case '4':
@@ -143,67 +114,232 @@ const AgreementPage = () => {
       case '6':
         return <ReturnPlan />
       case '7':
-        return <ApproveOpinion />
+        return <ApproveOpinion  data={approvalInfo} />
+      case '8':
+        return <SupplementaryInfo/>
       default:
         return <BaseInfo />
     }
   }
-  // 根据不同的tab页签，请求不同的数据，这里是根据activeKey来请求数据
-  const handleChangeTabs = (key) => {
-      setActiveKey(key)
-      
+  const handleGetTabChange=(key)=>{
+    setActiveKey(key)
+    tabStore.setCurrentTabKey(key)
+    console.log(1,key,'11223344')
+    if (key==='7') {
+      getWfmApproveInfo()
+    }
+  }
+  useEffect(() => {
+    // if (!currentInfo) {
+    //   return
+    // }
+    getVendorInfo()
+    getWfmApproveInfo()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+
+  const onSubmit = async (wfmParams) => {
+    setDisable(true)
+    try {
+      const result = await request(
+        '/business/wfm/wfmEngine/doWfmPost',
+        'POST',
+        {
+          pagCode: '',
+          wfmParams: [wfmParams],
+          funCode: null,
+          buzParams: {
+            RED_NO: reqNo
+          }
+        }
+      )
+      if (result && result.success) {
+        Toast.show({
+          content: result.mesg
+        })
+        router.push('/list')
+      }
+      setDisable(false)
+    } catch (err) {
+      setDisable(false)
+    }
+  }
+
+  const onApprove = async (flag) => {
+    if (!currentInfo) return
+
+    const values = form.getFieldsValue()
+    let wfmParams = { ...currentInfo, opinion: values.opinion }
+    if (flag) {
+      wfmParams.opinionFlag = '1'
+      onSubmit(wfmParams)
+    } else {
+      wfmParams.opinionFlag = '2'
+      if (!values.opinion) {
+        setMessage('请输入审核意见！')
+        setVisible(true)
+        return
+      }
+      onSubmit(wfmParams)
+    }
+  }
+
+  const onCommit = async () => {
+    if (!currentInfo) return
+    const values = form.getFieldsValue()
+    if (!values.opinion) {
+      setMessage('请输入评论！')
+      setVisible(true)
+      return
+    }
+    if (values.opinion.length > 50) {
+      setMessage('评论字数限制50！')
+      setVisible(true)
+      return
+    }
+    setDisable(true)
+    try {
+      const result = await request(
+        `${workflowApi.forwardSubmit}?forCode=${currentInfo.uuid}&opinion=${values.opinion}`,
+        'POST'
+      )
+      if (result && result.success) {
+        Toast.show({
+          content: result.mesg
+        })
+        router.push('/list')
+      }
+      setDisable(false)
+    } catch (err) {
+      setDisable(false)
+    }
   }
 
 
-
-  useEffect(() => {
-    getListData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeKey])
-
+  const saveOpinion = () => {
+    if (currentTabKey === '7') {
+      const values = form.getFieldsValue()
+      updateCurInfo({ curOpinion: values.opinion })
+    }
+  }
 
   return (
-    <div className="relative  w-[100%] overflow-hidden bg-white flex flex-col h-screen">
-      <div className="h-40px fixed left-0 top-0 z-[99] w-[100%] overflow-hidden bg-white pt-[1px]">
-        <Title isShowBack={false} title={'销售合同申请单审批'} rightIcon="1" />
-      </div>
-      <div className="border-bottom-gray top-40px border-box fixed left-0 z-[10] flex w-[100%] bg-white">
-        <Tabs
-          data={tabsMap}
-          activeKey={activeKey}
-          onChange={(key) =>handleChangeTabs(key)}
-        ></Tabs>
-      </div>
-        <div 
-        className="flex-1 overflow-y-auto top-80px border-box pt-12px fixed left-0 z-[10] flex w-[100%] bg-white px-[12px]"
-        style={{ height: 'calc(var(--vh, 1vh) * 100 - 7.5rem )' }}>
-          {renderContent(activeKey)}
-        </div>
-        {/* 底部有两个按钮，一个是审批，一个是更多 */}
-        <div className="bottom-0 fixed left-0 z-[10] w-[100%] flex items-center justify-between bg-white">
-          <Button
-            color='primary' fill='solid'
-            className="flex-1"
-            onClick={() => {
-              // router.push('/approve')
+    <>
+      <TabBar handleTabChange={handleGetTabChange} />
+      <div
+        className="pt-80px pb-160px absolute box-border w-full overflow-hidden"
+        style={{
+          height: 'calc(var(--vh, 1vh) * 100)',
+          paddingBottom: activeKey === '7' ? '9rem' : '5rem'
+        }}
+      >
+        <div className="relative box-border h-[100%] w-full">
+          <div
+            className="h-[100%] w-full"
+            style={{
+              position: 'absolute'
             }}
           >
-            审批
-          </Button>
-          <div className='w-4'></div>
-          <Button
-            color='primary' fill='outline'
-            className="flex-1"
-            onClick={() => {
-              onExpand()
-            }}
-          >
-            更多
-          </Button>
+           {renderContent(activeKey)}
+          </div>
         </div>
-     
-    </div>
-  )
-}
+      </div>
+      <div
+        className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
+        style={{ marginBottom: state === '2' ? '1.5rem' : 0 }}
+      >
 
-export default AgreementPage
+        {state === '2' && !isForward ? (
+          <div className="box-border flex w-full justify-between">
+            <Button
+              color="primary"
+              fill="solid"
+              style={{
+                width: '50%'
+              }}
+             
+              onClick={() => {
+                onApprove(true)
+                router.push('/saleAgreementCenter/approve')
+              }}
+              disabled={disable}
+            >
+              审 批
+            </Button>
+            <div  className='mx-2'/>
+            <Button
+              color="primary"
+              fill="outline"
+              style={{
+                width: '50%'
+              }}
+              onClick={() => {
+                setMoreVisible(true)
+              }}
+              disabled={disable}
+            >
+              更 多
+            </Button>
+            <Popup
+              visible={moreVisible}
+              onMaskClick={() => {
+                setMoreVisible(false)
+              }}
+            >
+              <div className="text-14px px-12px pb-24px">
+                <div
+                  className={`border-bottom-gray flex h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
+                  onClick={() => {
+                    setMoreVisible(false)
+                    saveOpinion()
+                    router.push('/saleAgreementCenter/forward')
+                  }}
+                >
+                  转发
+                </div>
+                <div
+                  className="border-bottom-gray flex h-[48px] w-[100%] items-center justify-center"
+                  onClick={() => {
+                    setMoreVisible(false)
+                    saveOpinion()
+                    router.push('/saleAgreementCenter/transfer')
+                  }}
+                >
+                  转办
+                </div>
+                <div
+                  className="flex h-[48px] w-[100%] items-center justify-center"
+                  onClick={() => {
+                    setMoreVisible(false)
+                  }}
+                >
+                  取消
+                </div>
+              </div>
+            </Popup>
+          </div>
+        ) : null}
+        {state === '2' && isForward ? (
+          <div className="box-border flex w-full place-content-center items-center">
+            <Button
+              color="primary"
+              fill="solid"
+              style={{
+                width: '30%'
+              }}
+              onClick={() => {
+                onCommit()
+              }}
+              disabled={disable}
+            >
+              评 论
+            </Button>
+          </div>
+        ) : null}
+      </div>
+    </>
+  )
+})
+
+export default SaleAgreement
