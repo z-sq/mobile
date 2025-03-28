@@ -39,7 +39,7 @@ const SaleAgreement = observer(({ children }) => {
   const router = useRouter()
 
   const {
-    approveStore: { currentInfo }
+    approveStore: { currentInfo, updateCurInfo }
   } = useStores()
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
   const searchParams = useSearchParams()
@@ -218,7 +218,7 @@ const SaleAgreement = observer(({ children }) => {
 
 
   const saveOpinion = () => {
-    if (currentTabKey === '7') {
+    if (state === '2') {
       const values = form.getFieldsValue()
       updateCurInfo({ curOpinion: values.opinion })
     }
@@ -261,7 +261,7 @@ const SaleAgreement = observer(({ children }) => {
              
               onClick={() => {
                 onApprove(true)
-                router.push('/saleAgreementCenter/approve')
+                router.push('/saleAgreement/approve')
               }}
               disabled={disable}
             >
@@ -293,7 +293,7 @@ const SaleAgreement = observer(({ children }) => {
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
-                    router.push('/saleAgreementCenter/forward')
+                    router.push('/saleAgreement/forward')
                   }}
                 >
                   转发
@@ -303,7 +303,7 @@ const SaleAgreement = observer(({ children }) => {
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
-                    router.push('/saleAgreementCenter/transfer')
+                    router.push('/saleAgreement/transfer')
                   }}
                 >
                   转办
