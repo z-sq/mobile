@@ -18,28 +18,28 @@ const columns = [
   
   {
     title: '付款日期',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'PAY_DATE',
+    key: 'PAY_DATE',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.PAY_DATE - b.PAY_DATE,
       multiple: 2
     }
   },
   {
     title: '付款金额',
-    dataIndex: 'PAY_NUM',
-    key: 'PAY_NUM',
+    dataIndex: 'AMT',
+    key: 'AMT',
     sorter: {
-      compare: (a, b) => a.PAY_NUM - b.PAY_NUM,
+      compare: (a, b) => a.AMT - b.AMT,
       multiple: 2
     }
   },
   {
     title: '备注',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'NOTE',
+    key: 'NOTE',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.NOTE - b.NOTE,
       multiple: 3
     }
   },
