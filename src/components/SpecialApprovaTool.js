@@ -57,16 +57,6 @@ const SpecialApprovaTool = observer(({ passApi, rejectApi, apiParams }) => {
           </Button>
         </div>
       </div>
-      <Modal
-        visible={visible}
-        content={message}
-        closeOnMaskClick={true}
-        onClose={() => {
-          setVisible(false)
-        }}
-        header="提示"
-        bodyClassName="mask-with-header"
-      />
     </>
   )
 })
