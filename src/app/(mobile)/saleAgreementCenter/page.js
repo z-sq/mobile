@@ -39,7 +39,7 @@ const SaleAgreementCenter = observer(({ children }) => {
   const router = useRouter()
 
   const {
-    approveStore: { currentInfo }
+    approveStore: { currentInfo, updateCurInfo }
   } = useStores()
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
   const searchParams = useSearchParams()
@@ -218,7 +218,7 @@ const SaleAgreementCenter = observer(({ children }) => {
 
 
   const saveOpinion = () => {
-    if (currentTabKey === '7') {
+    if (state === '2') {
       const values = form.getFieldsValue()
       updateCurInfo({ curOpinion: values.opinion })
     }
