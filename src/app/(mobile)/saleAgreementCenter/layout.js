@@ -176,19 +176,6 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
 
         {state === '2' && !isForward ? (
           <div className="box-border flex w-full justify-between">
-            {/* <Button
-              color="primary"
-              fill="outline"
-              style={{
-                width: '30%'
-              }}
-              onClick={() => {
-                onApprove(false)
-              }}
-              disabled={disable}
-            >
-              驳 回
-            </Button> */}
             <Button
               color="primary"
               fill="solid"
@@ -198,7 +185,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
              
               onClick={() => {
                 onApprove(true)
-                router.push('./saleAgreementCenter/approve')
+                router.push('/saleAgreementCenter/approve')
               }}
               disabled={disable}
             >
@@ -230,7 +217,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
-                    router.push('./saleAgreementCenter/forward')
+                    router.push('/saleAgreementCenter/forward')
                   }}
                 >
                   转发
@@ -240,7 +227,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
                   onClick={() => {
                     setMoreVisible(false)
                     saveOpinion()
-                    router.push('./saleAgreementCenter/transfer')
+                    router.push('/saleAgreementCenter/transfer')
                   }}
                 >
                   转办
@@ -257,7 +244,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
             </Popup>
           </div>
         ) : null}
-        {currentTabKey === '7' && isForward ? (
+        {state === '2' && isForward ? (
           <div className="box-border flex w-full place-content-center items-center">
             <Button
               color="primary"

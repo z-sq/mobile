@@ -18,47 +18,83 @@ import { useStores } from '@/utils/useStores'
 // 表格列的配置，还有个动态列，自查编码,列排序
 const columns = [
   {
-    title: '预算项目大类',
-    dataIndex: 'BUD_PAR_NAME',
-    key: 'BUD_PAR_NAME',
+    title: '销售合同审核大类编码',
+    dataIndex: 'AUD_PAR_CODE',
+    key: 'AUD_PAR_CODE',
     sorter: {
-      compare: (a, b) => a.BUD_PAR_NAME - b.BUD_PAR_NAME,
+      compare: (a, b) => a.AUD_PAR_CODE - b.AUD_PAR_CODE,
       multiple: 1
     }
   },
   {
-    title: '预算项目类别',
-    dataIndex: 'BUD_PJT_NAME',
-    key: 'BUD_PJT_NAME',
+    title: '销售合同审核大类名称',
+    dataIndex: 'AUD_PAR_NAME',
+    key: 'AUD_PAR_NAME',
     sorter: {
-      compare: (a, b) => a.BUD_PJT_NAME - b.BUD_PJT_NAME,
+      compare: (a, b) => a.AUD_PAR_NAME - b.AUD_PAR_NAME,
       multiple: 2
     }
   },
   {
-    title: '预算资金类别',
-    dataIndex: 'BUD_FUN_NAME',
-    key: 'BUD_FUN_NAME',
+    title: '销售合同审核项简称',
+    dataIndex: 'AUD_CHI_ABBR',
+    key: 'AUD_CHI_ABBR',
     sorter: {
-      compare: (a, b) => a.BUD_FUN_NAME - b.BUD_FUN_NAME,
+      compare: (a, b) => a.AUD_CHI_ABBR - b.AUD_CHI_ABBR,
       multiple: 3
     }
   },
   {
-    title: '预算金额',
-    dataIndex: 'AMT',
-    key: 'AMT',
+    title: '待审核人名称',
+    dataIndex: 'PLA_AUD_NAME',
+    key: 'PLA_AUD_NAME',
     sorter: {
-      compare: (a, b) => a.AMT - b.AMT,
+      compare: (a, b) => a.PLA_AUD_NAME - b.PLA_AUD_NAME,
       multiple: 4
     }
   },
   {
-    title: '备注',
-    dataIndex: 'NOTE',
-    key: 'NOTE',
+    title: '审核结论',
+    dataIndex: 'OPI_FLAG',
+    key: 'OPI_FLAG',
     sorter: {
-      compare: (a, b) => a.NOTE - b.NOTE,
+      compare: (a, b) => a.OPI_FLAG - b.OPI_FLAG,
+      multiple: 4
+    }
+  },
+  {
+    title: '上次审核意见',
+    dataIndex: 'LAST_OPINION',
+    key: 'LAST_OPINION',
+    sorter: {
+      compare: (a, b) => a.LAST_OPINION - b.LAST_OPINION,
+      multiple: 4
+    }
+  },
+  {
+    title: '审核意见',
+    dataIndex: 'OPI_FLAG',
+    key: 'OPI_FLAG',
+    sorter: {
+      compare: (a, b) => a.OPI_FLAG - b.OPI_FLAG,
+      multiple: 4
+    }
+  },
+  {
+    title: '审核人名称',
+    dataIndex: 'AUD_NAME',
+    key: 'AUD_NAME',
+    sorter: {
+      compare: (a, b) => a.AUD_NAME - b.AUD_NAME,
+      multiple: 4
+    }
+  },
+  {
+    title: '审核日期',
+    dataIndex: 'AUD_DATE',
+    key: 'AUD_DATE',
+    sorter: {
+      compare: (a, b) => a.AUD_DATE - b.AUD_DATE,
       multiple: 5
     }
   }
@@ -75,12 +111,12 @@ const ApprovePage = () => {
   const {
     approveStore: { currentInfo }
   } = useStores()
-  const { COM_CODE, ORD_NO } = currentInfo
-
+  const { COM_CODE, ORD_NO,PAGE_CODE } = currentInfo
+console.log(COM_CODE, ORD_NO,PAGE_CODE,'COM_CODE, ORD_NO,PAGE_CODE')
   const getBaseInfo = async () => {
     try {
-      const result = await request(saleAgreementApi.getBillhead, 'GET', {
-        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+      const result = await request(saleAgreementApi.getApproveBase, 'GET', {
+        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE,PAGE_CODE:PAGE_CODE }),
         page: 1,
         start: 0,
         limit: 25
@@ -97,8 +133,8 @@ const ApprovePage = () => {
   }
   const getDetailInfo = async (page = 1) => {
     try {
-      const result = await request(saleAgreementApi.getBillmgrid, 'GET', {
-        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+      const result = await request(saleAgreementApi.getApproveTable, 'GET', {
+        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE,PAGE_CODE:PAGE_CODE }),
         page: page,
         start: 0,
         limit: 100
@@ -141,15 +177,15 @@ const ApprovePage = () => {
             <table className="w-full">
               <tbody>
                 <tr>
-                  <BasicFormItem label="单位" text={baseInfo?.COM_NAME || ''} />
+                  <BasicFormItem label="申请单位名称" text={baseInfo?.COM_NAME || ''} />
                   <BasicFormItem
-                    label="编制部门"
+                    label="申请部门名称"
                     text={baseInfo?.DEP_NAME || ''}
                   />
                 </tr>
                 <tr>
                   <BasicFormItem
-                    label="编制人"
+                    label="申请人名称"
                     text={baseInfo?.AUD_NAME || ''}
                   />
                   <BasicFormItem
@@ -158,80 +194,33 @@ const ApprovePage = () => {
                   />
                 </tr>
                 <tr>
-                  <BasicFormItem label="订单号" text={baseInfo?.ORD_NO || ''} />
                   <BasicFormItem
                     label="客户名称"
                     text={baseInfo?.CUSTOMER_NAME || ''}
                   />
-                </tr>
-                <tr>
-                  <BasicFormItem
-                    label="合同名称"
-                    text={baseInfo?.PROJECT_NAME || ''}
-                  />
-                  <BasicFormItem
-                    label="牵头单位"
-                    text={baseInfo?.finDate || ''}
-                  />
-                </tr>
-                <tr>
-                  <BasicFormItem
-                    label="订单类型"
-                    text={baseInfo?.HEAD_TYPE_NAME || ''}
-                  />
-                  <BasicFormItem
-                    label="合同分类"
+                   <BasicFormItem
+                    label="合同类型"
                     text={baseInfo?.CON_CLS_NAME || ''}
                   />
                 </tr>
                 <tr>
                   <BasicFormItem
-                    label="业务分类"
-                    text={baseInfo?.BUS_CLS_NAME || ''}
+                    label="合同分类"
+                    text={baseInfo?.CON_CLS_NAME || ''}
                   />
-                  <BasicFormItem
-                    label="组织形式（纵向）"
-                    text={baseInfo?.ORG_FORM || ''}
-                  />
-                </tr>
-                <tr>
-                  <BasicFormItem label="币别" text={baseInfo?.CUR_NAME || ''} />
                   <BasicFormItem
                     label="销售合同额"
                     text={baseInfo?.ORD_TOT_AMT || ''}
                   />
                 </tr>
-                <tr>
-                  <BasicFormItem
-                    label="首付款"
-                    text={baseInfo?.PRE_RET_AMT || ''}
-                  />
-                  <BasicFormItem label="审批状态" text={baseInfo?.aaa || ''} />
-                </tr>
-                <tr>
-                  <BasicFormItem
-                    label="预算总金额"
-                    text={baseInfo?.BUD_TOT_AMT || ''}
-                  />
-                  <BasicFormItem
-                    label="预计利润"
-                    text={baseInfo?.BUD_TOT_AMT || ''}
-                  />
-                </tr>
-                <tr>
-                  <BasicFormItem
-                    label="利润率"
-                    text={baseInfo?.PRO_RATE || ''}
-                  />
-                  <BasicFormItem label="审批人" text={baseInfo?.bbb || ''} />
-                </tr>
+{/*                 
                 <tr>
                   <BasicFormItem
                     label="审批意见"
                     text={baseInfo?.AUD_TEXT || ''}
                     textColSpan={3}
                   />
-                </tr>
+                </tr> */}
               </tbody>
             </table>
             <div className="text-12px mt-16px">明细信息</div>

@@ -11,6 +11,11 @@ import { useStores } from '@/utils/useStores'
 // 回款计划 /business/om/auto/om_hk_sp/query/billform
 // 回款计划表格 
 // 销售-辅助信息 /business/om/auto/om_fz_cx/query/tabfzdetail
+// /business/om/auto/om2102/query/pm2102qdform 审批页面基础信息
+// /business/om/auto/om2102/query/tabqddetail 审批页面表格信息
+
+
+
 /**
  * 销售合同接口
  * @type {saleAgreementApi}
@@ -26,5 +31,7 @@ export const saleAgreementApi = {
   getPayPlanTable:'/business/om/auto/om_cgfk_sp/query/detailgridpanel',
   getReturnInfo:'/business/om/auto/om_hk_sp/query/billform',
   getReturnTable:'/business/om/auto/om_hk_sp/query/billform',
-  getSupplyInfo:'/business/om/auto/om_fz_cx/query/tabfzdetail'
+  getSupplyInfo:'/business/om/auto/om_fz_cx/query/tabfzdetail',
+  getApproveBase:'/business/om/auto/om2102/query/pm2102qdform',
+  getApproveTable:'/business/om/auto/om2102/query/tabqddetail'
 }
