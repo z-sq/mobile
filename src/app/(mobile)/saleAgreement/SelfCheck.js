@@ -1,23 +1,32 @@
 // 一个基本的React组件，接受一个data对象，一个style对象，一个onClick函数，返回一个div元素。
 import React, { useState, useEffect } from 'react'
-import { Loading } from 'antd-mobile'
 import { Table } from 'antd'
+import { useRouter } from 'next/navigation'
 
-import { saleAgreementApi } from '@/request/apis/saleAgre'
+import { saleAgreementApi } from '@/request/apis/saleAgreement'
 import request from '@/utils/request'
 
 import SectionTitle from './components/SectionTitle'
 import Dash from './components/Dash'
+
+import BasicFormItem from './components/BasicInformation/BasicFormItem'
+import FiewViewer from './components/FileViewer'
+
+import Loading from '@/components/Loading'
+import TableList from '@/components/TableList'
+import { BASE_PATH } from '@/config/app'
+import { addCommas } from '@/utils/method'
+import { useStores } from '@/utils/useStores'
 // 自查表基础信息
-const mockdata =  {
-    CON_DATE: '2025/02/13',
-    UPD_CODE: 'lhy',
-    SAL_NAME: '李浩宇',
-    DEP_NAME: '客户服务部',
-    UPD_NAME: '李浩宇',
-    ROWNUM_: '1',
-    UU_ID: 'nullnullnull'
-  }
+const mockdata = {
+  CON_DATE: '2025/02/13',
+  UPD_CODE: 'lhy',
+  SAL_NAME: '李浩宇',
+  DEP_NAME: '客户服务部',
+  UPD_NAME: '李浩宇',
+  ROWNUM_: '1',
+  UU_ID: 'nullnullnull'
+}
 // 对应的label名称：业务部门、销售员、录入人
 const FIELD_LABEL = {
   DEP_NAME: '业务部门',
@@ -38,58 +47,55 @@ const tableData = [
 const columns = [
   {
     title: '合同条款审查项',
-    dataIndex: 'CONFORM_ITEM',
-    key: 'CONFORM_ITEM',
+    dataIndex: 'EXA_TER_NAME',
+    key: 'EXA_TER_NAME',
     sorter: {
-      compare: (a, b) => a.CONFORM_ITEM - b.CONFORM_ITEM,
+      compare: (a, b) => a.EXA_TER_NAME - b.EXA_TER_NAME,
       multiple: 1
     }
   },
   {
     title: '是否符合',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'FIT_FLAG',
+    key: 'FIT_FLAG',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.FIT_FLAG - b.FIT_FLAG,
       multiple: 2
     }
   },
   {
     title: '备注信息',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARKS',
+    key: 'REMARKS',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARKS - b.REMARKS,
       multiple: 3
     }
   },
-    {
-        title: '自查编码',
-        dataIndex: 'UU_ID',
-        key: 'UU_ID',
-        sorter: {
-        compare: (a, b) => a.UU_ID - b.UU_ID,
-        multiple: 4
-        }
-    },
-    {
-        title: '行号',
-        dataIndex: 'ROWNUM_',
-        key: 'ROWNUM_',
-        sorter: {
-        compare: (a, b) => a.ROWNUM_ - b.ROWNUM_,
-        multiple: 5
-        }
+  {
+    title: '自查编码',
+    dataIndex: 'UU_ID',
+    key: 'UU_ID',
+    sorter: {
+      compare: (a, b) => a.UU_ID - b.UU_ID,
+      multiple: 4
     }
+  }
 ]
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log('params', pagination, filters, sorter, extra)
-}
 
 const SelfCheck = () => {
   const [loading, setLoading] = useState(true)
-  const [baseInfo, setBaseInfo] = useState(mockdata)
-  const [data, setData] = useState(tableData)
+  const [baseInfo, setBaseInfo] = useState({})
+  const [data, setData] = useState([])
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [total, setTotal] = useState(0)
+
+  const {
+    approveStore: { currentInfo }
+  } = useStores()
+  const { COM_CODE, ORD_NO } = currentInfo
+  console.log(COM_CODE, ORD_NO, 'currentInfo')
   // 根据接口返回的参数，重写formatFieldVal
   const formatFieldVal = (field, val) => {
     if (val === undefined || val === null || val === '') {
@@ -103,11 +109,10 @@ const SelfCheck = () => {
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
-        _dc: 1742895269636,
-        params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
+        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
         page: 1,
         start: 0,
-        limit: 25
+        limit: 100
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
@@ -115,19 +120,18 @@ const SelfCheck = () => {
       }
     } catch (err) {
       console.log(err)
-    }finally{
-        setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
-  const getDetailInfo = async () => {
+  const getDetailInfo = async (page=1) => {
     try {
       const result = await request(
         saleAgreementApi.getCheckTableDetail,
         'GET',
         {
-          _dc: 1742895269633,
-          params: { ORDER_NO: 'OM2025021300002', COM_CODE: '01' },
-          page: 1,
+          params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+          page: page,
           start: 0,
           limit: 100
         }
@@ -138,61 +142,74 @@ const SelfCheck = () => {
       }
     } catch (err) {
       console.log(err)
-    }finally{
-        setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
+
+  const loadMore = async () => {
+    if (data.length >= total) {
+      setHasMore(false)
+      return
+    }
+    setPage(page + 1)
+    const append = (await getDetailInfo(page + 1)) || []
+    setHasMore(data.length + append.length < total)
+    setData((val) => [...val, ...append])
+  }
+
   useEffect(() => {
     setLoading(true)
     getBaseInfo()
     getDetailInfo()
   }, [])
   return (
-    <div className="flex flex-col">
-      <Loading visible={loading} />
-
-      <div className="base-info flex flex-wrap w-full max-w-full">
-        <SectionTitle title="基本信息" />
-        <Dash />
-        <div className="base-info flex flex-wrap border border-bor-gray2 md:grid-cols-2 w-full ">
-          {Object.keys(FIELD_LABEL).map((field, index) => {
-            // 根据数据长度，增加边线样式
-            return (
-              <div
-                className={`base-info-item flex w-full
-                                 ${
-                                   index < Object.keys(FIELD_LABEL).length - 1
-                                     ? 'border-b border-gray-200'
-                                     : ''
-                                 }                         
-                                 ${
-                                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                                 }`}
-                key={field}
-              >
-                <div className="base-info-label w-2/5 py-3 px-4 border-r border-bor-gray2 bg-fill-blue flex items-center">
-                  {FIELD_LABEL[field]}
-                </div>
-                <div className="base-info-val w-3/5 py-3 px-4 flex items-center">
-                  {formatFieldVal(field, baseInfo[field])}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+    <>
+      <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto">
+        {!data ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="text-12px mt-16px">基本信息</div>
+            <table className="w-full">
+              <tbody>
+                <tr>
+                  <BasicFormItem
+                    label="业务部门"
+                    text={baseInfo?.DEP_NAME || ''}
+                  />
+                  <BasicFormItem
+                    label="销售员"
+                    text={baseInfo?.SAL_NAME || ''}
+                  />
+                </tr>
+                <tr>
+                  <BasicFormItem
+                    label="录入人"
+                    text={baseInfo?.UPD_NAME || ''}
+                  />
+                  <BasicFormItem
+                    label="申请日期"
+                    text={baseInfo?.CON_DATE || ''}
+                  />
+                </tr>
+              </tbody>
+            </table>
+            <div className="text-12px mt-16px">明细信息</div>
+            <div className="text-12px mt-10px w-full">
+              <TableList
+                columns={columns}
+                dataSource={data}
+                orderColumn={true}
+                loadMore={loadMore}
+                hasMore={hasMore}
+                infiniteScroll={true}
+              />
+            </div>
+          </>
+        )}
       </div>
-      <div className="base-info flex flex-wrap">
-        <Dash borderStyle="solid" />
-        <SectionTitle title="明细信息" />
-        <Table
-          columns={columns}
-          dataSource={data}
-          onChange={onChange}
-          bordered
-          className="border"
-        />
-      </div>
-    </div>
+    </>
   )
 }
 export default SelfCheck
