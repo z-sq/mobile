@@ -97,12 +97,12 @@ const MenuPage = () => {
         procName: '计划领用审批'
       },
       {
-        url: '/saleAgreementCenter',
+        url: '/saleAgreement',
         procCode: '1724919928665',
         procName: '销售合同审批临时测试'
       },
       {
-        url: '/saleAgreement',
+        url: '/saleAgreementCenter',
         procCode: '1669622397937',
         procName: '销售合同审批流程'
       }

@@ -42,55 +42,51 @@ const SaleAgreementCenter = observer(({ children }) => {
     approveStore: { currentInfo, updateCurInfo }
   } = useStores()
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
-  const searchParams = useSearchParams()
-  const busKeyValue = searchParams.get('key')||'R1092125020026'
-  const procCode = searchParams.get('type')
-  const pagCode = searchParams.get('pagCode')
-  const procVersion = searchParams.get('procVersion')
-  const state = searchParams.get('state')||'2'
+  // const searchParams = useSearchParams()
+  // const busKeyValue = searchParams.get('key')||'R1092125020026'
+  // const procCode = searchParams.get('type')
+  // const pagCode = searchParams.get('pagCode')
+  // const procVersion = searchParams.get('procVersion')
+  const state = currentInfo.state || '2'
 
-  const wfType = typeMap[pagCode]?.pagCode||'tp2100'
-  const busKey = typeMap[pagCode]?.busKey||'reqNo'
+  // const wfType = typeMap[pagCode]?.pagCode||'tp2100'
+  // const busKey = typeMap[pagCode]?.busKey||'reqNo'
 
-  const getVendorInfo = async () => {
-    try {
-      const result = await request(
-        `/business/mas/tp/manual/${wfType}/getVendorInfo`,
-        'GET',
-        {
-          [busKey]: busKeyValue
-        }
-      )
-      if (result && result.success) {
-        const data = result.data || []
-        const vendorData = data.map((item, index) => {
-          if (item.supImpName !== null) {
-            item.supClsNameNew =
-              (item.supClsName || '') + '（' + item.supImpName + '）'
-          } else {
-            item.supClsNameNew = item.supClsName || ''
-          }
-          return item
-        })
-        setSupplierInfo(vendorData)
-      }
-    } catch (err) {}
-  }
+  // const getVendorInfo = async () => {
+  //   try {
+  //     const result = await request(
+  //       `/business/mas/tp/manual/tp2100/getVendorInfo`,
+  //       'GET',
+  //       {
+  //         [busKey]: busKeyValue
+  //       }
+  //     )
+  //     if (result && result.success) {
+  //       const data = result.data || []
+  //       const vendorData = data.map((item, index) => {
+  //         if (item.supImpName !== null) {
+  //           item.supClsNameNew =
+  //             (item.supClsName || '') + '（' + item.supImpName + '）'
+  //         } else {
+  //           item.supClsNameNew = item.supClsName || ''
+  //         }
+  //         return item
+  //       })
+  //       setSupplierInfo(vendorData)
+  //     }
+  //   } catch (err) {}
+  // }
 // 审核意见
   const getWfmApproveInfo = async () => {
     console.log(222)
     // /business/mas/tp/manual/tp2800/getWfmApproveInfo
     try {
-      console.log(333,busKeyValue,wfType,busKey)
+      // console.log(333,busKeyValue,wfType,busKey)
+      const { busKey, busKeyValue, procCode, procVersion, uuid:uuId } = currentInfo
       const result = await request(
-        `/business/mas/tp/manual/${wfType}/getWfmApproveInfo`,
+        `/mbs/tp/manual/tp2100/getWfmApproveInfo`,
         'GET',
-        {
-          [busKey]: busKeyValue,
-          procCode,
-          procVersion,
-          uuId: currentInfo.uuid
-        }
+        { busKey, busKeyValue, procCode, procVersion, uuId }
       )
       console.log(444)
       if (result && result.success) {
@@ -133,7 +129,7 @@ const SaleAgreementCenter = observer(({ children }) => {
     // if (!currentInfo) {
     //   return
     // }
-    getVendorInfo()
+    // getVendorInfo()
     getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
