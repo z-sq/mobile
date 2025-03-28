@@ -2,7 +2,7 @@
 
 import {
   PullToRefresh,
-  // InfiniteScroll,
+  InfiniteScroll,
   Input,
   Toast,
   Ellipsis
@@ -36,12 +36,12 @@ const MenuPage = () => {
   } = useStores()
 
   const [data, setData] = useState([])
-  // const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
   const [unRead, setUnread] = useState(null)
   const [activeKey, setActiveKey] = useState('1')
-  // const [curPage, setCurPage] = useState(1)
-  // const [hasMore, setHasMore] = useState(true)
+  const [curPage, setCurPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
   const [visible, setVisible] = useState(false)
   const [curProc, setCurProc] = useState({})
   const [procList, setProcList] = useState([])
@@ -60,18 +60,20 @@ const MenuPage = () => {
         procCode: '',
         procName: ''
       })
-      getListData('')
+      getListData('',curPage)
+      console.log('00000')
     } else {
       setCurProc({
         ...curProc,
         procCode: procCode,
         procName: procName
       })
-      getListData(procCode)
+      getListData(procCode,curPage)
+      console.log(procCode,'procCode')
     }
     setVisible(false)
   }
-
+//列表点击事件
   const onClick = (data = {}) => {
     const { procCode, busKeyValue, state, procVersion, busParams, ascAppPage } =
       data
@@ -107,7 +109,11 @@ const MenuPage = () => {
       )
     }
   }
-
+  //先做一个这个列表跳转到销售合同申请审批的功能
+const onClickDemo = (data = {}) => {
+  // router.push('./saleAgreement')
+  router.push('./saleAgreementCenter')
+}
   // const getData = async (page) => {
   //   try {
   //     const result = await request(
@@ -129,7 +135,7 @@ const MenuPage = () => {
   //   } catch (err) {}
   // }
 
-  const getListData = async (procCode) => {
+  const getListData = async (procCode,page=1) => {
     let states = ''
     if (activeKey === '1') {
       states = '2'
@@ -151,7 +157,7 @@ const MenuPage = () => {
               ? procCode
               : curProc.procCode || '',
           limit: 20,
-          page: 1,
+          page: page,
           comCode: '01',
           usercode
         },
@@ -174,26 +180,35 @@ const MenuPage = () => {
           )
         })
         setData(data)
+        setTotal(result.total)
+        return data
       } else {
         setData([])
       }
-    } catch (err) {}
+    } catch (err) {
+    }finally{
+      setLoading(false)
+    }
   }
 
-  // const loadMore = async () => {
-  //   if (data.length >= total) {
-  //     setHasMore(false)
-  //     return
-  //   }
-  //   const append = (await getData(curPage + 1)) || []
-  //   if (data.length + append.length < total) {
-  //     setHasMore(true)
-  //     setCurPage(curPage + 1)
-  //   } else {
-  //     setHasMore(false)
-  //   }
-  //   setData((val) => [...val, ...append])
-  // }
+  const loadMore = async () => {
+    const dataLen=data.length
+    console.log(dataLen,'dataLen')
+    if (dataLen >= total) {
+      setHasMore(false)
+      return
+    }
+    const append = (await getListData('',curPage + 1)) || []
+    console.log(append,append.length,total,'append.length')
+    if (dataLen + append.length < total) {
+      setHasMore(true)
+      setCurPage(curPage + 1)
+    } else {
+      setHasMore(false)
+    }
+    const newData=[...data,...append]
+    setData(newData)
+  }
 
   const getProcDef = async () => {
     try {
@@ -344,12 +359,17 @@ const MenuPage = () => {
               {data.length ? (
                 <>
                   {data.map((item, index) => (
-                    <Card key={index} data={item} onClick={onClick} />
+                    <Card 
+                    key={index} 
+                    data={item} 
+                    // onClick={onClick} 
+                    onClick={onClickDemo}
+                    />
                   ))}
-                  {/* <InfiniteScroll
+                  <InfiniteScroll
                   loadMore={loadMore}
                   hasMore={hasMore}
-                ></InfiniteScroll> */}
+                ></InfiniteScroll>
                 </>
               ) : (
                 <div></div>
