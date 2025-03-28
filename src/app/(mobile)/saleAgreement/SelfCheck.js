@@ -36,7 +36,8 @@ const columns = [
     sorter: {
       compare: (a, b) => a.FIT_FLAG - b.FIT_FLAG,
       multiple: 2
-    }
+    },
+    render:(txt)=>(txt==='Y'?'是':'否')
   },
   {
     title: '备注信息',

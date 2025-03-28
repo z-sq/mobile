@@ -7,10 +7,8 @@ import { saleAgreementApi } from '@/request/apis/saleAgre'
 import request from '@/utils/request'
 
 import SectionTitle from './components/SectionTitle'
-import Dash from './components/Dash'
 
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
-import FiewViewer from './components/FileViewer'
 
 import Loading from '@/components/Loading'
 import TableList from '@/components/TableList'
@@ -18,7 +16,6 @@ import { BASE_PATH } from '@/config/app'
 import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 
-// 表格列的配置，还有个动态列，自查编码,列排序
 const columns = [
   {
     title: '合同条款审查项',
@@ -36,7 +33,8 @@ const columns = [
     sorter: {
       compare: (a, b) => a.FIT_FLAG - b.FIT_FLAG,
       multiple: 2
-    }
+    },
+    render:(txt)=>(txt==='Y'?'是':'否')
   },
   {
     title: '备注信息',
@@ -71,16 +69,7 @@ const SelfCheck = () => {
   } = useStores()
   const { COM_CODE, ORD_NO } = currentInfo
   console.log(COM_CODE, ORD_NO, 'currentInfo')
-  // 根据接口返回的参数，重写formatFieldVal
-  const formatFieldVal = (field, val) => {
-    if (val === undefined || val === null || val === '') {
-      return '-'
-    }
-    if (field === 'IS_CONFORM') {
-      return val === 'Y' ? '是' : '否'
-    }
-    return val
-  }
+  
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
