@@ -70,17 +70,7 @@ const SelfCheck = () => {
     approveStore: { currentInfo }
   } = useStores()
   const { COM_CODE, ORD_NO } = currentInfo
-  console.log(COM_CODE, ORD_NO, 'currentInfo')
-  // 根据接口返回的参数，重写formatFieldVal
-  const formatFieldVal = (field, val) => {
-    if (val === undefined || val === null || val === '') {
-      return '-'
-    }
-    if (field === 'IS_CONFORM') {
-      return val === 'Y' ? '是' : '否'
-    }
-    return val
-  }
+
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
@@ -91,7 +81,6 @@ const SelfCheck = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        console.log('result', result)
       }
     } catch (err) {
       console.log(err)

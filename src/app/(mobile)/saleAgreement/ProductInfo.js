@@ -159,69 +159,6 @@ const defaultColumns =
         }
     }]
 
-const otherColumns = [
-  {
-    title: '物料名称',
-    dataIndex: 'matName',
-    key: 'matName',
-    fixed: true,
-    width: '80px'
-  },
-  {
-    title: '规格',
-    dataIndex: 'matNorm',
-    key: 'matNorm',
-    width: '80px'
-  },
-  {
-    title: '型号',
-    dataIndex: 'matModel',
-    key: 'matModel',
-    width: '80px'
-  },
-  {
-    title: '图号',
-    dataIndex: 'draNo',
-    key: 'draNo',
-    width: '80px'
-  },
-  {
-    title: '材料',
-    dataIndex: 'material',
-    key: 'material',
-    width: '80px'
-  },
-  {
-    title: '品牌/厂家',
-    dataIndex: 'factory',
-    key: 'factory',
-    width: '80px'
-  },
-  {
-    title: '数量',
-    dataIndex: 'qty',
-    key: 'qty',
-    width: '80px'
-  },
-  {
-    title: '预算金额',
-    dataIndex: 'bugAmt',
-    key: 'bugAmt',
-    width: '80px'
-  },
-  {
-    title: '需求日期',
-    dataIndex: 'reqDate',
-    key: 'reqDate',
-    width: '80px'
-  },
-  {
-    title: '备注',
-    dataIndex: 'remarks',
-    key: 'remarks',
-    width: '100px'
-  }
-]
 
 const ProductInfo=observer(({style = {}})=> {
   const [tableDdata, setTableData] = useState([])
@@ -252,10 +189,6 @@ const ProductInfo=observer(({style = {}})=> {
             REC_VERSION:REC_VERSION,
             REC_VERSION_OLD:REC_VERSION_OLD,
           }),
-          COM_CODE:COM_CODE,
-          ORD_NO:ORD_NO,
-          REC_VERSION:REC_VERSION,
-          REC_VERSION_OLD:REC_VERSION_OLD,
           page: page,
           start: 0,
           limit: 200

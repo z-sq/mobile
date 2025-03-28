@@ -79,7 +79,7 @@ const ContractBudget = () => {
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getBillhead, 'GET', {
-        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+        params: JSON.stringify({ ORD_NO: ORD_NO, COM_CODE: COM_CODE }),
         page: 1,
         start: 0,
         limit: 25
@@ -97,14 +97,15 @@ const ContractBudget = () => {
   const getDetailInfo = async (page=1) => {
     try {
       const result = await request(saleAgreementApi.getBillmgrid, 'GET', {
-        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+        params: JSON.stringify({ ORD_NO: ORD_NO, COM_CODE: COM_CODE }),
+        ORD_NO:ORD_NO,
+        COM_CODE:COM_CODE,
         page: page,
         start: 0,
         limit: 100
       })
       if (result && result.success) {
         setData(result.data)
-        console.log('result', result)
       }
     } catch (err) {
       console.log(err)
