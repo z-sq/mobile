@@ -11,7 +11,20 @@ import SectionTitle from '@/components/SectionTitle'
 
 import { useState, useEffect } from 'react'
 
-const PurchasePaymentPlan = observer(() => {
+// 调试参数
+const _params = {
+  COM_CODE: '01',
+  COM_NAME: '北京机械工业自动化研究所有限公司软件分公司',
+  UPD_CODE: 'lhy',
+  DEP_NAME: '客户服务部',
+  PUR_PER_NAME: '李浩宇',
+  ORD_NO: '2024103100010',
+  CON_NO: '0124001025',
+  ORD_TOT_AMT: 1122914,
+  ALLO_AMT: 'null',
+  CURR_PM_AMT: 236.17
+}
+const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
   const [salesInfoData, setSalesInfoData] = useState([])
   const [projectData, setProjectData] = useState([])
   const [basicInfoData, setBasicInfoData] = useState({})
@@ -23,22 +36,34 @@ const PurchasePaymentPlan = observer(() => {
 
   // 基本信息
   const getBaseInfo = async () => {
+    const {
+      COM_CODE,
+      COM_NAME,
+      UPD_CODE,
+      DEP_NAME,
+      PUR_PER_NAME,
+      ORD_NO,
+      CON_NO,
+      ORD_TOT_AMT,
+      ALLO_AMT,
+      CURR_PM_AMT
+    } = apiParams
     try {
       const result = await request(
         '/business/pm/auto/pm_cgfk_sp/query/headpanel',
         'GET',
         {
           params: JSON.stringify({
-            COM_CODE: '01',
-            COM_NAME: '北京机械工业自动化研究所有限公司软件分公司',
-            UPD_CODE: 'lhy',
-            DEP_NAME: '客户服务部',
-            PUR_PER_NAME: '李浩宇',
-            ORD_NO: '2024103100010',
-            CON_NO: '0124001025',
-            ORD_TOT_AMT: 1122914,
-            ALLO_AMT: 'null',
-            CURR_PM_AMT: 236.17
+            COM_CODE,
+            COM_NAME,
+            UPD_CODE,
+            DEP_NAME,
+            PUR_PER_NAME,
+            ORD_NO,
+            CON_NO,
+            ORD_TOT_AMT,
+            ALLO_AMT,
+            CURR_PM_AMT
           }),
           page: 1,
           start: 0,
@@ -56,10 +81,17 @@ const PurchasePaymentPlan = observer(() => {
     } catch (err) {}
   }
 
-  async function getTableListData(url, params, callback) {
+  async function getTableListData(url, callback) {
+    const { COM_CODE, COM_NAME, UPD_CODE, ORD_NO, CON_NO } = apiParams
     try {
       const result = await request(url, 'GET', {
-        params: JSON.stringify(params),
+        params: JSON.stringify({
+          COM_CODE,
+          COM_NAME,
+          UPD_CODE,
+          ORD_NO,
+          CON_NO
+        }),
         page: 1,
         start: 0,
         limit: 200
@@ -73,27 +105,25 @@ const PurchasePaymentPlan = observer(() => {
   }
 
   useEffect(() => {
-    if (!currentInfo) {
-      return
-    }
     // 基本信息
     getBaseInfo()
-    
-    const params = {
-      COM_CODE: '01',
-      COM_NAME: '北京机械工业自动化研究所有限公司软件分公司',
-      UPD_CODE: 'lhy',
-      ORD_NO: '2024103100010',
-      CON_NO: '0124001025'
-    }
     // 销售信息
-    getTableListData('business/pm/auto/pm_cgfk_sp/query/uppanel',params,setSalesInfoData);
+    getTableListData(
+      'business/pm/auto/pm_cgfk_sp/query/uppanel',
+      setSalesInfoData
+    )
     // 明细信息
-    getTableListData('/business/pm/auto/pm_cgfk_sp/query/downpane',params,setDetailInfoData);
+    getTableListData(
+      '/business/pm/auto/pm_cgfk_sp/query/downpane',
+      setDetailInfoData
+    )
     // 项目采购计划信息
-    getTableListData('/business/pm/auto/pm_cgfk_sp/query/centerpanel',params,setProjectData);
+    getTableListData(
+      '/business/pm/auto/pm_cgfk_sp/query/centerpanel',
+      setProjectData
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentInfo])
+  }, [])
   return (
     <Collapse accordion defaultActiveKey={'3'}>
       <Collapse.Panel key="1" title="销售合同信息">
