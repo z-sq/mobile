@@ -68,7 +68,6 @@ const PaymentPlan = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        console.log('result', result)
       }
     } catch (err) {
       console.log(err)
@@ -98,9 +97,10 @@ const PaymentPlan = () => {
         }
       )
       if (result && result.success) {
-        setData(result.data)
+        const resData=result.data||[]
+        setData(resData)
         setTotal(result.total)
-        console.log('result', result)
+        return resData
       }
     } catch (err) {
       console.log(err)
@@ -116,7 +116,8 @@ const PaymentPlan = () => {
     setPage(page + 1)
     const append = (await getDetailInfo(page + 1)) || []
     setHasMore(data.length + append.length < total)
-    setData((val) => [...val, ...append])
+    const newData=[...data,...append]
+    setData(newData)
   }
   useEffect(() => {
     setLoading(true)
