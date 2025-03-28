@@ -10,9 +10,9 @@ const Card = ({ data = {}, style = {}, onClick }) => {
     title = showTitle.join('-')
   }
   if (title) {
-    title = `${title}-${data.procName || ''}`
+    title = `【${data.procName}】-${title}`
   } else {
-    title = data.procName || ''
+    title = `【${data.procName}】`
   }
 
   return (

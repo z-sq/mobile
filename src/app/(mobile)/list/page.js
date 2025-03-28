@@ -46,8 +46,6 @@ const MenuPage = () => {
   const [curProc, setCurProc] = useState({})
   const [procList, setProcList] = useState([])
   const [tabsMap, setTabsMap] = useState(defaultTabsMap)
-  const token = window.localStorage.getItem('token')
-  const usercode = window.localStorage.getItem('acctCode')
 
   const onExpand = () => {
     setVisible(!visible)
@@ -165,6 +163,8 @@ const MenuPage = () => {
     }
     try {
       setLoading(true)
+      const token = window.localStorage.getItem('token')
+      const usercode = window.localStorage.getItem('acctCode')
 
       const result = await request(
         '/home/page/getWorkItem',
@@ -228,6 +228,8 @@ const MenuPage = () => {
 
   const getProcDef = async () => {
     try {
+      const token = window.localStorage.getItem('token')
+      const usercode = window.localStorage.getItem('acctCode')
       const result = await request(
         '/home/page/getProcDef',
         'GET',
@@ -271,6 +273,7 @@ const MenuPage = () => {
   }, [])
 
   useEffect(() => {
+    setData([])
     getListData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeKey])
@@ -361,11 +364,11 @@ const MenuPage = () => {
         style={{ height: 'calc(var(--vh, 1vh) * 100 - 8.5rem )' }}
       >
         <div>
-          {loading ? (
+          {/* {loading ? (
             <div className="mt-160px">
               <Loading />
             </div>
-          ) : (
+          ) : ( */}
             <PullToRefresh
               onRefresh={() => {
                 getListData()
@@ -391,7 +394,7 @@ const MenuPage = () => {
                 <div></div>
               )}
             </PullToRefresh>
-          )}
+          {/* )} */}
         </div>
       </div>
     </div>

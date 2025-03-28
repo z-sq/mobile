@@ -10,12 +10,13 @@ import { useStores } from '@/utils/useStores'
 import { saleAgreementApi } from '@/request/apis/saleAgreement'
 
 export default function BaseInfo({ style = {} }) {
-  const usercode = window.localStorage.getItem('acctCode')
+  
   const [data, setData] = useState({})
   const {
     approveStore: { resetCurInfo }
   } = useStores()
   const getBaseInfo = async () => {
+    const usercode = window.localStorage.getItem('acctCode')
     try {
       const result = await request(saleAgreementApi.getBaseInfo,
         'GET',

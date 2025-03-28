@@ -131,9 +131,9 @@ const SaleAgreementCenter = observer(({ children }) => {
     setActiveKey(key)
     tabStore.setCurrentTabKey(key)
     console.log(1, key, '11223344')
-    if (key === '7') {
-      getWfmApproveInfo()
-    }
+    // if (key === '7') {
+    //   getWfmApproveInfo()
+    // }
   }
   useEffect(() => {
     // if (!currentInfo) {
