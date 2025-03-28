@@ -1,8 +1,10 @@
 // 一个基本的React组件，接受一个data对象，一个style对象，一个onClick函数，返回一个div元素。
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Input } from 'antd-mobile'
 
 import { saleAgreementApi } from '@/request/apis/saleAgre'
+import inputStore from '@/stores/inputStore'
 import request from '@/utils/request'
 
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
@@ -70,7 +72,7 @@ const ContractBudget = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [total, setTotal] = useState(0)
-
+  const [inputValue, setInputValue] = useState('')
   const {
     approveStore: { currentInfo }
   } = useStores()
@@ -86,7 +88,7 @@ const ContractBudget = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        console.log('result', result)
+        setInputValue(result.data[0].AUD_TEXT)
       }
     } catch (err) {
       console.log(err)
@@ -94,7 +96,7 @@ const ContractBudget = () => {
       setLoading(false)
     }
   }
-  const getDetailInfo = async (page=1) => {
+  const getDetailInfo = async (page = 1) => {
     try {
       const result = await request(saleAgreementApi.getBillmgrid, 'GET', {
         params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
@@ -123,7 +125,16 @@ const ContractBudget = () => {
     setHasMore(data.length + append.length < total)
     setData((val) => [...val, ...append])
   }
-
+  const renderInput = () => (
+    <Input
+      placeholder="请输入内容"
+      value={inputValue}
+      onChange={(val) => {
+        setInputValue(val)
+        inputStore.setInputTxt(val)
+      }}
+    />
+  )
   useEffect(() => {
     setLoading(true)
     getBaseInfo()
@@ -220,7 +231,8 @@ const ContractBudget = () => {
                 <tr>
                   <BasicFormItem
                     label="审批意见"
-                    text={baseInfo?.AUD_TEXT || ''}
+                    text={renderInput}
+                    // {baseInfo?.AUD_TEXT || ''}
                     textColSpan={3}
                   />
                 </tr>

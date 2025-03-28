@@ -10,7 +10,7 @@ import { typeMap } from '@/config/configData'
 import { replaceString } from '@/utils/method'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
-import { saleAgreementApi } from '@/request/apis/saleAgreement'
+import { saleAgreementApi } from '@/request/apis/saleAgre'
 
 const defaultColumns =
 [

@@ -1,7 +1,9 @@
 // 一个基本的React组件，接受一个data对象，一个style对象，一个onClick函数，返回一个div元素。
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Input } from 'antd-mobile'
 
+import inputStore from '@/stores/inputStore'
 import { saleAgreementApi } from '@/request/apis/saleAgre'
 import request from '@/utils/request'
 
@@ -95,7 +97,8 @@ const PaymentPlan = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [total,setTotal]=useState(0)
-
+ const [inputValue, setInputValue] = useState('')
+ 
   const {
         approveStore: { currentInfo }
       } = useStores()
@@ -111,7 +114,7 @@ const PaymentPlan = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        console.log('result', result)
+        setInputValue(result.data[0].AUD_TEXT)
       }
     } catch (err) {
       console.log(err)
@@ -156,6 +159,19 @@ const PaymentPlan = () => {
     getBaseInfo()
     getDetailInfo()
   }, [])
+
+
+  const renderInput = () => (
+    <Input
+      placeholder="请输入内容"
+      value={inputValue}
+      onChange={(val) => {
+        setInputValue(val)
+        inputStore.setInputTxt(val)
+      }}
+    />
+  )
+
   return (
   <>
    <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto">
@@ -200,7 +216,7 @@ const PaymentPlan = () => {
               <tr>
               <BasicFormItem
                 label="审批意见"
-                text={baseInfo?.AUD_TEXT || ''}
+                text={renderInput}
                 textColSpan={3}
               />
             </tr>

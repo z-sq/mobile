@@ -15,7 +15,13 @@ import { useStores } from '@/utils/useStores'
 // /business/om/auto/om2102/query/tabqddetail 审批页面表格信息
 // /business/om/auto/om2102/crud合同中心审批确认
 
+// /business/om/auto/om_ys_sp/ys_sp_y 合同预算通过接口
+// /business/om/auto/om_ys_sp/ys_sp_r 合同预算不通过接口
+// /business/om/auto/om_cgfk_sp/cgfk_sp_y/ 项目采购付款--通过
+// /business/om/auto/om_cgfk_sp/cgfk_sp_r/ 项目采购付款--不通过
 
+// /business/om/auto/om_hk_sp/om_hk_sp_y/ 回款-通过
+// /business/om/auto/om_hk_sp/om_hk_sp_r/ 回款-不通过
 /**
  * 销售合同接口
  * @type {saleAgreementApi}
@@ -36,5 +42,11 @@ export const saleAgreementApi = {
   getSupplyInfo:'/business/om/auto/om_fz_cx/query/tabfzdetail',
   getApproveBase:'/business/om/auto/om2102/query/pm2102qdform',
   getApproveTable:'/business/om/auto/om2102/query/tabqddetail',
-  getApproveSubmit:'/business/om/auto/om2102/crud'
+  getApproveSubmit:'/business/om/auto/om2102/crud',
+  getProductPass:'/business/om/auto/om_ys_sp/ys_sp_y',
+  getProductRefuse:'/business/om/auto/om_ys_sp/ys_sp_r',
+  getPayPass:'/business/om/auto/om_cgfk_sp/cgfk_sp_y/',
+  getPayRefuse:'/business/om/auto/om_cgfk_sp/cgfk_sp_r',
+  getReturnPass:'/business/om/auto/om_hk_sp/om_hk_sp_y',
+  getReturnRefuse:'/business/om/auto/om_hk_sp/om_hk_sp_r'
 }
