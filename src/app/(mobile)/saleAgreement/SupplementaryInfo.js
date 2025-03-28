@@ -56,9 +56,6 @@ const SupplementaryInfo = observer(({ style = {} }) => {
           COM_CODE: COM_CODE,
           CON_TEM_CODE: CON_TEM_CODE
         }),
-        ORDER_NO: ORD_NO,
-        COM_CODE: COM_CODE,
-        CON_TEM_CODE: CON_TEM_CODE,
         page: page,
         start: 0,
         limit: 200
