@@ -1,19 +1,21 @@
-// 一个基本的React组件，接受一个data对象，一个style对象，一个onClick函数，返回一个div元素。
-import React from 'react'
-const ApproveOpinion = () => {
-    return (
-        <div className='p-4'>
-        <div className='mb-4'>
-            4444
-        </div>
-        <div className='mb-4'>
-            111
-        </div>
-        <div className='mb-4'>
-            111
-        </div>
-        
-        </div>
-    )
+'use client'
+
+import ApprovalCard from '@/components/ApprovalCard'
+
+const ApprovalOpinion = ({ data = [] }) => {
+  const list = []
+  data.forEach((item) => {
+    item.forEach((val) => {
+      list.push(val)
+    })
+  })
+  return (
+    <div className="h-[100%] overflow-y-auto">
+      {list.map((item, index) => (
+        <ApprovalCard key={index} data={item} />
+      ))}
+    </div>
+  )
 }
-export default ApproveOpinion
+
+export default ApprovalOpinion
