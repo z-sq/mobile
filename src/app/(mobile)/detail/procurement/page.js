@@ -4,19 +4,26 @@ import { observer } from 'mobx-react'
 import { useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
+import { useRouter } from 'next/navigation'
+
+import ApprovaTool from '@/components/ApprovaTool'
 import ApprovalOpinion from '../components/ApprovalOpinion'
 import TabBar from '../components/TabBar'
 
-import BasicInformation from './BasicInformation'
-import ProductInfo from './ProductInfo'
+import Title from '@/components/Title'
+
+import BasicInformation from './components/BasicInformation'
+import ProductInfo from './components/ProductInfo'
+import PurchasePaymentPlan from './components/PurchasePaymentPlan/PurchasePaymentPlan'
 
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
 
 const defaultTabList = [
   { key: '1', title: '基本信息' },
-  { key: '2', title: '产品信息' },
-  { key: '3', title: '审核意见' }
+  { key: '2', title: '物料信息' },
+  { key: '3', title: '采购付款计划' },
+  { key: '4', title: '审核意见' }
 ]
 
 const BidPage = observer(() => {
@@ -25,15 +32,13 @@ const BidPage = observer(() => {
   const [approvalInfo, setApprovalInfo] = useState([])
   const [productData, setProductData] = useState([])
 
+  const router = useRouter()
+
   const {
     approveStore: { currentInfo }
   } = useStores()
 
-  const searchParams = useSearchParams()
-  const bilNo = searchParams.get('key')
-  const procCode = searchParams.get('type')
-  const procVersion = searchParams.get('procVersion')
-  const state = searchParams.get('state')
+  const state = currentInfo.state
 
   const getBaseInfo = async () => {
     try {
@@ -41,15 +46,16 @@ const BidPage = observer(() => {
         '/business/pm/auto/bzs_pm2120/query/pm2120hform',
         'GET',
         {
-          params: JSON.stringify({"usercode":"lhy"}),
+          params: JSON.stringify({ usercode: 'lhy' }),
           page: 1,
           start: 0,
           limit: 200
         }
       )
-      if (result && result.success) {
-        // TODO  获取列表UU_ID
-        const baseInfo = result.data.find(item=>item.UU_ID == '2ee9fafed3db4b318305d541d247de7d');
+      if (result?.success) {
+        const baseInfo = result.data.find(
+          (item) => item.UU_ID == currentInfo.uuid
+        )
         setBaseInfo(baseInfo || {})
       } else {
         // 错误提示
@@ -70,7 +76,7 @@ const BidPage = observer(() => {
           limit: 200
         }
       )
-      if (result && result.success) {
+      if (result?.success) {
         const data = result.data || []
         setProductData(data)
       } else {
@@ -81,6 +87,7 @@ const BidPage = observer(() => {
 
   const getWfmApproveInfo = async () => {
     try {
+      const { busKey, busKeyValue, procCode, procVersion, uuid:uuId } = currentInfo
       const result = await request(
         '/mbs/tp/manual/tp2100/getWfmApproveInfo',
         'GET',
@@ -89,12 +96,11 @@ const BidPage = observer(() => {
           busKeyValue,
           procCode,
           procVersion,
-          uuId: currentInfo.uuid
+          uuId
         }
       )
-      if (result && result.success) {
-        const data = result.data || []
-        setApprovalInfo(data)
+      if (result?.success) {
+        setApprovalInfo(result.data || [])
       }
     } catch (err) {}
   }
@@ -104,14 +110,20 @@ const BidPage = observer(() => {
       return
     }
     getBaseInfo()
-    // TODO 在服务器调试
-    // getProductInfo()  
+    getProductInfo()
     getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentInfo])
 
   return (
     <>
+      <div className="h-40px absolute left-0 top-0 z-[99] w-[100%] overflow-hidden bg-white pt-[1px]">
+        <Title
+          onBack={()=>router.back()}
+          title={currentInfo.procName}
+          rightIcon={'2'}
+        />
+      </div>
       <TabBar setActiveKey={setActiveKey} tabList={defaultTabList} />
       <div
         className="pt-80px pb-160px absolute box-border w-full overflow-hidden"
@@ -121,13 +133,14 @@ const BidPage = observer(() => {
         }}
       >
         <div className="relative box-border h-[100%] w-full">
-          {activeKey === '1' && (
-            <BasicInformation data={baseInfo} />
-          )}
+          {activeKey === '1' && <BasicInformation data={baseInfo} />}
           {activeKey === '2' && <ProductInfo data={productData} />}
-          {activeKey === '3' && <ApprovalOpinion data={approvalInfo} />}
+          {activeKey === '3' && <PurchasePaymentPlan />}
+          {activeKey === '4' && <ApprovalOpinion data={approvalInfo} />}
         </div>
       </div>
+
+      {activeKey !== '3' && <ApprovaTool />}
     </>
   )
 })

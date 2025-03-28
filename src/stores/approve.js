@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 
 class Approve {
   // TODO  删除调试数据
-  currentInfo =  {"COM_CODE":"01","ORD_NO":"2024103100010","CUR_CODE":"RMB","CUR_NAME":"人民币","DEP_CODE":"10906","BUY_ID":"null","PUR_PER_CODE":"lhy","PUR_PER_NAME":"李浩宇","GRO_ID":"null","GRO_NAME":"null","REC_VERSION":"1","REC_VERSION_OLD":"null"}
+  currentInfo = null
   venName = ''
 
   constructor() {
