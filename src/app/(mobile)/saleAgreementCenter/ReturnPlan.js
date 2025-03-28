@@ -19,70 +19,70 @@ const columns = [
   
   {
     title: '合同节点',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'PJT_NOD_CODE',
+    key: 'PJT_NOD_CODE',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.PJT_NOD_CODE - b.PJT_NOD_CODE,
       multiple: 2
     }
   },
   {
     title: '合同节点说明',
-    dataIndex: 'IS_CONFORM1',
-    key: 'IS_CONFORM1',
+    dataIndex: 'PJT_NOD_NOTE',
+    key: 'PJT_NOD_NOTE',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM1 - b.IS_CONFORM1,
+      compare: (a, b) => a.PJT_NOD_NOTE - b.PJT_NOD_NOTE,
       multiple: 2
     }
   },
   {
     title: '节点计划完成时间',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'ACT_DATE',
+    key: 'ACT_DATE',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.ACT_DATE - b.ACT_DATE,
       multiple: 3
     }
   },
   {
     title: '回款类型',
-    dataIndex: 'REMARK1',
-    key: 'REMARK1',
+    dataIndex: 'PMT_TYP_NAME',
+    key: 'PMT_TYP_NAME',
     sorter: {
-      compare: (a, b) => a.REMARK1 - b.REMARK1,
+      compare: (a, b) => a.PMT_TYP_NAME - b.PMT_TYP_NAME,
       multiple: 3
     }
   },{
     title: '回款说明',
-    dataIndex: 'REMARK2',
-    key: 'REMARK2',
+    dataIndex: 'PMT_NOTE',
+    key: 'PMT_NOTE',
     sorter: {
-      compare: (a, b) => a.REMARK2 - b.REMARK2,
+      compare: (a, b) => a.PMT_NOTE - b.PMT_NOTE,
       multiple: 3
     }
   },{
     title: '计划回款金额',
-    dataIndex: 'REMARK3',
-    key: 'REMARK3',
+    dataIndex: 'AMT',
+    key: 'AMT',
     sorter: {
-      compare: (a, b) => a.REMARK3 - b.REMARK3,
+      compare: (a, b) => a.AMT - b.AMT,
       multiple: 3
     }
   },{
     title: '计划回款日期',
-    dataIndex: 'REMARK4',
-    key: 'REMARK4',
+    dataIndex: 'PLA_DATE',
+    key: 'PLA_DATE',
     sorter: {
-      compare: (a, b) => a.REMARK4 - b.REMARK4,
+      compare: (a, b) => a.PLA_DATE - b.PLA_DATE,
       multiple: 3
     }
   },
   {
     title: '责任人',
-    dataIndex: 'REMARK5',
-    key: 'REMARK5',
+    dataIndex: 'RES_NAME',
+    key: 'RES_NAME',
     sorter: {
-      compare: (a, b) => a.REMARK5 - b.REMARK5,
+      compare: (a, b) => a.RES_NAME - b.RES_NAME,
       multiple: 3
     }
   }
