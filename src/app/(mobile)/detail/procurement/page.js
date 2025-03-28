@@ -135,7 +135,7 @@ const BidPage = observer(() => {
         <div className="relative box-border h-[100%] w-full">
           {activeKey === '1' && <BasicInformation data={baseInfo} />}
           {activeKey === '2' && <ProductInfo data={productData} />}
-          {activeKey === '3' && <PurchasePaymentPlan />}
+          {activeKey === '3' && <PurchasePaymentPlan apiParams={baseInfo} />}
           {activeKey === '4' && <ApprovalOpinion data={approvalInfo} />}
         </div>
       </div>
