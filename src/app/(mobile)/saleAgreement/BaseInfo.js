@@ -9,10 +9,9 @@ import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
 import { saleAgreementApi } from '@/request/apis/saleAgreement'
 
-import { centerDataInfo } from './mockData'
 export default function BaseInfo({ style = {} }) {
   const usercode = window.localStorage.getItem('acctCode')
-  const [data, setData] = useState(centerDataInfo)
+  const [data, setData] = useState({})
   const {
     approveStore: { resetCurInfo }
   } = useStores()

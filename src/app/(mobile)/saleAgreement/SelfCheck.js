@@ -17,32 +17,7 @@ import TableList from '@/components/TableList'
 import { BASE_PATH } from '@/config/app'
 import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
-// 自查表基础信息
-const mockdata = {
-  CON_DATE: '2025/02/13',
-  UPD_CODE: 'lhy',
-  SAL_NAME: '李浩宇',
-  DEP_NAME: '客户服务部',
-  UPD_NAME: '李浩宇',
-  ROWNUM_: '1',
-  UU_ID: 'nullnullnull'
-}
-// 对应的label名称：业务部门、销售员、录入人
-const FIELD_LABEL = {
-  DEP_NAME: '业务部门',
-  SAL_NAME: '销售员',
-  UPD_NAME: '录入人'
-}
-// 表格数据：合同条款审查项、是否符合、备注信息。还有个动态列，自查编码
-const tableData = [
-  {
-    REMARK: null,
-    IS_CONFORM: null,
-    CONFORM_ITEM: null,
-    ROWNUM_: '1',
-    UU_ID: null
-  }
-]
+
 // 表格列的配置，还有个动态列，自查编码,列排序
 const columns = [
   {
