@@ -198,6 +198,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
              
               onClick={() => {
                 onApprove(true)
+                router.push('./saleAgreementCenter/approve')
               }}
               disabled={disable}
             >
