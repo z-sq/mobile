@@ -61,7 +61,6 @@ const MenuPage = () => {
         procName: ''
       })
       getListData('',curPage)
-      console.log('00000')
     } else {
       setCurProc({
         ...curProc,
@@ -69,7 +68,6 @@ const MenuPage = () => {
         procName: procName
       })
       getListData(procCode,curPage)
-      console.log(procCode,'procCode')
     }
     setVisible(false)
   }
@@ -193,13 +191,11 @@ const onClickDemo = (data = {}) => {
 
   const loadMore = async () => {
     const dataLen=data.length
-    console.log(dataLen,'dataLen')
     if (dataLen >= total) {
       setHasMore(false)
       return
     }
     const append = (await getListData('',curPage + 1)) || []
-    console.log(append,append.length,total,'append.length')
     if (dataLen + append.length < total) {
       setHasMore(true)
       setCurPage(curPage + 1)
