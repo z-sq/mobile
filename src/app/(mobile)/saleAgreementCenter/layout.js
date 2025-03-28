@@ -16,7 +16,7 @@ import tabStore from '@/stores/tabStore'
 
 const saleAgreementCenterLayout = observer(({ children }) => {
   const [opinionValue, setOpinionValue] = useState('')
-  const [moreVisible, setMoreVisible] = useState(false)
+
   const [disable, setDisable] = useState(false)
   const [visible, setVisible] = useState(false)
   const [message, setMessage] = useState('')
@@ -47,88 +47,10 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
   const handleInputChange = (val) => {
     setOpinionValue(val)
   }
-
-  const onSubmit = async (wfmParams) => {
-    setDisable(true)
-    try {
-      const result = await request(
-        '/business/wfm/wfmEngine/doWfmPost',
-        'POST',
-        {
-          pagCode: '',
-          wfmParams: [wfmParams],
-          funCode: null,
-          buzParams: {
-            RED_NO: reqNo
-          }
-        }
-      )
-      if (result && result.success) {
-        Toast.show({
-          content: result.mesg
-        })
-        router.push('/list')
-      }
-      setDisable(false)
-    } catch (err) {
-      setDisable(false)
-    }
-  }
-
-  const onApprove = async (flag) => {
-    if (!currentInfo) return
-
-    const values = form.getFieldsValue()
-    let wfmParams = { ...currentInfo, opinion: values.opinion }
-    if (flag) {
-      wfmParams.opinionFlag = '1'
-      onSubmit(wfmParams)
-    } else {
-      wfmParams.opinionFlag = '2'
-      if (!values.opinion) {
-        setMessage('请输入审核意见！')
-        setVisible(true)
-        return
-      }
-      onSubmit(wfmParams)
-    }
-  }
-
-  const onCommit = async () => {
-    if (!currentInfo) return
-    const values = form.getFieldsValue()
-    if (!values.opinion) {
-      setMessage('请输入评论！')
-      setVisible(true)
-      return
-    }
-    if (values.opinion.length > 50) {
-      setMessage('评论字数限制50！')
-      setVisible(true)
-      return
-    }
-    setDisable(true)
-    try {
-      const result = await request(
-        `${workflowApi.forwardSubmit}?forCode=${currentInfo.uuid}&opinion=${values.opinion}`,
-        'POST'
-      )
-      if (result && result.success) {
-        Toast.show({
-          content: result.mesg
-        })
-        router.push('/list')
-      }
-      setDisable(false)
-    } catch (err) {
-      setDisable(false)
-    }
-  }
-
+  
   const goBack = () => {
     router.back()
   }
-
   const saveOpinion = () => {
     if (currentTabKey === '7') {
       const values = form.getFieldsValue()
@@ -169,99 +91,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
       </div>
       {children}
       
-      <div
-        className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
-        style={{ marginBottom: currentTabKey === '7' ? '1.5rem' : 0 }}
-      >
-
-        {state === '2' && !isForward ? (
-          <div className="box-border flex w-full justify-between">
-            <Button
-              color="primary"
-              fill="solid"
-              style={{
-                width: '50%'
-              }}
-             
-              onClick={() => {
-                onApprove(true)
-                router.push('/saleAgreementCenter/approve')
-              }}
-              disabled={disable}
-            >
-              审 批
-            </Button>
-            <div  className='mx-2'/>
-            <Button
-              color="primary"
-              fill="outline"
-              style={{
-                width: '50%'
-              }}
-              onClick={() => {
-                setMoreVisible(true)
-              }}
-              disabled={disable}
-            >
-              更 多
-            </Button>
-            <Popup
-              visible={moreVisible}
-              onMaskClick={() => {
-                setMoreVisible(false)
-              }}
-            >
-              <div className="text-14px px-12px pb-24px">
-                <div
-                  className={`border-bottom-gray flex h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
-                  onClick={() => {
-                    setMoreVisible(false)
-                    saveOpinion()
-                    router.push('/saleAgreementCenter/forward')
-                  }}
-                >
-                  转发
-                </div>
-                <div
-                  className="border-bottom-gray flex h-[48px] w-[100%] items-center justify-center"
-                  onClick={() => {
-                    setMoreVisible(false)
-                    saveOpinion()
-                    router.push('/saleAgreementCenter/transfer')
-                  }}
-                >
-                  转办
-                </div>
-                <div
-                  className="flex h-[48px] w-[100%] items-center justify-center"
-                  onClick={() => {
-                    setMoreVisible(false)
-                  }}
-                >
-                  取消
-                </div>
-              </div>
-            </Popup>
-          </div>
-        ) : null}
-        {state === '2' && isForward ? (
-          <div className="box-border flex w-full place-content-center items-center">
-            <Button
-              color="primary"
-              fill="solid"
-              style={{
-                width: '30%'
-              }}
-              onClick={() => {
-                onCommit()
-              }}
-              disabled={disable}
-            >
-              评 论
-            </Button>
-          </div>
-        ) : null}
-      </div>
+      
       <Modal
         visible={visible}
         content={message}
