@@ -60,58 +60,79 @@ const MenuPage = () => {
         procCode: '',
         procName: ''
       })
-      getListData('',curPage)
+      getListData('', curPage)
+      console.log('00000')
     } else {
       setCurProc({
         ...curProc,
         procCode: procCode,
         procName: procName
       })
-      getListData(procCode,curPage)
+      getListData(procCode, curPage)
+      console.log(procCode, 'procCode')
     }
     setVisible(false)
   }
-//列表点击事件
-  const onClick = (data = {}) => {
-    const { procCode, busKeyValue, state, procVersion, busParams, ascAppPage } =
-      data
-    let type = ''
-    let chaFlag = ''
-    let page = ascAppPage.split('/')[2]
-    if (busParams) {
-      const bussinessParams = JSON.parse(busParams)
-      type = bussinessParams.PUR_MET_CODE
-      chaFlag = bussinessParams.CHA_FLAG
+
+  function getDetailPageUrl(procCode) {
+    const arr = [
+      {
+        url: null,
+        procCode: '1666771987585',
+        procName: '事业部采购合同审批流程'
+      },
+      {
+        url: null,
+        procCode: '1737524017091',
+        procName: '仓库借用审批（单个节点）'
+      },
+      {
+        url: null,
+        procCode: '1737457304519',
+        procName: '仓库借用审批（多个节点）'
+      },
+      {
+        url: null,
+        procCode: '1722523436220',
+        procName: '计划领用审批'
+      },
+      {
+        url: '/saleAgreementCenter',
+        procCode: '1724919928665',
+        procName: '销售合同审批临时测试'
+      },
+      {
+        url: '/saleAgreement',
+        procCode: '1669622397937',
+        procName: '销售合同审批流程'
+      }
+    ]
+    const found = arr.find(item=>item.procCode ==procCode);
+    if(found?.url){
+      return found.url
+    } else {
+      return null
     }
-    if (!typeMap[page]) {
+  }
+  //列表点击事件
+  const onClick = (data = {}) => {
+    const pageUrl = getDetailPageUrl(data.procCode);
+    if (!pageUrl) {
       Toast.show({
         content: '功能正在开发中'
       })
       return
     }
-    if (procCode) {
+    if (data.procCode) {
       resetCurInfo(data)
-      let pagUrl = ''
-      // console.log(type, busTypeMap[procCode])
-      if (type && busTypeMap[page]) {
-        if (busTypeMap[page][type]) {
-          pagUrl = busTypeMap[page][type].page
-        }
-      }
-      router.push(
-        `/detail/${typeMap[page].page}${
-          pagUrl ? '/' + pagUrl : ''
-        }?key=${busKeyValue}&type=${procCode}&state=${state}&procVersion=${procVersion}&purMet=${type}&pagCode=${page}${
-          chaFlag === 'Y' ? '&chaFlag=' + chaFlag : ''
-        }`
-      )
+      router.push(pageUrl)
     }
   }
   //先做一个这个列表跳转到销售合同申请审批的功能
-const onClickDemo = (data = {}) => {
-  // router.push('./saleAgreement')
-  router.push('./saleAgreementCenter')
-}
+  const onClickDemo = (data = {}) => {
+    // router.push('./saleAgreement')
+    router.push('./saleAgreementCenter')
+  }
   // const getData = async (page) => {
   //   try {
   //     const result = await request(
@@ -133,7 +154,7 @@ const onClickDemo = (data = {}) => {
   //   } catch (err) {}
   // }
 
-  const getListData = async (procCode,page=1) => {
+  const getListData = async (procCode, page = 1) => {
     let states = ''
     if (activeKey === '1') {
       states = '2'
@@ -150,10 +171,7 @@ const onClickDemo = (data = {}) => {
         'GET',
         {
           states,
-          procCodes:
-            procCode !== undefined
-              ? procCode
-              : curProc.procCode || '',
+          procCodes: procCode !== undefined ? procCode : curProc.procCode || '',
           limit: 20,
           page: page,
           comCode: '01',
@@ -184,25 +202,27 @@ const onClickDemo = (data = {}) => {
         setData([])
       }
     } catch (err) {
-    }finally{
+    } finally {
       setLoading(false)
     }
   }
 
   const loadMore = async () => {
-    const dataLen=data.length
+    const dataLen = data.length
+    console.log(dataLen, 'dataLen')
     if (dataLen >= total) {
       setHasMore(false)
       return
     }
-    const append = (await getListData('',curPage + 1)) || []
+    const append = (await getListData('', curPage + 1)) || []
+    console.log(append, append.length, total, 'append.length')
     if (dataLen + append.length < total) {
       setHasMore(true)
       setCurPage(curPage + 1)
     } else {
       setHasMore(false)
     }
-    const newData=[...data,...append]
+    const newData = [...data, ...append]
     setData(newData)
   }
 
@@ -355,17 +375,17 @@ const onClickDemo = (data = {}) => {
               {data.length ? (
                 <>
                   {data.map((item, index) => (
-                    <Card 
-                    key={index} 
-                    data={item} 
-                    // onClick={onClick} 
-                    onClick={onClickDemo}
+                    <Card
+                      key={index}
+                      data={item}
+                      onClick={onClick}
+                      // onClick={onClickDemo}
                     />
                   ))}
                   <InfiniteScroll
-                  loadMore={loadMore}
-                  hasMore={hasMore}
-                ></InfiniteScroll>
+                    loadMore={loadMore}
+                    hasMore={hasMore}
+                  ></InfiniteScroll>
                 </>
               ) : (
                 <div></div>
