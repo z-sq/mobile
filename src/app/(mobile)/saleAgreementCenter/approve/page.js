@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { Table, Input } from 'antd'
-import { useRouter } from 'next/navigation'
+import { useRouter,useSearchParams } from 'next/navigation'
+import { Toast, Form } from 'antd-mobile'
 
 import { saleAgreementApi } from '@/request/apis/saleAgre'
 import request from '@/utils/request'
@@ -15,6 +16,8 @@ import { BASE_PATH } from '@/config/app'
 import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 import Button from '@/components/Button'
+import LabelInput from '@/components/LabelInput'
+
 const ApprovePage = () => {
   const [loading, setLoading] = useState(true)
   const [baseInfo, setBaseInfo] = useState({})
@@ -22,6 +25,14 @@ const ApprovePage = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [total, setTotal] = useState(0)
+  const [opinionValue, setOpinionValue] = useState()
+  const [flag, setFlag] = useState()
+
+  const [form] = Form.useForm()
+  const router = useRouter()
+
+  const searchParams = useSearchParams()
+  const reqNo = searchParams.get('key')
 
   const {
     approveStore: { currentInfo }
@@ -30,6 +41,7 @@ const ApprovePage = () => {
   console.log(COM_CODE, ORD_NO, PAGE_CODE, 'COM_CODE, ORD_NO,PAGE_CODE')
 
   const handleStatusChange = (index, newStatus) => {
+    setFlag(newStatus)
     setData((prev) =>
       prev.map((item, i) =>
         i === index ? { ...item, OPI_FLAG: newStatus } : item
@@ -37,7 +49,7 @@ const ApprovePage = () => {
     )
   }
   const handleOpinionChange = (index, newStatus) => {
-    console.log('走了吗',newStatus)
+    setOpinionValue(newStatus)
     setData((prev) =>
       prev.map((item, i) =>
         i === index ? { ...item, OPINION: newStatus } : item
@@ -96,14 +108,20 @@ const ApprovePage = () => {
       render: (text, record, index) => (
         <div className="flex space-x-2">
           <Button
-            style={{backgroundColor:record.OPI_FLAG === '1' ? '#DFE8F6' : ''}}
+            style={{
+              backgroundColor: record.OPI_FLAG === '1' ? '#DFE8F6' : ''
+            }}
             onClick={() => handleStatusChange(index, '1')}
+            disabled={index !== 0}
           >
             通过
           </Button>
           <Button
-            style={{backgroundColor:record.OPI_FLAG !== '1' ? '#DFE8F6' : ''}}
-            onClick={() => handleStatusChange(index, '0')}
+            style={{
+              backgroundColor: record.OPI_FLAG === '2' ? '#DFE8F6' : ''
+            }}
+            onClick={() => handleStatusChange(index, '2')}
+            disabled={index !== 0}
           >
             驳回
           </Button>
@@ -131,6 +149,7 @@ const ApprovePage = () => {
         <Input
           value={record.OPINION}
           onChange={(e) => handleOpinionChange(index, e.target.value)}
+          disabled={index !== 0}
         />
       )
     },
@@ -168,7 +187,6 @@ const ApprovePage = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        console.log('result11111', result)
       }
     } catch (err) {
       console.log(err)
@@ -190,7 +208,6 @@ const ApprovePage = () => {
       })
       if (result && result.success) {
         setData(result.data)
-        console.log('result', result)
       }
     } catch (err) {
       console.log(err)
@@ -209,19 +226,22 @@ const ApprovePage = () => {
     setHasMore(data.length + append.length < total)
     setData((val) => [...val, ...append])
   }
-
+ // '/business/wfm/wfmEngine/doWfmPost',
+        // panels这个接口里还有这个参数，但是不知道参数从哪里取值funCode: "confirmbtn", pagCode:"om2102"saleAgreementApi.getApproveSubmit
   const onSubmit = async (wfmParams) => {
     try {
-      const result = await request(
-        '/business/wfm/wfmEngine/doWfmPost',
-        'POST',
-        {
-          pagCode: '',
+      const result = await request(saleAgreementApi.getApproveSubmit,'POST',{
+          pagCode: "om2102",
           wfmParams: [wfmParams],
-          funCode: null,
-          buzParams: {
-            RED_NO: reqNo
-          }
+          funCode: "confirmbtn",
+          lanType: 'ch',
+        //   buzParams: {
+        //     RED_NO: reqNo
+        //   },
+          panels:[{
+            gridCode:'',
+            panelData:{}
+          }]
         }
       )
       if (result && result.success) {
@@ -230,21 +250,34 @@ const ApprovePage = () => {
         })
         router.push('/list')
       }
-    } catch (err) {}
+    } catch (err) {
+        console.log('请求失败',err)
+    }
   }
   const onApprove = async (flag) => {
     if (!currentInfo) return
-
-    const values = form.getFieldsValue()
-    let wfmParams = { ...currentInfo, opinion: values.opinion }
+    let wfmParams = { ...currentInfo, opinion: opinionValue }
+    if (!flag&&!opinionValue ) {
+        Toast.show({
+            content: '存在待审核项且审核意见不能为空，请确认审核！',
+            afterClose: () => {
+              console.log('after')
+            },
+        })
+        return
+    }
     if (flag) {
       wfmParams.opinionFlag = '1'
       onSubmit(wfmParams)
     } else {
       wfmParams.opinionFlag = '2'
-      if (!values.opinion) {
-        setMessage('请输入审核意见！')
-        setVisible(true)
+      if (!opinionValue) {
+        Toast.show({
+            content: '请输入审核意见！',
+            afterClose: () => {
+              console.log('after')
+            },
+          })
         return
       }
       onSubmit(wfmParams)
@@ -332,24 +365,23 @@ const ApprovePage = () => {
                 rowClassName={() => 'editable-row'}
               />
             </div>
-           
           </>
         )}
       </div>
       <div className="px-per4 absolute bottom-0 box-border w-[100%] bg-white overflow-hidden">
-              <Button
-                color="primary"
-                fill="solid"
-                style={{
-                  width: '100%'
-                }}
-                onClick={() => {
-                  onApprove(true)
-                }}
-              >
-                通过
-              </Button>
-            </div>
+        <Button
+          color="primary"
+          fill="solid"
+          style={{
+            width: '100%'
+          }}
+          onClick={() => {
+            onApprove(flag)
+          }}
+        >
+          通过
+        </Button>
+      </div>
     </>
   )
 }

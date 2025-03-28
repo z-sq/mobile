@@ -13,7 +13,7 @@ import { useStores } from '@/utils/useStores'
 // 销售-辅助信息 /business/om/auto/om_fz_cx/query/tabfzdetail
 // /business/om/auto/om2102/query/pm2102qdform 审批页面基础信息
 // /business/om/auto/om2102/query/tabqddetail 审批页面表格信息
-
+// /business/om/auto/om2102/crud合同中心审批确认
 
 
 /**
@@ -33,5 +33,6 @@ export const saleAgreementApi = {
   getReturnTable:'/business/om/auto/om_hk_sp/query/billform',
   getSupplyInfo:'/business/om/auto/om_fz_cx/query/tabfzdetail',
   getApproveBase:'/business/om/auto/om2102/query/pm2102qdform',
-  getApproveTable:'/business/om/auto/om2102/query/tabqddetail'
+  getApproveTable:'/business/om/auto/om2102/query/tabqddetail',
+  getApproveSubmit:'/business/om/auto/om2102/crud'
 }
