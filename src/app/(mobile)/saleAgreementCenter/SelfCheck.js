@@ -47,28 +47,28 @@ const tableData = [
 const columns = [
   {
     title: '合同条款审查项',
-    dataIndex: 'CONFORM_ITEM',
-    key: 'CONFORM_ITEM',
+    dataIndex: 'EXA_TER_NAME',
+    key: 'EXA_TER_NAME',
     sorter: {
-      compare: (a, b) => a.CONFORM_ITEM - b.CONFORM_ITEM,
+      compare: (a, b) => a.EXA_TER_NAME - b.EXA_TER_NAME,
       multiple: 1
     }
   },
   {
     title: '是否符合',
-    dataIndex: 'IS_CONFORM',
-    key: 'IS_CONFORM',
+    dataIndex: 'FIT_FLAG',
+    key: 'FIT_FLAG',
     sorter: {
-      compare: (a, b) => a.IS_CONFORM - b.IS_CONFORM,
+      compare: (a, b) => a.FIT_FLAG - b.FIT_FLAG,
       multiple: 2
     }
   },
   {
     title: '备注信息',
-    dataIndex: 'REMARK',
-    key: 'REMARK',
+    dataIndex: 'REMARKS',
+    key: 'REMARKS',
     sorter: {
-      compare: (a, b) => a.REMARK - b.REMARK,
+      compare: (a, b) => a.REMARKS - b.REMARKS,
       multiple: 3
     }
   },
