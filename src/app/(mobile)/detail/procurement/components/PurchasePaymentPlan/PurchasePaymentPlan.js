@@ -15,7 +15,7 @@ const PurchasePaymentPlan = observer(() => {
   const [salesInfoData, setSalesInfoData] = useState([])
   const [projectData, setProjectData] = useState([])
   const [basicInfoData, setBasicInfoData] = useState({})
-  const [detailInfoData, setDetailInfoData] = useState({})
+  const [detailInfoData, setDetailInfoData] = useState([])
 
   const {
     approveStore: { currentInfo }
