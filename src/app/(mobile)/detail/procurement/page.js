@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 
 import ApprovaTool from '@/components/ApprovaTool'
 import ApprovalOpinion from '../components/ApprovalOpinion'
-import SpecialApprovaTool from '../components/SpecialApprovaTool'
+import SpecialApprovaTool from '@/components/SpecialApprovaTool'
 import TabBar from '../components/TabBar'
 
 import Title from '@/components/Title'
