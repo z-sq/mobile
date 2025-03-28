@@ -52,7 +52,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
     router.back()
   }
   const saveOpinion = () => {
-    if (currentTabKey === '7') {
+    if (state === '2'){
       const values = form.getFieldsValue()
       updateCurInfo({ curOpinion: values.opinion })
     }

@@ -25,7 +25,7 @@ export const saleAgreementApi = {
   getProInfo:'/business/om/auto/bzs_om2121/query/tabdehead',
   getCompany: '/business/om/auto/bzs_om2121/query/om2100hform',
   getTable: '/business/om/auto/bzs_om2121/query/tabdehead',
-  getCheckDetail: '/business/om/auto/om_qd_cx/query/pm2100qdform',
+  getCheckDetail: '/business/om/auto/bzs_om2121/query/tabdehead',
   getCheckTableDetail: '/business/om/auto/om_qd_cx/query/tabqddetail',
   getBillhead:'/business/om/auto/om_ys_sp/query/billhead',
   getBillmgrid:'/business/om/auto/om_ys_sp/query/billmgrid',
