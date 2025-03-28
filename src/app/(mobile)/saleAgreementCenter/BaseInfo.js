@@ -7,6 +7,7 @@ import BasicFormItem from './components/BasicInformation/BasicFormItem'
 import Loading from '@/components/Loading'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
+import { saleAgreementApi } from '@/request/apis/saleAgre'
 
 import { centerDataInfo } from './mockData'
 export default function BaseInfo({ style = {} }) {
@@ -17,8 +18,7 @@ export default function BaseInfo({ style = {} }) {
   } = useStores()
   const getBaseInfo = async () => {
     try {
-      const result = await request(
-        `/business/om/auto/bzs_om2120/query/om2100hform`,
+      const result = await request(saleAgreementApi.getBaseInfo,
         'GET',
         {
           params:JSON.stringify( { usercode:usercode }),

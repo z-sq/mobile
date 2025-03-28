@@ -26,7 +26,7 @@ import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
 import tabStore from '@/stores/tabStore'
 
-const saleAgreementCenter = observer(({ children }) => {
+const SaleAgreementCenter = observer(({ children }) => {
   const [activeKey, setActiveKey] = useState('1')
   const [materialInfo, setMaterialInfo] = useState([])
   const [materialTotal, setMaterialTotal] = useState(0)
@@ -342,4 +342,4 @@ const saleAgreementCenter = observer(({ children }) => {
   )
 })
 
-export default saleAgreementCenter
+export default SaleAgreementCenter

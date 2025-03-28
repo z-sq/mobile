@@ -10,6 +10,7 @@ import { typeMap } from '@/config/configData'
 import { replaceString } from '@/utils/method'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
+import { saleAgreementApi } from '@/request/apis/saleAgreement'
 
 const defaultColumns =
 [
@@ -242,8 +243,7 @@ const ProductInfo=observer(({style = {}})=> {
   // 产品信息
   const getMaterialInfo = async (page=1) => {
     try {
-      const result = await request(
-        `/business/om/auto/bzs_om2120/query/tabdehead`,
+      const result = await request(saleAgreementApi.getProInfo,
         'GET',
         {
           params:JSON.stringify({

@@ -21,6 +21,8 @@ import { useStores } from '@/utils/useStores'
  * @type {saleAgreementApi}
  */
 export const saleAgreementApi = {
+  getBaseInfo:'/business/om/auto/bzs_om2120/query/om2100hform',
+  getProInfo: '/business/om/auto/bzs_om2120/query/tabdehead',
   getCompany: '/business/om/auto/bzs_om2121/query/om2100hform',
   getTable: '/business/om/auto/bzs_om2121/query/tabdehead',
   getCheckDetail: '/business/om/auto/om_qd_cx/query/pm2100qdform',
