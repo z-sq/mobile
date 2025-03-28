@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 
 import ApprovaTool from '@/components/ApprovaTool'
 import ApprovalOpinion from '../components/ApprovalOpinion'
+import SpecialApprovaTool from '../components/SpecialApprovaTool'
 import TabBar from '../components/TabBar'
 
 import Title from '@/components/Title'
@@ -140,7 +141,8 @@ const BidPage = observer(() => {
         </div>
       </div>
 
-      {activeKey !== '3' && <ApprovaTool />}
+      {activeKey == '3' ? <SpecialApprovaTool passApi="" rejectApi="" apiParams={baseInfo} /> : <ApprovaTool />}
+      
     </>
   )
 })
