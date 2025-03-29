@@ -70,7 +70,9 @@ const MenuPage = () => {
     setVisible(false)
   }
 
-  function getDetailPageUrl(procCode) {
+  function getDetailPageUrl(procCode, isCen) {
+    if (isCen == 'Y') return '/saleAgreementCenter'
+    if (isCen == 'N') return '/saleAgreement'
     const arr = [
       {
         url: '/detail/procurement',
@@ -103,8 +105,8 @@ const MenuPage = () => {
         procName: '销售合同审批流程'
       }
     ]
-    const found = arr.find(item=>item.procCode ==procCode);
-    if(found?.url){
+    const found = arr.find((item) => item.procCode == procCode)
+    if (found?.url) {
       return found.url
     } else {
       return null
@@ -112,7 +114,7 @@ const MenuPage = () => {
   }
   //列表点击事件
   const onClick = (data = {}) => {
-    const pageUrl = getDetailPageUrl(data.procCode);
+    const pageUrl = getDetailPageUrl(data.procCode, data.isCen)
     if (!pageUrl) {
       Toast.show({
         content: '功能正在开发中'
@@ -267,16 +269,16 @@ const MenuPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-// 切页等于重置
-const resetState=()=>{
-  setCurPage(1)
-  setData([])
-  setHasMore(true)
-}
+  // 切页等于重置
+  const resetState = () => {
+    setCurPage(1)
+    setData([])
+    setHasMore(true)
+  }
   useEffect(() => {
     resetState()
     getListData(curProc.procCode, 1)
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeKey])
 
@@ -371,31 +373,31 @@ const resetState=()=>{
               <Loading />
             </div>
           ) : ( */}
-            <PullToRefresh
-              onRefresh={() => {
-                getListData()
-                // setCurPage(1)
-              }}
-            >
-              {data.length ? (
-                <>
-                  {data.map((item, index) => (
-                    <Card
-                      key={index}
-                      data={item}
-                      onClick={onClick}
-                      // onClick={onClickDemo}
-                    />
-                  ))}
-                  <InfiniteScroll
-                    loadMore={loadMore}
-                    hasMore={hasMore}
-                  ></InfiniteScroll>
-                </>
-              ) : (
-                <div></div>
-              )}
-            </PullToRefresh>
+          <PullToRefresh
+            onRefresh={() => {
+              getListData()
+              // setCurPage(1)
+            }}
+          >
+            {data.length ? (
+              <>
+                {data.map((item, index) => (
+                  <Card
+                    key={index}
+                    data={item}
+                    onClick={onClick}
+                    // onClick={onClickDemo}
+                  />
+                ))}
+                <InfiniteScroll
+                  loadMore={loadMore}
+                  hasMore={hasMore}
+                ></InfiniteScroll>
+              </>
+            ) : (
+              <div></div>
+            )}
+          </PullToRefresh>
           {/* )} */}
         </div>
       </div>
