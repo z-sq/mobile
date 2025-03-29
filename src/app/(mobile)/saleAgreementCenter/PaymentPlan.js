@@ -58,12 +58,12 @@ const PaymentPlan = () => {
   const {
     approveStore: { currentInfo }
   } = useStores()
-  const { COM_CODE, ORD_NO, CUR_CODE, CUR_NAME } = currentInfo
+  // const { COM_CODE, ORD_NO, CUR_CODE, CUR_NAME } = currentInfo
 
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getPayPlanBase, 'GET', {
-        params: JSON.stringify({ ORD_NO: ORD_NO, COM_CODE: COM_CODE }),
+        params: JSON.stringify({ ORD_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
         page: 1,
         start: 0,
         limit: 25
@@ -82,15 +82,15 @@ const PaymentPlan = () => {
     try {
       const result = await request(saleAgreementApi.getPayPlanTable, 'GET', {
         params: JSON.stringify({
-          COM_CODE,
-          ORD_NO,
-          CUR_CODE,
-          CUR_NAME
+          COM_CODE:currentInfo.COM_CODE,
+          ORD_NO:currentInfo.ORD_NO,
+          CUR_CODE:currentInfo.CUR_CODE,
+          CUR_NAME:currentInfo.COM_NAME
         }),
-        COM_CODE,
-        ORD_NO,
-        CUR_CODE,
-        CUR_NAME,
+        COM_CODE:currentInfo.COM_CODE,
+        ORD_NO:currentInfo.ORD_NO,
+        CUR_CODE:currentInfo.CUR_CODE,
+        CUR_NAME:currentInfo.COM_NAME,
         page: page,
         start: 0,
         limit: 100

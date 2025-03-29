@@ -43,15 +43,15 @@ const SaleAgreementCenter = observer(({ children }) => {
   const {
     approveStore: { currentInfo, updateCurInfo }
   } = useStores()
-  const {COM_CODE,difFlag,state='2',ORD_NO,ACC_NAME}=currentInfo
+  // const {COM_CODE,difFlag,state='2',ORD_NO,ACC_NAME}=currentInfo
   console.log(JSON.stringify(currentInfo), 'currentInfo')
-  const isForward = currentInfo ? difFlag === 'FORWARD' : false
+  const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
   // const searchParams = useSearchParams()
   // const busKeyValue = searchParams.get('key')||'R1092125020026'
   // const procCode = searchParams.get('type')
   // const pagCode = searchParams.get('pagCode')
   // const procVersion = searchParams.get('procVersion')
-  // const state = currentInfo.state || '2'
+  const state = currentInfo?.state || '2'
 
   // const wfType = typeMap[pagCode]?.pagCode||'tp2100'
   // const busKey = typeMap[pagCode]?.busKey||'reqNo'
@@ -237,10 +237,10 @@ const SaleAgreementCenter = observer(({ children }) => {
       url=saleAgreementApi.getReturnPass
     }
     const {inputTxt} =inputStore;
-    const params=[{COM_CODE: COM_CODE,
-      ORD_NO: ORD_NO,
+    const params=[{COM_CODE: currentInfo.COM_CODE,
+      ORD_NO: currentInfo.ORD_NO,
       AUD_TEXT: inputTxt,
-      ACC_NAME: ACC_NAME,
+      ACC_NAME: currentInfo.ACC_NAME,
     }]
     // {COM_CODE: "01", ORD_NO: "OM2025021300002", AUD_TEXT: "", ACC_CODE: "lhy", ACC_NAME: "李浩宇"}
     // {COM_CODE: "01", ORD_NO: "OM2025021300002", AUD_TEXT: "12345", ACC_CODE: "lhy", ACC_NAME: "李浩宇"}
@@ -273,10 +273,10 @@ const SaleAgreementCenter = observer(({ children }) => {
     }
 
     const {inputTxt} =inputStore;
-    const params=[{COM_CODE: COM_CODE,
-      ORD_NO: ORD_NO,
+    const params=[{COM_CODE: currentInfo.COM_CODE,
+      ORD_NO: currentInfo.ORD_NO,
       AUD_TEXT: inputTxt,
-      ACC_NAME: ACC_NAME,
+      ACC_NAME: currentInfo.ACC_NAME,
     }]
     // getProductRefuse
 // {COM_CODE: "01", ORD_NO: "OM2025021300002", AUD_TEXT: "12345", ACC_CODE: "lhy", ACC_NAME: "李浩宇"}
@@ -441,8 +441,7 @@ const SaleAgreementCenter = observer(({ children }) => {
         className="pt-80px pb-160px absolute box-border w-full overflow-hidden"
         style={{
           height: 'calc(var(--vh, 1vh) * 100)',
-          // paddingBottom: state === '2' ? '9rem' : '5rem'
-          paddingBottom: state === '2' ? '3.5rem' : '1.5rem'
+          paddingBottom: state === '2' ? '4rem' : '1.5rem'
         }}
       >
         <div className="relative box-border h-[100%] w-full">
