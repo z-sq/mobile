@@ -8,23 +8,12 @@ import ProjectProcurementPaymentPlan from './ProjectProcurementPaymentPlan'
 import BasicInformation from './BasicInformation'
 import DetailInfo from './DetailInfo'
 import SectionTitle from '@/components/SectionTitle'
+import SpecialApprovaTool from './SpecialApprovaTool'
+import request from '@/utils/request'
 
 import { useState, useEffect } from 'react'
 
-// 调试参数
-const _params = {
-  COM_CODE: '01',
-  COM_NAME: '北京机械工业自动化研究所有限公司软件分公司',
-  UPD_CODE: 'lhy',
-  DEP_NAME: '客户服务部',
-  PUR_PER_NAME: '李浩宇',
-  ORD_NO: '2024103100010',
-  CON_NO: '0124001025',
-  ORD_TOT_AMT: 1122914,
-  ALLO_AMT: 'null',
-  CURR_PM_AMT: 236.17
-}
-const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
+const PurchasePaymentPlan = observer(({ apiParams }) => {
   const [salesInfoData, setSalesInfoData] = useState([])
   const [projectData, setProjectData] = useState([])
   const [basicInfoData, setBasicInfoData] = useState({})
@@ -71,14 +60,15 @@ const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
         }
       )
       if (result?.success) {
-        const baseInfo = result.data.find(
-          (item) => item.UU_ID == currentInfo.uuid
-        )
-        setBasicInfoData(baseInfo || {})
+        // const baseInfo = result.data.find(
+        //   (item) => item.UU_ID == currentInfo.uuid
+        // )
+        setBasicInfoData(result.data[0] || {})
       } else {
         // 错误提示
       }
-    } catch (err) {}
+    } catch (err) {
+    }
   }
 
   async function getTableListData(url, callback) {
@@ -109,12 +99,12 @@ const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
     getBaseInfo()
     // 销售信息
     getTableListData(
-      'business/pm/auto/pm_cgfk_sp/query/uppanel',
+      '/business/pm/auto/pm_cgfk_sp/query/uppanel',
       setSalesInfoData
     )
     // 明细信息
     getTableListData(
-      '/business/pm/auto/pm_cgfk_sp/query/downpane',
+      '/business/pm/auto/pm_cgfk_sp/query/downpanel',
       setDetailInfoData
     )
     // 项目采购计划信息
@@ -123,8 +113,9 @@ const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
       setProjectData
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [apiParams])
   return (
+    <>
     <Collapse accordion defaultActiveKey={'3'}>
       <Collapse.Panel key="1" title="销售合同信息">
         <div className="text-black -m-3">
@@ -141,7 +132,7 @@ const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
           <div className="mx-3">
             <SectionTitle title="基本信息" />
           </div>
-          <BasicInformation data={basicInfoData} />
+          <BasicInformation data={basicInfoData} onUpdateBasicInfo={setBasicInfoData} />
           <div className="mx-3">
             <SectionTitle title="明细信息" />
           </div>
@@ -149,6 +140,8 @@ const PurchasePaymentPlan = observer(({ apiParams = _params }) => {
         </div>
       </Collapse.Panel>
     </Collapse>
+    <SpecialApprovaTool data={basicInfoData} />
+    </>
   )
 })
 

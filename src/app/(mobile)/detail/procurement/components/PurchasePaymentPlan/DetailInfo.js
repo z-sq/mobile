@@ -15,18 +15,18 @@ export default function ProductInfo({data}) {
     },
     {
       title: '采购付款形式',
-      dataIndex: 'ORD_NO',
-      key: 'ORD_NO',
+      dataIndex: 'ORD_NOa',
+      key: 'ORD_NOa',
     },
     {
       title: '本次付款金额',
-      dataIndex: 'ORD_NO',
-      key: 'ORD_NO'
+      dataIndex: 'AMT',
+      key: 'AMT'
     },
     {
       title: '本次采购金额',
-      dataIndex: 'ORD_NO',
-      key: 'ORD_NO',
+      dataIndex: 'CURR_PM_AMT',
+      key: 'CURR_PM_AMT',
     }
   ]
   return (

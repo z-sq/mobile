@@ -21,6 +21,7 @@ const defaultData = [
     }
 ]
 export default function ProductInfo({data = defaultData}) {
+  // TODO 确认字段
   const columns = [
     {
       title: '项目号',

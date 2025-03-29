@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation'
 
 import ApprovaTool from '@/components/ApprovaTool'
 import ApprovalOpinion from '../components/ApprovalOpinion'
-import SpecialApprovaTool from '@/components/SpecialApprovaTool'
 import TabBar from '../components/TabBar'
 
 import Title from '@/components/Title'
@@ -55,7 +54,7 @@ const BidPage = observer(() => {
       )
       if (result?.success) {
         const baseInfo = result.data.find(
-          (item) => item.UU_ID == currentInfo.uuid
+          (item) => item.ORD_NO == currentInfo.busKeyValue
         )
         setBaseInfo(baseInfo || {})
       } else {
@@ -100,9 +99,9 @@ const BidPage = observer(() => {
           uuId
         }
       )
-      if (result?.success) {
-        setApprovalInfo(result.data || [])
-      }
+      // if (result&& result.success) {
+      //   setApprovalInfo(result.data || [])
+      // }
     } catch (err) {}
   }
 
@@ -112,7 +111,7 @@ const BidPage = observer(() => {
     }
     getBaseInfo()
     getProductInfo()
-    getWfmApproveInfo()
+    // getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentInfo])
 
@@ -141,7 +140,7 @@ const BidPage = observer(() => {
         </div>
       </div>
 
-      {activeKey == '3' ? <SpecialApprovaTool passApi="" rejectApi="" apiParams={baseInfo} /> : <ApprovaTool />}
+      {activeKey !=='3' && <ApprovaTool />}
       
     </>
   )

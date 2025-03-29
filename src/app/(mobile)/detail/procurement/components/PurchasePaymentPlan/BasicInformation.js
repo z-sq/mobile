@@ -3,6 +3,7 @@
 import BasicFormItem from '@/components/BasicFormItem'
 
 import Loading from '@/components/Loading'
+import { Input } from 'antd-mobile'
 
 const defaultData = {
   "DEP_CODE": "10906",
@@ -23,7 +24,17 @@ const defaultData = {
   "EDT_CODE": "lhy"
 }
 
-export default function BasicInformation({ data = defaultData }) {
+export default function BasicInformation({ data, onUpdateBasicInfo }) {
+  const renderInput = () => (
+    <Input
+      placeholder="请输入内容"
+      value={data.AUD_TEXT}
+      onChange={(val) => {
+        const draft = {...data, AUD_TEXT: val}
+        onUpdateBasicInfo(draft)
+      }}
+    />
+  )
   return (
     <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto">
       {!data ? (
@@ -49,7 +60,7 @@ export default function BasicInformation({ data = defaultData }) {
                 <BasicFormItem label="" text={''} />
               </tr>
               <tr>
-                <BasicFormItem label="审批意见" text={data.AUD_TEXT || ''} textColSpan={3} />
+                <BasicFormItem label="审批意见" text={renderInput} textColSpan={3} />
               </tr>
             </tbody>
           </table>
