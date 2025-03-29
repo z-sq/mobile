@@ -224,6 +224,105 @@ const SaleAgreement = observer(({ children }) => {
       updateCurInfo({ curOpinion: values.opinion })
     }
   }
+  const renderButton=()=>{
+    if (['1', '2', '7'].includes(activeKey)) {
+    return (<div
+      className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
+      style={{ marginBottom: '1.5rem'}}
+    >
+
+      {state === '2' && !isForward ? (
+        <div className="box-border flex w-full justify-between">
+          <Button
+            color="primary"
+            fill="solid"
+            style={{
+              width: '50%'
+            }}
+           
+            onClick={() => {
+              onApprove(true)
+              router.push('/saleAgreement/approve')
+            }}
+            disabled={disable}
+          >
+            审 批
+          </Button>
+          <div  className='mx-2'/>
+          <Button
+            color="primary"
+            fill="outline"
+            style={{
+              width: '50%'
+            }}
+            onClick={() => {
+              setMoreVisible(true)
+            }}
+            disabled={disable}
+          >
+            更 多
+          </Button>
+          <Popup
+            visible={moreVisible}
+            onMaskClick={() => {
+              setMoreVisible(false)
+            }}
+          >
+            <div className="text-14px px-12px pb-24px">
+              <div
+                className={`border-bottom-gray flex h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
+                onClick={() => {
+                  setMoreVisible(false)
+                  saveOpinion()
+                  router.push('/saleAgreement/forward')
+                }}
+              >
+                转发
+              </div>
+              <div
+                className="border-bottom-gray flex h-[48px] w-[100%] items-center justify-center"
+                onClick={() => {
+                  setMoreVisible(false)
+                  saveOpinion()
+                  router.push('/saleAgreement/transfer')
+                }}
+              >
+                转办
+              </div>
+              <div
+                className="flex h-[48px] w-[100%] items-center justify-center"
+                onClick={() => {
+                  setMoreVisible(false)
+                }}
+              >
+                取消
+              </div>
+            </div>
+          </Popup>
+        </div>
+      ) : null}
+      {state === '2' && isForward ? (
+        <div className="box-border flex w-full place-content-center items-center">
+          <Button
+            color="primary"
+            fill="solid"
+            style={{
+              width: '30%'
+            }}
+            onClick={() => {
+              onCommit()
+            }}
+            disabled={disable}
+          >
+            评 论
+          </Button>
+        </div>
+      ) : null}
+    </div>)
+     }else{
+      return null
+     }
+  }
 
   return (
     <>
@@ -232,7 +331,7 @@ const SaleAgreement = observer(({ children }) => {
         className="pt-80px pb-160px absolute box-border w-full overflow-hidden"
         style={{
           height: 'calc(var(--vh, 1vh) * 100)',
-          paddingBottom: activeKey === '7' ? '9rem' : '5rem'
+          paddingBottom: ['1', '2', '7'].includes(activeKey) ? '4rem' : '1.5rem'
         }}
       >
         <div className="relative box-border h-[100%] w-full">
@@ -246,99 +345,7 @@ const SaleAgreement = observer(({ children }) => {
           </div>
         </div>
       </div>
-      <div
-        className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
-        style={{ marginBottom: '1.5rem' }}
-      >
-
-        {state === '2' && !isForward ? (
-          <div className="box-border flex w-full justify-between">
-            <Button
-              color="primary"
-              fill="solid"
-              style={{
-                width: '50%'
-              }}
-             
-              onClick={() => {
-                onApprove(true)
-                router.push('/saleAgreement/approve')
-              }}
-              disabled={disable}
-            >
-              审 批
-            </Button>
-            <div  className='mx-2'/>
-            <Button
-              color="primary"
-              fill="outline"
-              style={{
-                width: '50%'
-              }}
-              onClick={() => {
-                setMoreVisible(true)
-              }}
-              disabled={disable}
-            >
-              更 多
-            </Button>
-            <Popup
-              visible={moreVisible}
-              onMaskClick={() => {
-                setMoreVisible(false)
-              }}
-            >
-              <div className="text-14px px-12px pb-24px">
-                <div
-                  className={`border-bottom-gray flex h-[48px] w-[100%] items-center justify-center ${isForward ? 'hidden' : ''}`}
-                  onClick={() => {
-                    setMoreVisible(false)
-                    saveOpinion()
-                    router.push('/saleAgreement/forward')
-                  }}
-                >
-                  转发
-                </div>
-                <div
-                  className="border-bottom-gray flex h-[48px] w-[100%] items-center justify-center"
-                  onClick={() => {
-                    setMoreVisible(false)
-                    saveOpinion()
-                    router.push('/saleAgreement/transfer')
-                  }}
-                >
-                  转办
-                </div>
-                <div
-                  className="flex h-[48px] w-[100%] items-center justify-center"
-                  onClick={() => {
-                    setMoreVisible(false)
-                  }}
-                >
-                  取消
-                </div>
-              </div>
-            </Popup>
-          </div>
-        ) : null}
-        {state === '2' && isForward ? (
-          <div className="box-border flex w-full place-content-center items-center">
-            <Button
-              color="primary"
-              fill="solid"
-              style={{
-                width: '30%'
-              }}
-              onClick={() => {
-                onCommit()
-              }}
-              disabled={disable}
-            >
-              评 论
-            </Button>
-          </div>
-        ) : null}
-      </div>
+      {renderButton()}
     </>
   )
 })
