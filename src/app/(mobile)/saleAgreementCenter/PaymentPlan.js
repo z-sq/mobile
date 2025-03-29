@@ -8,6 +8,8 @@ import { saleAgreementApi } from '@/request/apis/saleAgre'
 import request from '@/utils/request'
 
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
+import SectionTitle from './components/SectionTitle'
+import Dash from './components/Dash'
 
 import Loading from '@/components/Loading'
 import TableList from '@/components/TableList'
@@ -142,7 +144,8 @@ const PaymentPlan = () => {
           <Loading />
         ) : (
           <>
-            <div className="text-12px mt-16px">基本信息</div>
+            <SectionTitle className="text-12px" title='基本信息'/>
+            <Dash className='my-2 border-dashed'/>
             <table className="w-full">
               <tbody>
                 <tr>
@@ -203,7 +206,8 @@ const PaymentPlan = () => {
                 </tr>
               </tbody>
             </table>
-            <div className="text-12px mt-16px">明细信息</div>
+            <SectionTitle className="text-12px mt-10px" title='明细信息'/>
+            <Dash className='my-2 border-dashed'/>
             <div className="text-12px mt-10px w-full">
               <TableList
                 columns={columns}
