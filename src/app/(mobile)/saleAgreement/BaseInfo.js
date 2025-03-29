@@ -13,7 +13,7 @@ export default function BaseInfo({ style = {} }) {
   
   const [data, setData] = useState({})
   const {
-    approveStore: { resetCurInfo }
+    approveStore: {currentInfo, resetCurInfo }
   } = useStores()
   const getBaseInfo = async () => {
     const usercode = window.localStorage.getItem('acctCode')
