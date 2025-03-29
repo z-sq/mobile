@@ -31,7 +31,7 @@ const TableList = ({
 
   return (
     <div
-      className={`flex w-full flex-col overflow-x-auto ${styles['table-wrapper']}`}
+      className={`table-container flex w-full flex-col overflow-x-auto ${styles['table-wrapper']}`}
       style={{ height: '100%' }}
     >
       <div>
