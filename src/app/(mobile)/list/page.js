@@ -182,9 +182,9 @@ const MenuPage = () => {
       setLoading(false)
       if (result && result.success) {
         const data = result.data ? result.data : []
-        const total = result.total !== null ? result.total : data.length
+        const totalA = result.total ? result.total : data.length
         if (activeKey === '1') {
-          setUnread(total)
+          setUnread(totalA)
         }
         //先按照insStaDate降序排序，如果insStaDate相同，则按照insStatime降序排序
         data.sort(function (a, b) {
@@ -194,7 +194,7 @@ const MenuPage = () => {
           )
         })
         setData(data)
-        setTotal(result.total)
+        setTotal(totalA)
         return data
       } else {
         setData([])
@@ -267,10 +267,16 @@ const MenuPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+// 切页等于重置
+const resetState=()=>{
+  setCurPage(1)
+  setData([])
+  setHasMore(true)
+}
   useEffect(() => {
-    setData([])
+    resetState()
     getListData(curProc.procCode, 1)
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeKey])
 
