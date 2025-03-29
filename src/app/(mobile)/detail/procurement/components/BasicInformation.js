@@ -5,6 +5,10 @@ import BasicFormItem from '../../components/BasicInformation/BasicFormItem'
 import Loading from '@/components/Loading'
 
 export default function BasicInformation({ data }) {
+  const booleMap = {
+    'Y': '是',
+    'N': '否',
+  }
   return (
     <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto">
       {!data ? (
@@ -18,8 +22,7 @@ export default function BasicInformation({ data }) {
                 <BasicFormItem label="单位" text={data.COM_NAME || ''} />
               </tr>
               <tr>
-                {/* TODO */}
-                <BasicFormItem label="申请日期" text={data.purTitle || ''} />
+                <BasicFormItem label="申请日期" text={data.CRE_DATE || ''} />
                 <BasicFormItem label="业务部门" text={data.DEP_NAME || ''} />
               </tr>
               <tr>
@@ -52,17 +55,16 @@ export default function BasicInformation({ data }) {
               </tr>
               <tr>
                 <BasicFormItem label="合同额" text={data.ORD_TOT_AMT || ''} />
-                <BasicFormItem label="SM" text={data.BZS_SM_FLAG || ''} />
+                <BasicFormItem label="SM" text={booleMap[data.BZS_SM_FLAG] || ''} />
               </tr>
               <tr>
                 <BasicFormItem label="备注" text={data.ORD_NOTE || ''} textColSpan={3} />
               </tr>
               <tr>
-                <BasicFormItem label="是否电子签章" text={data.BZS_OA_DZQ_FLAG || ''} />
+                <BasicFormItem label="是否电子签章" text={booleMap[data.BZS_OA_DZQ_FLAG] || ''} />
                 <BasicFormItem label="" text={''} />
               </tr>
               <tr>
-                {/* TODO */}
                 <BasicFormItem label="变更原因" text={data.MOD_REASON || ''} textColSpan={3} />
               </tr>
             </tbody>
