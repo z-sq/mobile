@@ -42,11 +42,17 @@ const BidPage = observer(() => {
 
   const getBaseInfo = async () => {
     try {
+      const usercode = window.localStorage.getItem('acctCode')
+      const company_code = window.localStorage.getItem('companyCode')
       const result = await request(
         '/business/pm/auto/bzs_pm2120/query/pm2120hform',
         'GET',
         {
-          params: JSON.stringify({ usercode: 'lhy' }),
+          params: JSON.stringify({
+            COM_CODE_T: company_code,
+            usercode,
+            company_code
+          }),
           page: 1,
           start: 0,
           limit: 200
@@ -57,20 +63,59 @@ const BidPage = observer(() => {
           (item) => item.ORD_NO == currentInfo.busKeyValue
         )
         setBaseInfo(baseInfo || {})
+        getProductInfo(baseInfo || {})
       } else {
         // 错误提示
       }
     } catch (err) {}
   }
 
-  const getProductInfo = async () => {
+  const getProductInfo = async (params) => {
+    const {
+      COM_CODE,
+      ORD_NO,
+      CUR_CODE,
+      CUR_NAME,
+      DEP_CODE,
+      BUY_ID,
+      PUR_PER_CODE,
+      PUR_PER_NAME,
+      GRO_ID,
+      GRO_NAME,
+      REC_VERSION,
+      REC_VERSION_OLD
+    } = params
     try {
       const result = await request(
         '/business/pm/auto/bzs_pm2120/query/tabdehead',
         'GET',
         {
-          params: JSON.stringify(currentInfo),
-          ...currentInfo,
+          params: JSON.stringify({
+            COM_CODE,
+            ORD_NO,
+            CUR_CODE,
+            CUR_NAME,
+            DEP_CODE,
+            BUY_ID,
+            PUR_PER_CODE,
+            PUR_PER_NAME,
+            GRO_ID,
+            GRO_NAME,
+            REC_VERSION,
+            REC_VERSION_OLD
+          }),
+          COM_CODE,
+          ORD_NO,
+          CUR_CODE,
+          CUR_NAME,
+          DEP_CODE,
+          BUY_ID,
+          PUR_PER_CODE,
+          PUR_PER_NAME,
+          GRO_ID,
+          GRO_NAME,
+          REC_VERSION,
+          REC_VERSION_OLD,
           page: 1,
           start: 0,
           limit: 200
@@ -87,7 +132,13 @@ const BidPage = observer(() => {
 
   const getWfmApproveInfo = async () => {
     try {
-      const { busKey, busKeyValue, procCode, procVersion, uuid:uuId } = currentInfo
+      const {
+        busKey,
+        busKeyValue,
+        procCode,
+        procVersion,
+        uuid: uuId
+      } = currentInfo
       const result = await request(
         '/mbs/tp/manual/tp2100/getWfmApproveInfo',
         'GET',
@@ -110,8 +161,8 @@ const BidPage = observer(() => {
       return
     }
     getBaseInfo()
-    getProductInfo()
-    // getWfmApproveInfo()
+    // getProductInfo()
+    getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentInfo])
 
@@ -119,7 +170,7 @@ const BidPage = observer(() => {
     <>
       <div className="h-40px absolute left-0 top-0 z-[99] w-[100%] overflow-hidden bg-white pt-[1px]">
         <Title
-          onBack={()=>router.back()}
+          onBack={() => router.back()}
           title={currentInfo.procName}
           rightIcon={'2'}
         />
@@ -140,8 +191,7 @@ const BidPage = observer(() => {
         </div>
       </div>
 
-      {activeKey !=='3' && <ApprovaTool />}
-      
+      {activeKey !== '3' && <ApprovaTool />}
     </>
   )
 })
