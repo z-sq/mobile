@@ -28,7 +28,9 @@ export default function BaseInfo({ style = {} }) {
         }
       )
       if (result && result.success) {
-        const resData=result.data[0]
+        const resData = result.data.find(
+          (item) => item.ORD_NO == currentInfo.busKeyValue
+        )
         setData(resData || {})
         resetCurInfo(resData)
       }
