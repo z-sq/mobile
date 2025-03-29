@@ -166,17 +166,17 @@ const ProductInfo=observer(({style = {}})=> {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [tableColumns, setTableColumns] = useState(defaultColumns)
-  const [tableWidth, setTableWidth] = useState(null)
+  const [tableWidth, setTableWidth] = useState(1200)
   const {
       approveStore: { currentInfo }
     } = useStores()
   console.log(JSON.stringify(currentInfo),'currentInfo')
   const searchParams = useSearchParams()
   const busKeyValue = searchParams.get('key')
-  const pagCode = searchParams.get('pagCode')
+  const pagCode = searchParams.get('pagCode')    
   const wfType = typeMap[pagCode]?.pagCode
   const busKey = typeMap[pagCode]?.busKey
-  const {COM_CODE,ORD_NO,REC_VERSION,REC_VERSION_OLD}=currentInfo
+//   const {COM_CODE,ORD_NO,REC_VERSION,REC_VERSION_OLD}=currentInfo
   // 产品信息
   const getMaterialInfo = async (page=1) => {
     try {
@@ -184,10 +184,10 @@ const ProductInfo=observer(({style = {}})=> {
         'GET',
         {
           params:JSON.stringify({
-            COM_CODE:COM_CODE,
-            ORD_NO:ORD_NO,
-            REC_VERSION:REC_VERSION,
-            REC_VERSION_OLD:REC_VERSION_OLD,
+            COM_CODE:currentInfo.COM_CODE,
+            ORD_NO:currentInfo.ORD_NO,
+            REC_VERSION:currentInfo.REC_VERSION,
+            REC_VERSION_OLD:currentInfo.REC_VERSION_OLD,
           }),
           page: page,
           start: 0,

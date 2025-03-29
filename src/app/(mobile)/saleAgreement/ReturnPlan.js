@@ -104,6 +104,7 @@ const PaymentPlan = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [total,setTotal]=useState(0)
+  const [tableWidth, setTableWidth] = useState(1200)
 
   const {
         approveStore: { currentInfo }
@@ -225,6 +226,7 @@ const PaymentPlan = () => {
               orderColumn={true}
               loadMore={loadMore}
               hasMore={hasMore}
+              width={tableWidth}
               infiniteScroll={true}
             />
           </div>

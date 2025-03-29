@@ -46,15 +46,15 @@ const SupplementaryInfo = observer(({ style = {} }) => {
   } = useStores()
   console.log(JSON.stringify(currentInfo), 'currentInfo')
 
-  const { COM_CODE, ORD_NO, CON_TEM_CODE } = currentInfo
+  // const { COM_CODE, ORD_NO, CON_TEM_CODE } = currentInfo
   // 产品信息
   const getMaterialInfo = async (page = 1) => {
     try {
       const result = await request(saleAgreementApi.getSupplyInfo, 'GET', {
         params: JSON.stringify({
-          ORDER_NO: ORD_NO,
-          COM_CODE: COM_CODE,
-          CON_TEM_CODE: CON_TEM_CODE
+          ORDER_NO: currentInfo.ORD_NO,
+          COM_CODE: currentInfo.COM_CODE,
+          CON_TEM_CODE: currentInfo.CON_TEM_CODE
         }),
         page: page,
         start: 0,
