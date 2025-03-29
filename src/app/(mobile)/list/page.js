@@ -58,16 +58,14 @@ const MenuPage = () => {
         procCode: '',
         procName: ''
       })
-      getListData('', curPage)
-      console.log('00000')
+      getListData('', 1)
     } else {
       setCurProc({
         ...curProc,
         procCode: procCode,
         procName: procName
       })
-      getListData(procCode, curPage)
-      console.log(procCode, 'procCode')
+      getListData(procCode, 1)
     }
     setVisible(false)
   }
@@ -75,7 +73,7 @@ const MenuPage = () => {
   function getDetailPageUrl(procCode) {
     const arr = [
       {
-        url: null,
+        url: '/detail/procurement',
         procCode: '1666771987585',
         procName: '事业部采购合同审批流程'
       },
@@ -209,13 +207,11 @@ const MenuPage = () => {
 
   const loadMore = async () => {
     const dataLen = data.length
-    console.log(dataLen, 'dataLen')
     if (dataLen >= total) {
       setHasMore(false)
       return
     }
-    const append = (await getListData('', curPage + 1)) || []
-    console.log(append, append.length, total, 'append.length')
+    const append = (await getListData(curProc.procCode, curPage + 1)) || []
     if (dataLen + append.length < total) {
       setHasMore(true)
       setCurPage(curPage + 1)
@@ -274,7 +270,7 @@ const MenuPage = () => {
 
   useEffect(() => {
     setData([])
-    getListData()
+    getListData(curProc.procCode, 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeKey])
 
