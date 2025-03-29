@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation'
 import { saleAgreementApi } from '@/request/apis/saleAgreement'
 import request from '@/utils/request'
 
+import SectionTitle from './components/SectionTitle'
+import Dash from './components/Dash'
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
 
 import Loading from '@/components/Loading'
 import TableList from '@/components/TableList'
-import { BASE_PATH } from '@/config/app'
-import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 
 
@@ -108,12 +108,12 @@ const PaymentPlan = () => {
   const {
         approveStore: { currentInfo }
       } = useStores()
-  const {COM_CODE,ORD_NO}=currentInfo
+  // const {COM_CODE,ORD_NO}=currentInfo
 
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getReturnInfo, 'GET', {
-        params: JSON.stringify({ ORD_NO: ORD_NO, COM_CODE: COM_CODE }),
+        params: JSON.stringify({ ORD_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
         page: 1,
         start: 0,
         limit: 25
@@ -134,9 +134,9 @@ const PaymentPlan = () => {
         saleAgreementApi.getReturnTable,
         'GET',
         {
-          params:JSON.stringify( { ORD_NO: ORD_NO, COM_CODE: COM_CODE }),
-          ORD_NO: ORD_NO, 
-          COM_CODE: COM_CODE,
+          params:JSON.stringify( { ORD_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
+          ORD_NO: currentInfo.ORD_NO, 
+          COM_CODE: currentInfo.COM_CODE,
           page: page,
           start: 0,
           limit: 100
@@ -174,9 +174,8 @@ const PaymentPlan = () => {
         <Loading />
       ) : (
         <>
-         <div className="text-12px mt-16px">
-           基本信息
-          </div>
+          <SectionTitle className="text-12px" title='基本信息'/>
+          <Dash className='my-2 border-dashed'/>
           <table className="w-full">
             <tbody>
             <tr>
@@ -217,9 +216,8 @@ const PaymentPlan = () => {
             </tr>
             </tbody>
           </table>
-          <div className="text-12px mt-16px">
-           明细信息
-          </div>
+          <SectionTitle className="text-12px mt-10px" title='明细信息'/>
+          <Dash className='my-2 border-dashed'/>
           <div className="text-12px mt-10px w-full">
             <TableList
               columns={columns}

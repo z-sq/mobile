@@ -1,21 +1,15 @@
-// 一个基本的React组件，接受一个data对象，一个style对象，一个onClick函数，返回一个div元素。
+'use client'
 import React, { useState, useEffect } from 'react'
-import { Table } from 'antd'
-import { useRouter } from 'next/navigation'
 
 import { saleAgreementApi } from '@/request/apis/saleAgreement'
 import request from '@/utils/request'
 
 import SectionTitle from './components/SectionTitle'
 import Dash from './components/Dash'
-
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
-import FiewViewer from './components/FileViewer'
 
 import Loading from '@/components/Loading'
 import TableList from '@/components/TableList'
-import { BASE_PATH } from '@/config/app'
-import { addCommas } from '@/utils/method'
 import { useStores } from '@/utils/useStores'
 
 // 表格列的配置，还有个动态列，自查编码,列排序
@@ -70,7 +64,7 @@ const SelfCheck = () => {
   const {
     approveStore: { currentInfo }
   } = useStores()
-  const { COM_CODE, ORD_NO } = currentInfo
+  // const { COM_CODE, ORD_NO } = currentInfo
 
   const getBaseInfo = async () => {
     try {
@@ -95,7 +89,7 @@ const SelfCheck = () => {
         saleAgreementApi.getCheckTableDetail,
         'GET',
         {
-          params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+          params: JSON.stringify({ ORDER_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
           page: page,
           start: 0,
           limit: 100
