@@ -8,8 +8,8 @@ import { BASE_PATH } from '@/config/app'
 import './PopoverWfm.css'
 
 const actions = [
-  { key: '1', text: '流程图', route: '/wfm/figure' }
-  // { key: '2', text: '流程状态', route: '' }
+  { key: '1', text: '流程图', route: '/wfm/figure' },
+  { key: '2', text: '查看附件', route: '/attachment' }
 ]
 
 export default function PopoverWfm({

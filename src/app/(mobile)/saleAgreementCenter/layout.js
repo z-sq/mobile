@@ -86,7 +86,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
           onBack={goBack}
           title={title}
           rightIcon={'2'}
-          callback={saveOpinion}
+          // callback={saveOpinion}
         />
       </div>
       {children}

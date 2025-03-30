@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 
 class Approve {
-  // TODO  删除调试数据
   currentInfo = null
   venName = ''
 
