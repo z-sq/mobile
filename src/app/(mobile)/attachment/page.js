@@ -70,8 +70,8 @@ const PreviewAtta = observer(()=>{
       </div>
 
       {attList.map((item) => (
-        <div className="flex items-end border-bottom-gray mx-3 py-2" key={item.uuId}>
-          {/* <div className='size-4 bg-blue rounded'></div> */}
+        <div className="flex items-center border-bottom-gray mx-3 py-2" key={item.uuId}>
+          <div className='size-2 bg-blue rounded mr-2'></div>
           <div className="flex-1 border-r-gray border-r">
             <div>{item.filName}</div>
             <div className="text-gray mt-1">{formatFileSize(item.attSize)}</div>

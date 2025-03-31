@@ -189,12 +189,12 @@ const MenuPage = () => {
           setUnread(totalA)
         }
         //先按照insStaDate降序排序，如果insStaDate相同，则按照insStatime降序排序
-        data.sort(function (a, b) {
-          return (
-            new Date(`${b.insStaDate.replaceAll('/', '-')}T${b.insStaTime}`) -
-            new Date(`${a.insStaDate.replaceAll('/', '-')}T${a.insStaTime}`)
-          )
-        })
+        // data.sort(function (a, b) {
+        //   return (
+        //     new Date(`${b.insStaDate.replaceAll('/', '-')}T${b.insStaTime}`) -
+        //     new Date(`${a.insStaDate.replaceAll('/', '-')}T${a.insStaTime}`)
+        //   )
+        // })
         setData(data)
         setTotal(totalA)
         return data

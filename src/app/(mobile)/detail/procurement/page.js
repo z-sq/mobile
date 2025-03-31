@@ -150,9 +150,9 @@ const BidPage = observer(() => {
           uuId
         }
       )
-      // if (result&& result.success) {
-      //   setApprovalInfo(result.data || [])
-      // }
+      if (result&& result.success) {
+        setApprovalInfo(result.data || [])
+      }
     } catch (err) {}
   }
 

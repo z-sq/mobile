@@ -7,7 +7,7 @@ import BasicFormItem from './components/BasicInformation/BasicFormItem'
 import Loading from '@/components/Loading'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
-import { saleAgreementApi } from '@/request/apis/saleAgre'
+import { saleAgreementApi } from '@/request/apis/saleAgreementCenter'
 import { Popup, Toast, Form, Modal } from 'antd-mobile'
 import { useSearchParams, useRouter } from 'next/navigation'
 
@@ -16,7 +16,7 @@ export default function BaseInfo({ style = {} }) {
   const usercode = window.localStorage.getItem('acctCode')
   const [data, setData] = useState({})
   const {
-    approveStore: { resetCurInfo }
+    approveStore: { resetCurInfo, currentInfo }
   } = useStores()
   const getBaseInfo = async () => {
     try {
@@ -38,6 +38,8 @@ export default function BaseInfo({ style = {} }) {
             content: '该条数据异常'
           })
           router.push('/list')
+        }else{
+          console.log('resData',resData);
         }
         setData(resData || {})
         resetCurInfo(resData)
