@@ -69,7 +69,7 @@ const SelfCheck = () => {
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getCheckDetail, 'GET', {
-        params: JSON.stringify({ ORDER_NO: ORD_NO, COM_CODE: COM_CODE }),
+        params: JSON.stringify({ ORDER_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
         page: 1,
         start: 0,
         limit: 100

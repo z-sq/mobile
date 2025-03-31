@@ -16,7 +16,7 @@ export default function BaseInfo({ style = {} }) {
   
   const [data, setData] = useState({})
   const {
-    approveStore: {currentInfo, resetCurInfo }
+    approveStore: {currentInfo, updateCurInfo }
   } = useStores()
   const getBaseInfo = async () => {
     const usercode = window.localStorage.getItem('acctCode')
@@ -41,7 +41,7 @@ export default function BaseInfo({ style = {} }) {
           router.push('/list')
         }
         setData(resData || {})
-        resetCurInfo(resData)
+        updateCurInfo(resData)
       }
     } catch (err) {}
   }

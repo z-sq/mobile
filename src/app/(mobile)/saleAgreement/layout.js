@@ -28,14 +28,14 @@ const saleAgreementLayout = observer(({ children }) => {
     approveStore: { currentInfo, updateCurInfo }
   } = useStores()
   const {currentTabKey} =tabStore;
-console.log(JSON.stringify(currentInfo),'currentInfo')
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
+  const state = currentInfo ? currentInfo.state : '2'
 
   const searchParams = useSearchParams()
-  const reqNo = searchParams.get('key')
-  const pagCode = searchParams.get('pagCode')
-  const state = searchParams.get('state')||'2'
-  const purMetCode = searchParams.get('purMet')
+  // const reqNo = searchParams.get('key')
+  // const pagCode = searchParams.get('pagCode')
+  // const state = searchParams.get('state')||'2'
+  // const purMetCode = searchParams.get('purMet')
   const chaFlag = searchParams.get('chaFlag')
   let title_item = 'title'
   if (chaFlag === 'Y') {
@@ -44,21 +44,21 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
   }
   let title ='销售合同申请单审批'
 
-  const handleInputChange = (val) => {
-    setOpinionValue(val)
-  }
+  // const handleInputChange = (val) => {
+  //   setOpinionValue(val)
+  // }
   
   const goBack = () => {
     router.back()
   }
-  const saveOpinion = () => {
-    if (state === '2') {
-      const values = form.getFieldsValue()
-      updateCurInfo({ curOpinion: values.opinion })
-    }
-  }
+  // const saveOpinion = () => {
+  //   if (state === '2') {
+  //     const values = form.getFieldsValue()
+  //     updateCurInfo({ curOpinion: values.opinion })
+  //   }
+  // }
 
-  useEffect(() => {
+  // useEffect(() => {
     // if (!currentInfo) {
     //   router.push('/list')
     //   return
@@ -74,7 +74,7 @@ console.log(JSON.stringify(currentInfo),'currentInfo')
     //   })
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentInfo])
+  // }, [])
 
   return (
     <div

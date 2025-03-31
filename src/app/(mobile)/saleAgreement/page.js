@@ -41,6 +41,8 @@ const SaleAgreement = observer(({ children }) => {
   const {
     approveStore: { currentInfo, updateCurInfo }
   } = useStores()
+  
+console.log(JSON.stringify(currentInfo),'currentInfo')
   const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
   // const searchParams = useSearchParams()
   // const busKeyValue = searchParams.get('key')||'R1092125020026'
@@ -224,8 +226,10 @@ const SaleAgreement = observer(({ children }) => {
       updateCurInfo({ curOpinion: values.opinion })
     }
   }
-  const renderButton=()=>{
-    if (['1', '2', '7'].includes(activeKey)) {
+  const renderButton=(state)=>{
+
+    console.log(typeof activeKey, isForward,!isForward,state,'和页签1')
+    if (["1", "2", "7"].includes(activeKey)) {
     return (<div
       className="px-per4 absolute bottom-0 box-border w-[100%] bg-white"
       style={{ marginBottom: '1.5rem'}}
@@ -345,7 +349,7 @@ const SaleAgreement = observer(({ children }) => {
           </div>
         </div>
       </div>
-      {renderButton()}
+      {renderButton(state)}
     </>
   )
 })
