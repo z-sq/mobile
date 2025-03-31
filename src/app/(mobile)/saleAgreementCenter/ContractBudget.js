@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Input } from 'antd-mobile'
 
-import { saleAgreementApi } from '@/request/apis/saleAgre'
+import { saleAgreementApi } from  '@/request/apis/saleAgreementCenter'
 import inputStore from '@/stores/inputStore'
 import request from '@/utils/request'
 
@@ -90,7 +90,7 @@ const ContractBudget = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        setInputValue(result.data[0].AUD_TEXT)
+        setInputValue(result.data[0]?.AUD_TEXT)
       }
     } catch (err) {
       console.log(err)

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Input } from 'antd-mobile'
 
 import inputStore from '@/stores/inputStore'
-import { saleAgreementApi } from '@/request/apis/saleAgre'
+import { saleAgreementApi } from  '@/request/apis/saleAgreementCenter'
 import request from '@/utils/request'
 
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
@@ -105,7 +105,6 @@ const PaymentPlan = () => {
         approveStore: { currentInfo }
       } = useStores()
   // const {COM_CODE,ORD_NO}=currentInfo
-
   const getBaseInfo = async () => {
     try {
       const result = await request(saleAgreementApi.getReturnInfo, 'GET', {
@@ -116,7 +115,7 @@ const PaymentPlan = () => {
       })
       if (result && result.success) {
         setBaseInfo(result.data[0])
-        setInputValue(result.data[0].AUD_TEXT)
+        setInputValue(result.data[0]?.AUD_TEXT)
       }
     } catch (err) {
       console.log(err)

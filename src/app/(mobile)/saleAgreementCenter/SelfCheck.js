@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Table } from 'antd'
 import { useRouter } from 'next/navigation'
 
-import { saleAgreementApi } from '@/request/apis/saleAgre'
+import { saleAgreementApi } from  '@/request/apis/saleAgreementCenter'
 import request from '@/utils/request'
 
 import SectionTitle from './components/SectionTitle'

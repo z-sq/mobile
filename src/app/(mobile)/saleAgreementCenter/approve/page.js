@@ -363,6 +363,8 @@ const ApprovePage = () => {
                 dataSource={data}
                 columns={columns}
                 rowClassName={() => 'editable-row'}
+                size="small"
+                scroll={{ x: 2000 }}
               />
             </div>
           </>
