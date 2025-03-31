@@ -8,8 +8,11 @@ import Loading from '@/components/Loading'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
 import { saleAgreementApi } from '@/request/apis/saleAgre'
+import { Popup, Toast, Form, Modal } from 'antd-mobile'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function BaseInfo({ style = {} }) {
+  const router = useRouter()
   const usercode = window.localStorage.getItem('acctCode')
   const [data, setData] = useState({})
   const {
@@ -30,6 +33,12 @@ export default function BaseInfo({ style = {} }) {
         const resData = result.data.find(
           (item) => item.ORD_NO == currentInfo.busKeyValue
         )
+        if(!resData) {
+          Toast.show({
+            content: '该条数据异常'
+          })
+          router.push('/list')
+        }
         setData(resData || {})
         resetCurInfo(resData)
       }
