@@ -177,9 +177,9 @@ const ApprovePage = () => {
     try {
       const result = await request(saleAgreementApi.getApproveBase, 'GET', {
         params: JSON.stringify({
-          ORD_NO: ORD_NO,
+          ORDER_NO: ORD_NO,
           COM_CODE: COM_CODE,
-          PAGE_CODE: "om2120"
+          PAGE_CODE: PAGE_CODE
         }),
         page: 1,
         start: 0,
@@ -198,9 +198,9 @@ const ApprovePage = () => {
     try {
       const result = await request(saleAgreementApi.getApproveTable, 'GET', {
         params: JSON.stringify({
-          ORD_NO: ORD_NO,
+          ORDER_NO: ORD_NO,
           COM_CODE: COM_CODE,
-          PAGE_CODE: "om2120"
+          PAGE_CODE: PAGE_CODE
         }),
         page: page,
         start: 0,
@@ -290,7 +290,7 @@ const ApprovePage = () => {
   }, [])
   return (
     <>
-      <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto pt-40px pb-40px">
+      <div className="text-12px px-10px py-10px h-[100%] overflow-y-auto pb-40px">
         {loading === true ? (
           <Loading />
         ) : (
@@ -311,21 +311,21 @@ const ApprovePage = () => {
                 <tr>
                   <BasicFormItem
                     label="申请人名称"
-                    text={baseInfo?.APP_NAME || ''}
+                    text={baseInfo?.AUD_NAME || ''}
                   />
                   <BasicFormItem
                     label="申请日期"
-                    text={baseInfo?.CRE_DATE || ''}
+                    text={baseInfo?.EDT_DATE || ''}
                   />
                 </tr>
                 <tr>
                   <BasicFormItem
                     label="客户名称"
-                    text={baseInfo?.CUS_NAME || ''}
+                    text={baseInfo?.CUSTOMER_NAME || ''}
                   />
                   <BasicFormItem
                     label="合同类型"
-                    text={baseInfo?.ORD_TYP_NAME || ''}
+                    text={baseInfo?.CON_CLS_NAME || ''}
                   />
                 </tr>
                 <tr>
@@ -362,10 +362,9 @@ const ApprovePage = () => {
                 bordered
                 dataSource={data}
                 columns={columns}
-                size='small'
-                pagination={false}
-                scroll={{ x: 2000 }}
                 rowClassName={() => 'editable-row'}
+                size="small"
+                scroll={{ x: 2000 }}
               />
             </div>
           </>

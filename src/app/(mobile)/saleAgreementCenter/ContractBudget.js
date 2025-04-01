@@ -163,7 +163,7 @@ const ContractBudget = () => {
                 <tr>
                   <BasicFormItem
                     label="编制人"
-                    text={baseInfo?.AUD_NAME || ''}
+                    text={baseInfo?.EDT_NAME || ''}
                   />
                   <BasicFormItem
                     label="申请日期"

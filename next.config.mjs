@@ -27,7 +27,12 @@ const nextConfig = {
           {
             source: '/home/:path*',
             // destination: 'http://localhost:7777/gateway/:path*'
-            destination: 'http://172.21.16.12:8080/home/:path*'
+            destination: 'http://172.21.16.12:30010/home/:path*'
+          },
+          {
+            source: '/mbs/:path*',
+            // destination: 'http://localhost:7777/gateway/:path*'
+            destination: 'http://172.21.16.12:30010/mbs/:path*'
           }
         ]
       }

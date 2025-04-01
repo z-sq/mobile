@@ -13,6 +13,11 @@ import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function BaseInfo({ style = {} }) {
   const router = useRouter()
+
+  const booleMap = {
+    Y: "是",
+    N: "否",
+  };
   
   const [data, setData] = useState({})
   const {
@@ -87,10 +92,10 @@ export default function BaseInfo({ style = {} }) {
           </tr>
           <tr>
             <BasicFormItem label="执行地区" text={data?.CIT_NAME || ''} />
-            <BasicFormItem label="信息来源" text={data?.SOU_NAME || ''} />
+            <BasicFormItem label="信息来源" text={data?.REA_TEXT || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="签约方式" text={data?.SHI_EXP_FLAG || ''} />
+            <BasicFormItem label="签约方式" text={data?.SOU_NAME || ''} />
             <BasicFormItem label="开始日期" text={data?.BZS_VAL_DATE || ''} />
           </tr>
           <tr>
@@ -102,10 +107,10 @@ export default function BaseInfo({ style = {} }) {
             <BasicFormItem label="不含税金额" text={data?.AMT || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="SM" text={data?.BZS_SM_FLAG || ''} />
+            <BasicFormItem label="SM" text={booleMap[data?.BZS_SM_FLAG] || ''} />
             <BasicFormItem
               label="是否电子签章"
-              text={data?.BZS_OA_DZQ_FLAG || ''}
+              text={booleMap[data?.BZS_OA_DZQ_FLAG] || ''}
             />
           </tr>
           <tr>
@@ -117,7 +122,7 @@ export default function BaseInfo({ style = {} }) {
           </tr>
           <tr>
             <BasicFormItem label="是否含运费" text={data?.SHI_EXP_FLAG || ''} />
-            <BasicFormItem label="是否终止" text={data?.ORD_STATUS || ''} />
+            <BasicFormItem label="是否终止" text={booleMap[data?.ORD_STATUS] || ''} />
           </tr>
 
           <tr>

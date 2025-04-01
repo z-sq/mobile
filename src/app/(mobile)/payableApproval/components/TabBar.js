@@ -5,13 +5,8 @@ import Tabs from '@/components/Tabs'
 
 const defaultTabList = [
   { title: '基本信息', key: '1' },
-  { title: '产品信息', key: '2' },
-  // { title: '自查表', key: '3' },
-  { title: '合同预算', key: '4' },
-  { title: '项目采购付款计划', key: '5' },
-  { title: '回款计划', key: '6' },
-  { title: '审核意见', key: '7' },
-  {title:'辅助信息',key:'8'}
+  { title: '付款信息', key: '2' },
+  { title: '审核意见', key: '3' }
 ]
 
 export default function TabBar({ tabList = defaultTabList, handleTabChange }) {

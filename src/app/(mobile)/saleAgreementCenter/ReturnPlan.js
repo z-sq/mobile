@@ -129,7 +129,7 @@ const PaymentPlan = () => {
         saleAgreementApi.getReturnTable,
         'GET',
         {
-          params:JSON.stringify( { ORDER_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
+          params:JSON.stringify( { ORD_NO: currentInfo.ORD_NO, COM_CODE: currentInfo.COM_CODE }),
           page: page,
           start: 0,
           limit: 100
@@ -185,7 +185,7 @@ const PaymentPlan = () => {
           <table className="w-full">
             <tbody>
             <tr>
-                <BasicFormItem label="单位" text={baseInfo?.COM_NAME || ''} />
+                <BasicFormItem label="单位" text={baseInfo?.COMPANY_NAME || ''} />
                 <BasicFormItem label="编制部门" text={baseInfo?.DEP_NAME || ''} />
               </tr>
               <tr>
@@ -193,25 +193,25 @@ const PaymentPlan = () => {
                 <BasicFormItem label="申请日期" text={baseInfo?.EDT_DATE || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="订单号" text={baseInfo?.purName || ''} />
+                <BasicFormItem label="订单号" text={baseInfo?.ORD_NO || ''} />
                 <BasicFormItem label="客户名称" text={baseInfo?.CUS_NAME || ''} />
               </tr>
               <tr>
                 {/* 订单类型改名为合同类型 */}
-                <BasicFormItem label="合同类型" text={baseInfo?.purName || ''} />
-                <BasicFormItem label="合同名称" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="合同类型" text={baseInfo?.HEAD_TYPE_NAME || ''} />
+                <BasicFormItem label="合同名称" text={baseInfo?.PROJECT_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同分类" text={baseInfo?.purName || ''} />
-                <BasicFormItem label="业务分类" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="合同分类" text={baseInfo?.CON_CLS_NAME || ''} />
+                <BasicFormItem label="业务分类" text={baseInfo?.BUS_CLS_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同额" text={baseInfo?.ORD_TOT_AMT  || ''} />
-                <BasicFormItem label="首付款" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="合同额" text={baseInfo?.TOTAL_AMT  || ''} />
+                <BasicFormItem label="首付款" text={baseInfo?.PRE_RETURN_AMT || ''} />
               </tr>
               <tr>
                 <BasicFormItem label="币别" text={baseInfo?.CUR_NAME || ''} />
-                <BasicFormItem label="计划回款总金额" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="计划回款总金额" text={baseInfo?.PMT_TOT_AMT || ''} />
               </tr>
               <tr>
               <BasicFormItem

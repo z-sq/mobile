@@ -5,20 +5,12 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Popup, Toast, Form, Modal } from 'antd-mobile'
 
-import ApprovalOpinion from './components/ApprovalOpinion'
-import MaterialInformation from './components/MaterialInformation'
-import SupplierInformation from './components/SupplierInformation'
 import TabBar from './components/TabBar'
 
 // 引入页面所有的tab页签组件
 import BaseInfo from './BaseInfo'
 import ProductInfo from './ProductInfo'
-import SelfCheck from './SelfCheck'
-import ContractBudget from './ContractBudget'
-import PaymentPlan from './PaymentPlan'
-import ReturnPlan from './ReturnPlan'
 import ApproveOpinion from './ApproveOpinion'
-import SupplementaryInfo from './SupplementaryInfo'
 
 import Button from '@/components/Button'
 import { typeMap } from '@/config/configData'
@@ -28,7 +20,7 @@ import tabStore from '@/stores/tabStore'
 import inputStore from '@/stores/inputStore'
 import { saleAgreementApi } from '@/request/apis/saleAgreement'
 
-const SaleAgreementCenter = observer(({ children }) => {
+const PayableApproval = observer(({ children }) => {
   const [activeKey, setActiveKey] = useState('1')
   const [materialInfo, setMaterialInfo] = useState([])
   const [materialTotal, setMaterialTotal] = useState(0)
@@ -45,47 +37,12 @@ const SaleAgreementCenter = observer(({ children }) => {
   } = useStores()
   // const {COM_CODE,difFlag,state='2',ORD_NO,ACC_NAME}=currentInfo
   console.log(JSON.stringify(currentInfo), 'currentInfo')
-  const isForward = currentInfo ? currentInfo.difFlag === 'FORWARD' : false
-  // const searchParams = useSearchParams()
-  // const busKeyValue = searchParams.get('key')||'R1092125020026'
-  // const procCode = searchParams.get('type')
-  // const pagCode = searchParams.get('pagCode')
-  // const procVersion = searchParams.get('procVersion')
+  const isForward = currentInfo ? currentInfo?.difFlag === 'FORWARD' : false
   const state = currentInfo?.state || '2'
 
-  // const wfType = typeMap[pagCode]?.pagCode||'tp2100'
-  // const busKey = typeMap[pagCode]?.busKey||'reqNo'
-
-  // const getVendorInfo = async () => {
-  //   try {
-  //     const result = await request(
-  //       `/business/mas/tp/manual/tp2100/getVendorInfo`,
-  //       'GET',
-  //       {
-  //         [busKey]: busKeyValue
-  //       }
-  //     )
-  //     if (result && result.success) {
-  //       const data = result.data || []
-  //       const vendorData = data.map((item, index) => {
-  //         if (item.supImpName !== null) {
-  //           item.supClsNameNew =
-  //             (item.supClsName || '') + '（' + item.supImpName + '）'
-  //         } else {
-  //           item.supClsNameNew = item.supClsName || ''
-  //         }
-  //         return item
-  //       })
-  //       setSupplierInfo(vendorData)
-  //     }
-  //   } catch (err) {}
-  // }
   // 审核意见
   const getWfmApproveInfo = async () => {
-    console.log(222)
-    // /business/mas/tp/manual/tp2800/getWfmApproveInfo
     try {
-      // console.log(333,busKeyValue,wfType,busKey)
       const {
         busKey,
         busKeyValue,
@@ -111,18 +68,9 @@ const SaleAgreementCenter = observer(({ children }) => {
         return <BaseInfo />
       case '2':
         return <ProductInfo data={materialInfo} total={materialTotal} />
-      // case '3':
-      //   return <SelfCheck />
-      case '4':
-        return <ContractBudget />
-      case '5':
-        return <PaymentPlan />
-      case '6':
-        return <ReturnPlan />
-      case '7':
+      case '3':
         return <ApproveOpinion data={approvalInfo} />
-      case '8':
-        return <SupplementaryInfo />
+      
       default:
         return <BaseInfo />
     }
@@ -130,16 +78,9 @@ const SaleAgreementCenter = observer(({ children }) => {
   const handleGetTabChange = (key) => {
     setActiveKey(key)
     tabStore.setCurrentTabKey(key)
-    console.log(1, key, '11223344')
-    // if (key === '7') {
-    //   getWfmApproveInfo()
-    // }
   }
   useEffect(() => {
-    // if (!currentInfo) {
-    //   return
-    // }
-    // getVendorInfo()
+    
     getWfmApproveInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -246,12 +187,6 @@ const SaleAgreementCenter = observer(({ children }) => {
     // {COM_CODE: "01", ORD_NO: "OM2025021300002", AUD_TEXT: "12345", ACC_CODE: "lhy", ACC_NAME: "李浩宇"}
     try {
       const result = await request(url, 'POST', params,
-        // params: JSON.stringify({
-        //   COM_CODE: COM_CODE,
-        //   ORD_NO: ORD_NO,
-        //   AUD_TEXT: AUD_TEXT,
-        //   ACC_NAME: ACC_NAME
-        // }),
         )
       if (result && result.success) {
         Toast.show({
@@ -278,8 +213,6 @@ const SaleAgreementCenter = observer(({ children }) => {
       AUD_TEXT: inputTxt,
       ACC_NAME: currentInfo.ACC_NAME,
     }]
-    // getProductRefuse
-// {COM_CODE: "01", ORD_NO: "OM2025021300002", AUD_TEXT: "12345", ACC_CODE: "lhy", ACC_NAME: "李浩宇"}
     try {
       const result = await request(url, 'POST', params)
       if (result && result.success) {
@@ -294,7 +227,6 @@ const SaleAgreementCenter = observer(({ children }) => {
     }
   }
   const renderButtons = (activeKey) => {
-    console.log(activeKey,'activeKey')
     if (['1', '2', '7'].includes(activeKey)) {
       return (
         <div
@@ -310,7 +242,7 @@ const SaleAgreementCenter = observer(({ children }) => {
                   width: '50%'
                 }}
                 onClick={() => {
-                  // onApprove(true)
+                  onApprove(true)
                   router.push('/saleAgreementCenter/approve')
                 }}
                 disabled={disable}
@@ -460,4 +392,4 @@ const SaleAgreementCenter = observer(({ children }) => {
   )
 })
 
-export default SaleAgreementCenter
+export default PayableApproval

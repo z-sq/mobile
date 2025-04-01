@@ -152,7 +152,7 @@ const ContractBudget = () => {
                 <tr>
                   <BasicFormItem
                     label="编制人"
-                    text={baseInfo?.AUD_NAME || ''}
+                    text={baseInfo?.EDT_NAME || ''}
                   />
                   <BasicFormItem
                     label="申请日期"
@@ -216,7 +216,8 @@ const ContractBudget = () => {
                 <tr>
                   <BasicFormItem
                     label="利润率"
-                    text={baseInfo?.PRO_RATE || ''}
+                    text={`${baseInfo?.PRO_RATE}%`}
+                    textStyle={{"word-break": "break-all"}}
                   />
                   <BasicFormItem label="" text={''} />
                 </tr>

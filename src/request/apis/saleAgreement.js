@@ -27,26 +27,20 @@ import { useStores } from '@/utils/useStores'
  * @type {saleAgreementApi}
  */
 export const saleAgreementApi = {
-  getBaseInfo:'/business/om/auto/bzs_om2120/query/om2100hform',
-  getProInfo: '/business/om/auto/bzs_om2120/query/tabdehead',
+  getBaseInfo:'/business/om/auto/bzs_om2121/query/om2100hform',
+  getProInfo: '/business/om/auto/bzs_om2121/query/tabdehead',
   getCompany: '/business/om/auto/bzs_om2121/query/om2100hform',
   getTable: '/business/om/auto/bzs_om2121/query/tabdehead',
   getCheckDetail: '/business/om/auto/om_qd_cx/query/pm2100qdform',
   getCheckTableDetail: '/business/om/auto/om_qd_cx/query/tabqddetail',
-  getBillhead:'/business/om/auto/om_ys_sp/query/billhead',
-  getBillmgrid:'/business/om/auto/om_ys_sp/query/billmgrid',
-  getPayPlanBase:'/business/om/auto/om_cgfk_sp/query/headformpanel',
-  getPayPlanTable:'/business/om/auto/om_cgfk_sp/query/detailgridpanel',
-  getReturnInfo:'/business/om/auto/om_hk_sp/query/billform',
-  getReturnTable:'/business/om/auto/om_hk_sp/query/billform',
+  getBillhead:'/business/om/auto/om_ys_cx/query/billhead',
+  getBillmgrid:'/business/om/auto/om_ys_cx/query/billmgrid',
+  getPayPlanBase:'/business/om/auto/om_cgfk_cx/query/headformpanel',
+  getPayPlanTable:'/business/om/auto/om_cgfk_cx/query/detailgridpanel',
+  getReturnInfo:'/business/om/auto/om_hk_cx/query/billform',
+  getReturnTable:'/business/om/auto/om_hk_cx/query/billmgrid',
   getSupplyInfo:'/business/om/auto/om_fz_cx/query/tabfzdetail',
   getApproveBase:'/business/om/auto/om2102/query/pm2102qdform',
   getApproveTable:'/business/om/auto/om2102/query/tabqddetail',
-  getApproveSubmit:'/business/om/auto/om2102/crud',
-  getProductPass:'/business/om/auto/om_ys_sp/ys_sp_y',
-  getProductRefuse:'/business/om/auto/om_ys_sp/ys_sp_r',
-  getPayPass:'/business/om/auto/om_cgfk_sp/cgfk_sp_y/',
-  getPayRefuse:'/business/om/auto/om_cgfk_sp/cgfk_sp_r',
-  getReturnPass:'/business/om/auto/om_hk_sp/om_hk_sp_y',
-  getReturnRefuse:'/business/om/auto/om_hk_sp/om_hk_sp_r'
+  getApproveSubmit:'/business/om/auto/om2102/crud'
 }

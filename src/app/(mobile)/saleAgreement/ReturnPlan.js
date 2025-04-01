@@ -188,25 +188,25 @@ const PaymentPlan = () => {
                 <BasicFormItem label="申请日期" text={baseInfo?.EDT_DATE || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="订单号" text={baseInfo?.purName || ''} />
+                <BasicFormItem label="订单号" text={baseInfo?.ORD_NO || ''} />
                 <BasicFormItem label="客户名称" text={baseInfo?.CUS_NAME || ''} />
               </tr>
               <tr>
                 {/* 订单类型改名为合同类型 */}
-                <BasicFormItem label="合同类型" text={baseInfo?.purName || ''} />
-                <BasicFormItem label="合同名称" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="合同类型" text={baseInfo?.ORD_TYP_NAME || ''} />
+                <BasicFormItem label="合同名称" text={baseInfo?.ORD_NAME || ''} />
               </tr>
               <tr>
-                <BasicFormItem label="合同分类" text={baseInfo?.purName || ''} />
-                <BasicFormItem label="业务分类" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="合同分类" text={baseInfo?.CON_CLS_CODE || ''} />
+                <BasicFormItem label="业务分类" text={baseInfo?.BUS_CLS_CODE || ''} />
               </tr>
               <tr>
                 <BasicFormItem label="合同额" text={baseInfo?.ORD_TOT_AMT  || ''} />
-                <BasicFormItem label="首付款" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="首付款" text={baseInfo?.PRE_RET_AMT || ''} />
               </tr>
               <tr>
                 <BasicFormItem label="币别" text={baseInfo?.CUR_NAME || ''} />
-                <BasicFormItem label="计划回款总金额" text={baseInfo?.finDate || ''} />
+                <BasicFormItem label="计划回款总金额" text={baseInfo?.PMT_TOT_AMT || ''} />
               </tr>
               <tr>
               <BasicFormItem

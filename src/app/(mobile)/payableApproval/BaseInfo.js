@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { observer } from 'mobx-react'
 
 import BasicFormItem from './components/BasicInformation/BasicFormItem'
 
@@ -12,16 +11,12 @@ import { saleAgreementApi } from '@/request/apis/saleAgreementCenter'
 import { Popup, Toast, Form, Modal } from 'antd-mobile'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-const BaseInfo = ({ style = {} }) => {
+export default function BaseInfo({ style = {} }) {
   const router = useRouter()
-  const booleMap = {
-    Y: "是",
-    N: "否",
-  };
   const usercode = window.localStorage.getItem('acctCode')
   const [data, setData] = useState({})
   const {
-    approveStore: { updateCurInfo, currentInfo }
+    approveStore: { resetCurInfo, currentInfo }
   } = useStores()
   const getBaseInfo = async () => {
     try {
@@ -39,7 +34,6 @@ const BaseInfo = ({ style = {} }) => {
           (item) => item.ORD_NO == currentInfo.busKeyValue
         )
         if(!resData) {
-          console.log('currentInfo.busKeyValue', currentInfo.busKeyValue)
           Toast.show({
             content: '该条数据异常'
           })
@@ -48,7 +42,7 @@ const BaseInfo = ({ style = {} }) => {
           console.log('resData',resData);
         }
         setData(resData || {})
-        updateCurInfo(resData)
+        resetCurInfo(resData)
       }
     } catch (err) {}
   }
@@ -94,10 +88,10 @@ const BaseInfo = ({ style = {} }) => {
           </tr>
           <tr>
             <BasicFormItem label="执行地区" text={data?.CIT_NAME || ''} />
-            <BasicFormItem label="信息来源" text={data?.REA_TEXT || ''} />
+            <BasicFormItem label="信息来源" text={data?.SOU_NAME || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="签约方式" text={data?.SOU_NAME || ''} />
+            <BasicFormItem label="签约方式" text={data?.SHI_EXP_FLAG || ''} />
             <BasicFormItem label="开始日期" text={data?.BZS_VAL_DATE || ''} />
           </tr>
           <tr>
@@ -109,10 +103,10 @@ const BaseInfo = ({ style = {} }) => {
             <BasicFormItem label="不含税金额" text={data?.AMT || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="SM" text={booleMap[data?.BZS_SM_FLAG] || ''} />
+            <BasicFormItem label="SM" text={data?.BZS_SM_FLAG || ''} />
             <BasicFormItem
               label="是否电子签章"
-              text={booleMap[data?.BZS_OA_DZQ_FLAG] || ''}
+              text={data?.BZS_OA_DZQ_FLAG || ''}
             />
           </tr>
           <tr>
@@ -141,5 +135,3 @@ const BaseInfo = ({ style = {} }) => {
     </div>
   )
 }
-
-export default observer(BaseInfo);
