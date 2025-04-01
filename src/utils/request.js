@@ -2,7 +2,7 @@ import { Toast, Dialog } from 'antd-mobile'
 
 import { BASE_PATH, API_DOMAIN } from '@/config/app'
 
-const BASE_URL = API_DOMAIN
+// let BASE_URL = API_DOMAIN;
 
 let isLogoutShow = false
 
@@ -38,6 +38,13 @@ const request = async (
       ...config.headers,
       ...headers
     }
+  }
+
+  /** 首页、审核意见接口走单独服务 */
+  let BASE_URL = API_DOMAIN;
+  let modalServer = url.split("/")[1];
+  if(["home","mbs"].includes(modalServer)) {
+    BASE_URL = process.env.NEXT_PUBLIC_HOME_API_URL
   }
 
   if (data) {

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 class Approve {
-  currentInfo = null
+  currentInfo = {}
   venName = ''
 
   constructor() {
