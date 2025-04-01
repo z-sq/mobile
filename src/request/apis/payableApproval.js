@@ -7,7 +7,8 @@ import { useStores } from '@/utils/useStores'
  * @type {saleAgreementApi}
  */
 export const payApprovalApi = {
-  getBaseInfo:'/business/om/auto/bzs_om2120/query/om2100hform',
-  getProInfo: '/business/om/auto/bzs_om2120/query/tabdehead',
+  getBaseInfo:'/business/ap/auto/ap2521/query/ap2521h',
+  getTable1:'/business/ap/auto/ap2521/query/ap2521dd',
+  getTable2: '/business/ap/auto/ap2521/query/ap2521d',
  
 }

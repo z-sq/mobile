@@ -7,23 +7,25 @@ import BasicFormItem from './components/BasicInformation/BasicFormItem'
 import Loading from '@/components/Loading'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
-import { saleAgreementApi } from '@/request/apis/saleAgreementCenter'
+import { payApprovalApi } from '@/request/apis/payableApproval'
 import { Popup, Toast, Form, Modal } from 'antd-mobile'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function BaseInfo({ style = {} }) {
   const router = useRouter()
-  const usercode = window.localStorage.getItem('acctCode')
+  // const usercode =localStorage.getItem('acctCode')
   const [data, setData] = useState({})
+  const [userCode,setUserCode]=useState()
+
   const {
     approveStore: { resetCurInfo, currentInfo }
   } = useStores()
   const getBaseInfo = async () => {
     try {
-      const result = await request(saleAgreementApi.getBaseInfo,
+      const result = await request(payApprovalApi.getBaseInfo,
         'GET',
         {
-          params:JSON.stringify( { usercode:usercode }),
+          params:JSON.stringify( { COM_CODE:currentInfo.COM_CODE }),
           page: 1,
           start: 0,
           limit: 9999
@@ -37,7 +39,7 @@ export default function BaseInfo({ style = {} }) {
           Toast.show({
             content: '该条数据异常'
           })
-          router.push('/list')
+          // router.push('/list')
         }else{
           console.log('resData',resData);
         }
@@ -47,6 +49,14 @@ export default function BaseInfo({ style = {} }) {
     } catch (err) {}
   }
 
+  useEffect(()=>{
+    if (typeof window!==undefined) {
+      const usercode =localStorage.getItem('acctCode')
+      if (usercode) {
+        setUserCode(usercode)
+      }
+    }
+  },[])
   useEffect(() => {
     getBaseInfo()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,69 +72,31 @@ export default function BaseInfo({ style = {} }) {
       ) : (
       <table className="w-full">
         <tbody>
+         
           <tr>
-            <BasicFormItem label="单位" text={data?.COM_NAME || ''} />
-            <BasicFormItem label="合同号" text={data?.ORD_NO || ''} />
+            <BasicFormItem label="申请单号" text={data?.PAY_ID || ''} />
+            <BasicFormItem label="申请日期" text={data?.UPD_DATE || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="申请日期" text={data?.SIG_DATE || ''} />
-            <BasicFormItem label="业务部门" text={data?.DEP_NAME || ''} />
+            <BasicFormItem label="公司" text={data?.COM_NAME || ''} />
+            <BasicFormItem label="申请部门" text={data?.DEP_NAME || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="销售员" text={data?.SAL_PER_NAME || ''} />
-            <BasicFormItem label="合同名称" text={data?.ORD_NAME || ''} />
+            <BasicFormItem label="申请人" text={data?.UPD_NAME || ''} />
+            <BasicFormItem label="付款类型" text={data?.PAY_TYP_NAME || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="合同类型" text={data?.ORD_TYP_NAME || ''} />
-            <BasicFormItem label="合同分类" text={data?.CON_CLS_NAME || ''} />
+            <BasicFormItem label="结算币别" text={data?.CUR_NAME || ''} />
+            <BasicFormItem label="申请金额" text={data?.DEM_AMT || ''} />
           </tr>
           <tr>
-            <BasicFormItem label="业务分类" text={data?.BUS_CLS_NAME || ''} />
-            <BasicFormItem label="币别名称" text={data?.CUR_NAME || ''} />
-          </tr>
-          <tr>
-            <BasicFormItem label="客户名称" text={data?.CUS_NAME || ''} />
-            <BasicFormItem label="客户级别" text={data?.LEV_NAME || ''} />
-          </tr>
-          <tr>
-            <BasicFormItem label="执行地区" text={data?.CIT_NAME || ''} />
-            <BasicFormItem label="信息来源" text={data?.SOU_NAME || ''} />
-          </tr>
-          <tr>
-            <BasicFormItem label="签约方式" text={data?.SHI_EXP_FLAG || ''} />
-            <BasicFormItem label="开始日期" text={data?.BZS_VAL_DATE || ''} />
-          </tr>
-          <tr>
-            <BasicFormItem label="结束日期" text={data?.BZS_INV_DATE || ''} />
-            <BasicFormItem label="合同额" text={data?.ORD_TOT_AMT || ''} />
-          </tr>
-          <tr>
-            <BasicFormItem label="税金" text={data?.TAX_TOT_AMT || ''} />
-            <BasicFormItem label="不含税金额" text={data?.AMT || ''} />
-          </tr>
-          <tr>
-            <BasicFormItem label="SM" text={data?.BZS_SM_FLAG || ''} />
-            <BasicFormItem
-              label="是否电子签章"
-              text={data?.BZS_OA_DZQ_FLAG || ''}
-            />
-          </tr>
-          <tr>
-            <BasicFormItem label="首付款" text={data?.PRE_RET_AMT || ''} />
-            <BasicFormItem
-              label="首付款比例(%)"
-              text={data?.PRE_RET_RATE || ''}
-            />
-          </tr>
-          <tr>
-            <BasicFormItem label="是否含运费" text={data?.SHI_EXP_FLAG || ''} />
-            <BasicFormItem label="是否终止" text={data?.ORD_STATUS || ''} />
+            <BasicFormItem label="供应商" text={data?.VEN_NAME || ''} />
           </tr>
 
           <tr>
             <BasicFormItem
-              label="变更原因"
-              text={data?.MOD_REASON || ''}
+              label="付款说明"
+              text={data?.EXA_REMAKES || ''}
               textColSpan={3}
             />
           </tr>
