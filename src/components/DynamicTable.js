@@ -4,22 +4,42 @@ import { InfiniteScroll, Loading } from 'antd-mobile'
 import { useState, useEffect, useRef } from 'react'
 import { Table, Checkbox, Popover, Button } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
+import { createStyles } from 'antd-style';
+const useStyle = createStyles(({ css, token }) => {
+  const { antCls } = token;
+  return {
+    customTable: css`
+      ${antCls}-table {
+        ${antCls}-table-container {
+          ${antCls}-table-body,
+          ${antCls}-table-content {
+            scrollbar-width: thin;
+            scrollbar-color: #eaeaea transparent;
+            scrollbar-gutter: stable;
+          }
+        }
+      }
+    `,
+  };
+});
 
 const DynamicTable = ({
   defaultColumns,
   initData,
   fetchData,
-  allColumns = defaultColumns
+  allColumns = defaultColumns,
+  loadMoreData,
+  hasMore
 }) => {
   const [activeColumns, setActiveColumns] = useState(defaultColumns)
   const [selectedColumns, setSelectedColumns] = useState(
     allColumns.map((col) => col.key)
   )
-  const [dataSource, setDataSource] = useState(initData)
-  const [hasMore, setHasMore] = useState(true)
+  // const [dataSource, setDataSource] = useState(initData)
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [openPopover,setOpenPopover]=useState({})
+  const { styles } = useStyle();
 
   const handleColumnChange = (checkedVal) => {
     setSelectedColumns(checkedVal)
@@ -92,22 +112,22 @@ const DynamicTable = ({
       </div>
     )
   }))
-  // 加载更多数据
-  const loadMoreData = async () => {
-    if (loading || !hasMore) return
-    setLoading(true)
-    const newData = await fetchData(page)
-    if (newData.length === 0) {
-      setHasMore(false)
-    } else {
-      setDataSource((prev) => [...prev, ...newData])
-      setPage((prev) => prev + 1)
-    }
-    setLoading(false)
-  }
-  useEffect(() => {
-    loadMoreData()
-  }, [])
+  // // 加载更多数据
+  // const loadMoreData = async () => {
+  //   if (loading || !hasMore) return
+  //   setLoading(true)
+  //   const newData = await fetchData(page)
+  //   if (newData.length === 0) {
+  //     setHasMore(false)
+  //   } else {
+  //     setDataSource((prev) => [...prev, ...newData])
+  //     setPage((prev) => prev + 1)
+  //   }
+  //   setLoading(false)
+  // }
+  // useEffect(() => {
+  //   // loadMoreData()
+  // }, [])
 
   return (
     <>
@@ -117,9 +137,11 @@ const DynamicTable = ({
         loading={loading}
       >
         <Table
+         className={styles.customTable}
           columns={columnsWithSelector}
-          dataSource={dataSource}
+          dataSource={initData}
           pagination={false}
+          scroll={{ y: 55 * 5 }}
         />
       </InfiniteScroll>
     </>
