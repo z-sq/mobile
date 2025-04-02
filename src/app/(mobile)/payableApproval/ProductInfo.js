@@ -2,7 +2,7 @@
 import { observer } from 'mobx-react'
 import { useState, useEffect } from 'react'
 
-import TableList from '@/components/TableList'
+import DynamicTable from '@/components/DynamicTable'
 import request from '@/utils/request'
 import { useStores } from '@/utils/useStores'
 import { payApprovalApi } from '@/request/apis/payableApproval'
@@ -16,7 +16,8 @@ const defaultColumns = [
       compare: (a, b) => a.SEQ_NO - b.SEQ_NO,
       multiple: 1
     },
-    defaultSortOrder: 'ascend'
+    defaultSortOrder: 'ascend',
+    width:100,
   },
   {
     title: '付款方式',
@@ -26,9 +27,10 @@ const defaultColumns = [
       compare: (a, b) => a.PAY_KIN_NAME - b.PAY_KIN_NAME,
       multiple: 2
     },
-    defaultSortOrder: 'ascend'
+    defaultSortOrder: 'ascend',
+    width:100,
   },
-  {
+  { width:100,
     title: '银行开户行',
     dataIndex: 'BANK',
     key: 'BANK',
@@ -37,7 +39,7 @@ const defaultColumns = [
       multiple: 3
     }
   },
-  {
+  { width:100,
     title: '银行账号',
     dataIndex: 'BAN_ID',
     key: 'BAN_ID',
@@ -46,7 +48,7 @@ const defaultColumns = [
       multiple: 4
     }
   },
-  {
+  { width:100,
     title: '银行单据号',
     dataIndex: 'BAN_BIL_ID',
     key: 'BAN_BIL_ID',
@@ -55,7 +57,7 @@ const defaultColumns = [
       multiple: 5
     }
   },
-  {
+  { width:100,
     title: '票据分类',
     dataIndex: 'KIN_NAME',
     key: 'KIN_NAME',
@@ -64,7 +66,7 @@ const defaultColumns = [
       multiple: 6
     }
   },
-  {
+  { width:100,
     title: '票据类型',
     dataIndex: 'TYP_NAME',
     key: 'TYP_NAME',
@@ -73,7 +75,7 @@ const defaultColumns = [
       multiple: 7
     }
   },
-  {
+  { width:100,
     title: '票据号',
     dataIndex: 'BIL_ID',
     key: 'BIL_ID',
@@ -82,7 +84,8 @@ const defaultColumns = [
       multiple: 8
     }
   },
-  {
+  { 
+    width:100,
     title: '申请金额',
     dataIndex: 'APP_AMT',
     key: 'APP_AMT',
@@ -92,6 +95,7 @@ const defaultColumns = [
     }
   },
   {
+    width:100,
     title: '票据期限',
     dataIndex: 'LIM_DATE',
     key: 'LIM_DATE',
@@ -101,6 +105,7 @@ const defaultColumns = [
     }
   },
   {
+    width:100,
     title: '票据承兑日期',
     dataIndex: 'COM_DATE',
     key: 'COM_DATE',
@@ -110,6 +115,7 @@ const defaultColumns = [
     }
   },
   {
+    width:100,
     title: '供应商开户行',
     dataIndex: 'VEN_BANK',
     key: 'VEN_BANK',
@@ -119,6 +125,7 @@ const defaultColumns = [
     }
   },
   {
+    width:100,
     title: '供应商开户行账号',
     dataIndex: 'VEN_BAN_ID',
     key: 'VEN_BAN_ID',
@@ -334,27 +341,19 @@ const ProductInfo = observer(({ style = {} }) => {
   return (
     <div className="text-12px px-10px py-10px h-[100%] w-full" style={style}>
       <div className="h-[50%]">
-        <TableList
-          columns={tableColumns}
-          dataSource={tableData}
-          orderColumn={true}
-          width={tableWidth}
-          loadMore={loadMore}
+        <DynamicTable
+          defaultColumns={tableColumns}
+          initData={tableData}
+          loadMoreData={loadMore}
           hasMore={hasMore}
-          threshold={100}
-          infiniteScroll={true}
         />
       </div>
       <div className="h-[50%]">
-        <TableList
-          columns={tableColumns2}
-          dataSource={tableData2}
-          orderColumn={true}
-          width={tableWidth}
-          loadMore={loadMoreTable}
-          hasMore={hasMore2}
-          threshold={100}
-          infiniteScroll={false}
+        <DynamicTable
+          defaultColumns={tableColumns2}
+          initData={tableData2}
+          loadMoreData={loadMore}
+          hasMore={hasMore}
         />
       </div>
     </div>
