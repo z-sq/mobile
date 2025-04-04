@@ -17,7 +17,7 @@ const defaultColumns = [
       multiple: 1
     },
     defaultSortOrder: 'ascend',
-    width:100,
+    width:150,
   },
   {
     title: '付款方式',
@@ -28,9 +28,9 @@ const defaultColumns = [
       multiple: 2
     },
     defaultSortOrder: 'ascend',
-    width:100,
+    width:150,
   },
-  { width:100,
+  { width:150,
     title: '银行开户行',
     dataIndex: 'BANK',
     key: 'BANK',
@@ -39,7 +39,7 @@ const defaultColumns = [
       multiple: 3
     }
   },
-  { width:100,
+  { width:150,
     title: '银行账号',
     dataIndex: 'BAN_ID',
     key: 'BAN_ID',
@@ -48,7 +48,7 @@ const defaultColumns = [
       multiple: 4
     }
   },
-  { width:100,
+  { width:150,
     title: '银行单据号',
     dataIndex: 'BAN_BIL_ID',
     key: 'BAN_BIL_ID',
@@ -57,7 +57,7 @@ const defaultColumns = [
       multiple: 5
     }
   },
-  { width:100,
+  { width:150,
     title: '票据分类',
     dataIndex: 'KIN_NAME',
     key: 'KIN_NAME',
@@ -66,7 +66,7 @@ const defaultColumns = [
       multiple: 6
     }
   },
-  { width:100,
+  { width:150,
     title: '票据类型',
     dataIndex: 'TYP_NAME',
     key: 'TYP_NAME',
@@ -75,7 +75,7 @@ const defaultColumns = [
       multiple: 7
     }
   },
-  { width:100,
+  { width:150,
     title: '票据号',
     dataIndex: 'BIL_ID',
     key: 'BIL_ID',
@@ -85,7 +85,7 @@ const defaultColumns = [
     }
   },
   { 
-    width:100,
+    width:150,
     title: '申请金额',
     dataIndex: 'APP_AMT',
     key: 'APP_AMT',
@@ -95,7 +95,7 @@ const defaultColumns = [
     }
   },
   {
-    width:100,
+    width:150,
     title: '票据期限',
     dataIndex: 'LIM_DATE',
     key: 'LIM_DATE',
@@ -105,7 +105,7 @@ const defaultColumns = [
     }
   },
   {
-    width:100,
+    width:150,
     title: '票据承兑日期',
     dataIndex: 'COM_DATE',
     key: 'COM_DATE',
@@ -115,7 +115,7 @@ const defaultColumns = [
     }
   },
   {
-    width:100,
+    width:150,
     title: '供应商开户行',
     dataIndex: 'VEN_BANK',
     key: 'VEN_BANK',
@@ -125,7 +125,7 @@ const defaultColumns = [
     }
   },
   {
-    width:100,
+    width:150,
     title: '供应商开户行账号',
     dataIndex: 'VEN_BAN_ID',
     key: 'VEN_BAN_ID',
@@ -137,6 +137,7 @@ const defaultColumns = [
 ]
 const secondTable = [
   {
+    width:150,
     title: '采购订单号',
     dataIndex: 'ORD_ID',
     key: 'ORD_ID',
@@ -147,6 +148,7 @@ const secondTable = [
     defaultSortOrder: 'ascend'
   },
   {
+    width:150,
     title: '采购订单名称',
     dataIndex: 'ORD_NAME',
     key: 'ORD_NAME',
@@ -157,6 +159,7 @@ const secondTable = [
     defaultSortOrder: 'ascend'
   },
   {
+    width:150,
     title: '订单金额',
     dataIndex: 'ITE_NAME',
     key: 'ITE_NAME',
@@ -166,6 +169,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '已付款金额',
     dataIndex: 'ITE_NORM',
     key: 'ITE_NORM',
@@ -175,6 +179,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '已付款比例',
     dataIndex: 'ITE_MODEL',
     key: 'ITE_MODEL',
@@ -184,6 +189,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '剩余未付款金额',
     dataIndex: 'REQ_QTY',
     key: 'REQ_QTY',
@@ -193,6 +199,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '开票金额',
     dataIndex: 'OM_UNI_NAME',
     key: 'OM_UNI_NAME',
@@ -202,6 +209,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '已占用付款比例',
     dataIndex: 'PRICE',
     key: 'PRICE',
@@ -211,6 +219,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '已审核未付款',
     dataIndex: 'AMT',
     key: 'AMT',
@@ -220,6 +229,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '已申请未审核',
     dataIndex: 'TAX_RATE',
     key: 'TAX_RATE',
@@ -229,6 +239,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '已占用金额',
     dataIndex: 'TAX_AMT',
     key: 'TAX_AMT',
@@ -238,6 +249,7 @@ const secondTable = [
     }
   },
   {
+    width:150,
     title: '申请金额',
     dataIndex: 'PAY_AMT',
     key: 'PAY_AMT',
