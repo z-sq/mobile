@@ -109,29 +109,28 @@ const Page = () => {
     },
   ];
 
-  async function getBaseInfo() {
-    try {
-      const comCode = window.localStorage.getItem("companyCode");
-      const usercode = window.localStorage.getItem("acctCode");
-      const Authorization = window.localStorage.getItem("token");
-      const { busTabName, busKeyValue: ordNo, uuid } = currentInfo;
-      const result = await request(
-        "/business/md/home/page/getBaseInfo",
-        "GET",
-        { comCode, usercode, busTabName, ordNo, uuid },
-        { Authorization }
-      );
-      if (result?.success && result.data?.lenght > 0) {
-        setBaseInfo(result.data[0] || {});
-      } else {
-        // 错误提示
-        Dialog.alert({
-          content: "该数据存在异常",
-          // onConfirm: () => router.back(),
-        });
-      }
-    } catch (err) {}
+  const getBaseInfo = async (params = {}) => {
+    const result = await request(
+      `/business/inv/auto/bzs_inv21141/query/uppanel`,
+      'GET',
+      // {"COM_CODE":"01","REQ_NO":"2025032500009","COM_NAME":"北京机械工业自动化研究所有限公司软件分公司","UPD_CODE":"lhy","UPD_NAME":"李浩宇"}
+      {params:JSON.stringify( {
+        COM_CODE: currentInfo.COM_CODE||'01',
+        REQ_NO:currentInfo.REQ_NO||'2025032500009',
+        COM_NAME:currentInfo.COM_NAME||'北京机械工业自动化研究所有限公司软件分公司',
+        UPD_CODE:currentInfo.UPD_CODE||'lhy',
+        UPD_NAME:currentInfo.UPD_NAME||"李浩宇"
+      }),
+      page: 1,
+      start: 0,
+      limit: 9999
+    }
+    )
+    if (result && result.success) {
+      setBaseInfo(result.data[0] || {})
+    }
   }
+
 const loadMore=()=>{
 
 }
